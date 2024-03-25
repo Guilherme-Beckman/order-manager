@@ -46,7 +46,7 @@ $ git clone https://github.com/Guilherme-Beckman/order-manager.git
 
 ### API Documentation:
 - Generate automatic API documentation using Swagger to facilitate integration with the frontend and provide a clear reference for developers.
-- 
+  
 ### Database
 The project uses MongoDB as the database. MongoDB is a NoSQL database that provides flexibility and scalability for storing and managing data.
 
