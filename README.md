@@ -3,6 +3,11 @@
 ## Description:
 Develop an online order management system for restaurants that enables customers to place food orders over the internet. The system will feature a RESTful API for frontend communication and will be built on microservices, with each one responsible for specific functionalities.
 
+## Installation
+
+### Clone the repository:
+$ git clone https://github.com/Guilherme-Beckman/order-manager.git
+
 ## Technologies Used:
 
 - Java
