@@ -46,6 +46,9 @@ $ git clone https://github.com/Guilherme-Beckman/order-manager.git
 
 ### API Documentation:
 - Generate automatic API documentation using Swagger to facilitate integration with the frontend and provide a clear reference for developers.
+- 
+### Database
+The project uses MongoDB as the database. MongoDB is a NoSQL database that provides flexibility and scalability for storing and managing data.
 
 ## Final Considerations:
 This project can be expanded and customized according to your needs and interests. You can add additional features such as online payment support, integration with delivery systems, sales data analysis, among others. The use of modern technologies like microservices, Docker containers, and asynchronous communication with RabbitMQ will make the system robust, scalable, and easy to maintain.
