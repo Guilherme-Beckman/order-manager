@@ -1,10 +1,10 @@
-package com.beckman.ordermanager;
+package com.ms.user;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class OrderManagerApplicationTests {
+class UserApplicationTests {
 
 	@Test
 	void contextLoads() {
