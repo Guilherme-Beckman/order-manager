@@ -1,54 +1,64 @@
-package com.ms.user.model.adress;
+package com.ms.user.model.address;
 
 import java.util.UUID;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Autowired;
 
-@Document(collection = "usersAdressDb")
-public class AdressModel {
-    @Id
-    private UUID id;
-    @DBRef
-    private UUID userId;
+import com.ms.user.service.AddressService;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Null;
+
+public class AddressDTO {
+
+	
+    private String userId;
+    @NotBlank 
     private String street;
+    @NotBlank 
     private String number;
     private String complement;
+    @NotBlank 
     private String neighborhood;
+    @NotBlank 
     private String city;
+    @NotBlank 
     private String state;
     private String zipCode;
     
-	public AdressModel() {
+    
+	public AddressDTO() {
 	}
-	public AdressModel(UUID id, UUID userId, String street, String number, String complement, String neighborhood, String city,
-			String state, String zipCode) {
-		this.id = id;
-		this.userId = userId;
+
+	public AddressDTO(@NotBlank String street, @NotBlank String number, String complement,
+			@NotBlank String neighborhood, @NotBlank String city, @NotBlank String state) {
 		this.street = street;
 		this.number = number;
 		this.complement = complement;
 		this.neighborhood = neighborhood;
 		this.city = city;
 		this.state = state;
-		this.zipCode = zipCode;
 	}
-	public UUID getId() {
-		return id;
+
+	public AddressDTO(@NotBlank String zipCode) {
+		AddressService addressService = new AddressService(); 
+	    AddressDTO dto = addressService.insertAddressByCPF(zipCode); 
+	    this.street = dto.getStreet(); 
+	    this.number = dto.getNumber(); 
+	    this.complement = dto.getComplement(); 
+	    this.neighborhood = dto.getNeighborhood(); 
+	    this.city = dto.getCity(); 
+	    this.state = dto.getState(); 
+	    this.zipCode = zipCode;
 	}
-	public void setId(UUID id) {
-		this.id = id;
-	}
-	public UUID getUserId() {
-		return userId;
-	}
-	public void setUserId(UUID userId) {
-		this.userId = userId;
-	}
+
+	
+	
 	public String getStreet() {
 		return street;
 	}
+	
 	public void setStreet(String street) {
 		this.street = street;
 	}
@@ -88,5 +98,16 @@ public class AdressModel {
 	public void setZipCode(String zipCode) {
 		this.zipCode = zipCode;
 	}
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+	
+	
+    
+    
+    
     
 }
