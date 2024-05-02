@@ -1,7 +1,6 @@
 package com.ms.user.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.config.RepositoryNameSpaceHandler;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ms.user.model.address.AddressDTO;
 import com.ms.user.model.user.UserDTO;
 import com.ms.user.model.user.UserModel;
 import com.ms.user.service.UserService;
@@ -22,7 +22,7 @@ public class UserController {
 	public UserService userService;
 	
 	@PostMapping
-	public ResponseEntity<UserModel> insertUser(@RequestBody @Valid UserDTO userDTO){
+	public ResponseEntity<UserModel> insertUser(@RequestBody @Valid UserDTO userDTO) throws Exception{
 	UserModel savedUser=  this.userService.insertUser(userDTO);
 	return ResponseEntity.ok().body(savedUser);
 	}
@@ -30,6 +30,15 @@ public class UserController {
 	public ResponseEntity<UserModel> getUserById(@PathVariable String id){
 	var findedUser= this.userService.getUserById(id);
 	return ResponseEntity.ok().body(findedUser);
+	}
+	@PostMapping("/{userId}")
+	public ResponseEntity<UserModel> addAddress(@PathVariable String userId, @RequestBody AddressDTO newAddress) throws Exception{
+	var user = this.userService.addAdress(userId, newAddress);
+	return ResponseEntity.ok().body(user);
+	}
+	/*@DeleteMapping("/del")
+	public void deleteAll() {
+		this.userService.deleteAll();
+	}*/
 	
 	}
-}

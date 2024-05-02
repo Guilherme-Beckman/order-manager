@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotNull;
 
 public record UserDTO(
     @NotBlank String cpf,    
+    @NotBlank String password,
     @NotBlank String name,   
     @NotBlank String lastName,  
     @Email @NotBlank String email,

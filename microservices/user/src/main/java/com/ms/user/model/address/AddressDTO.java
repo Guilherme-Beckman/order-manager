@@ -1,15 +1,8 @@
 package com.ms.user.model.address;
 
-import java.util.UUID;
-
-import org.bson.types.ObjectId;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.ms.user.service.AddressService;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Null;
-
 public class AddressDTO {
 
 	
@@ -43,7 +36,7 @@ public class AddressDTO {
 
 	public AddressDTO(@NotBlank String zipCode) {
 		AddressService addressService = new AddressService(); 
-	    AddressDTO dto = addressService.insertAddressByCPF(zipCode); 
+	    AddressDTO dto = addressService.addressByCPF(zipCode); 
 	    this.street = dto.getStreet(); 
 	    this.number = dto.getNumber(); 
 	    this.complement = dto.getComplement(); 

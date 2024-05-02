@@ -1,10 +1,7 @@
 package com.ms.user.model.address;
 
-import java.util.UUID;
 
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "usersAdressDb")
@@ -42,6 +39,7 @@ public class AddressModel {
 		this.neighborhood = addressDTO.getNeighborhood();
 		this.city = addressDTO.getCity();
 		this.state = addressDTO.getState();
+		this.zipCode = addressDTO.getZipCode();
 	}
 	public String getId() {
 		return id;

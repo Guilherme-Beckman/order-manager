@@ -1,15 +1,22 @@
 package com.ms.user.model.address;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class ViaCepResponse {
+	@NotBlank
 	private String cep;
+	@NotBlank
 	private String logradouro;
 	private String complemento;
+	@NotBlank
 	private String bairro;
+	@NotBlank
 	private String localidade;
+	@NotBlank
 	private String uf;
 	
-	public ViaCepResponse(String cep, String logradouro, String complemento, String bairro, String localidade,
-			String uf) {
+	public ViaCepResponse(	@NotBlank String cep, 	@NotBlank String logradouro, String complemento,	@NotBlank String bairro, 	@NotBlank String localidade,
+			@NotBlank String uf) {
 		this.cep = cep;
 		this.logradouro = logradouro;
 		this.complemento = complemento;
