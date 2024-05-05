@@ -11,8 +11,7 @@ public class AddressCrypto {
 	@Autowired
 	CryptoUtils cryptoUtils;
 	
-	public AddressCrypto() {
-	}
+
 
 	public AddressDTO cryptoAddressData(AddressDTO addressDTO) throws Exception {
 

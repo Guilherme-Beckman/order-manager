@@ -1,9 +1,11 @@
 package com.ms.user.model.user;
 
 import java.util.ArrayList;
+
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 
@@ -15,6 +17,7 @@ public class UserModel {
 	private String password;
 	private String name;
 	private String lastName;
+	@Indexed(unique = true)
 	private String email;
 	private List<String> adress;
 	
@@ -29,7 +32,7 @@ public class UserModel {
 		this.adress = new ArrayList<String>();
 		
 	}
-	public UserModel(String id, String cpf, String name, String lastName, String email) {
+	public UserModel(String id, String cpf, String password, String name, String lastName, String email) {
 		this.id = id;
 		this.cpf = cpf;
 		this.password = password;

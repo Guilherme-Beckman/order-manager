@@ -1,6 +1,6 @@
 package com.ms.user.infra.security;
 
-import org.apache.catalina.User;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,9 +12,7 @@ import com.ms.user.model.user.UserDTO;
 public class UserCrypto {
 	@Autowired
 	CryptoUtils cryptoUtils;
-	
-	public UserCrypto() {
-	}
+
 
 	public UserDTO cryptoUserData(UserDTO userDTO) throws Exception {
 
