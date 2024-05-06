@@ -1,5 +1,6 @@
 package com.ms.user.rabbitMQ.producer;
 
+import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -11,7 +12,7 @@ public class UserReturnData{
 	@Autowired
 	public RabbitTemplate rabbitTemplate;
 	
-	public void returnUserData(String encryptedPassword) {
-		rabbitTemplate.convertAndSend(RabbitMQConfig.USER_FANOUT_EXCHANGE, RabbitMQConfig.USER_QUEUE, encryptedPassword);
+	public void returnUserData(Message user) {
+		rabbitTemplate.convertAndSend(RabbitMQConfig.AUTH_DIRECT_EXCHANGE, RabbitMQConfig.BINDINGKEY_RESPONSE, user);
 	}
 }

@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import com.ms.user.model.user.UserModel;
 
 @Repository
-public interface UserRepository extends MongoRepository<UserModel,String>{
-
+public interface UserRepository extends MongoRepository<UserModel,String> {
+	UserModel findByEmail (String email);
 }

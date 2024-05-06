@@ -43,13 +43,17 @@ public class UserService {
          } 
         address.setUserId(userId);
         AddressModel addedAddress = this.addressService.insertAddress(address);
-        List<String> addressesSavedUser = findedUser.getAdress();
+        List<String> addressesSavedUser = findedUser.getAddress();
         addressesSavedUser.add(addedAddress.getId());
         findedUser.setAdress(addressesSavedUser);
         return this.userRepository.save(findedUser);
     }
     public UserModel getUserById(String id) {
     	return this.userRepository.findById(id).orElseThrow();
+    }
+    
+    public UserModel getUserByEmail(String email){
+    	return this.userRepository.findByEmail(email);
     }
    /* public void deleteAll() {
     	this.userRepository.deleteAll();

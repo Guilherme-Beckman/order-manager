@@ -19,7 +19,7 @@ public class UserModel {
 	private String lastName;
 	@Indexed(unique = true)
 	private String email;
-	private List<String> adress;
+	private List<String> address;
 	
 	public UserModel() {
 	}
@@ -29,7 +29,7 @@ public class UserModel {
 		this.name = userDTO.name();
 		this.lastName = userDTO.lastName();
 		this.email = userDTO.email();
-		this.adress = new ArrayList<String>();
+		this.address = new ArrayList<String>();
 		
 	}
 	public UserModel(String id, String cpf, String password, String name, String lastName, String email) {
@@ -39,7 +39,7 @@ public class UserModel {
 		this.name = name;
 		this.lastName = lastName;
 		this.email = email;
-		this.adress = new ArrayList<String>();
+		this.address = new ArrayList<String>();
 	}
 	public String getId() {
 		return id;
@@ -71,11 +71,11 @@ public class UserModel {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public List<String> getAdress() {
-		return adress;
+	public List<String> getAddress() {
+		return address;
 	}
-	public void setAdress(List<String> adress) {
-		this.adress = adress;
+	public void setAdress(List<String> address) {
+		this.address = address;
 	}
 	public String getPassword() {
 		return password;
