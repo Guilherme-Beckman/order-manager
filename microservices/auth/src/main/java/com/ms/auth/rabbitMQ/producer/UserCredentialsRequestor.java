@@ -12,19 +12,14 @@ public class UserCredentialsRequestor {
     public RabbitTemplate rabbitTemplate;
 
     public void requestUserCredentials(Message email) {
-        System.out.println("requestUserCredentials: Enviando mensagem ao RabbitMQ."+" email: "+email.getBody().toString());
 
-        // Convertendo e enviando a mensagem para o RabbitMQ
+
         rabbitTemplate.convertAndSend(
             RabbitMQConfig.AUTH_DIRECT_EXCHANGE,
             RabbitMQConfig.BINDINGKEY_REQUEST,
             email
         );
 
-        System.out.println("Mensagem enviada para o Exchange: " 
-            + RabbitMQConfig.AUTH_DIRECT_EXCHANGE
-            + " com a Binding Key: "
-            + RabbitMQConfig.BINDINGKEY_REQUEST
-        );
+
     }
 }

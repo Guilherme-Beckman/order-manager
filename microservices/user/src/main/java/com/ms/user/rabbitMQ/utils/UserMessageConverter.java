@@ -24,12 +24,13 @@ public class UserMessageConverter {
         }
 
         // Converte o objeto User para JSON
-        byte[] jsonBytes = objectMapper.writeValueAsBytes(user);
+        byte[] menssageBytes = objectMapper.writeValueAsBytes(user);
 
         // Define as propriedades da mensagem
         MessageProperties messageProperties = new MessageProperties();
         messageProperties.setHeader("correlationId", correlationId);
+        messageProperties.setExpiration("5000");
         // Cria uma mensagem com os bytes do JSON
-        return new Message(jsonBytes, messageProperties);
+        return new Message(menssageBytes, messageProperties);
     }
 }

@@ -25,38 +25,25 @@ public class UserDataListerner {
 
     @Autowired
     public UserMessageConverter messageConverter;
-
+    
     @RabbitListener(queues = RabbitMQConfig.AUTH_QUEUE)
     public void processUserData(@Payload Message email) throws Exception {
-        System.out.println("processUserData: Mensagem recebida na fila AUTH_QUEUE.");
-
-        // Verificar se a mensagem não é null
+ 
+   
         if (email != null) {
-            System.out.println("Mensagem recebida: " + email);
+   
 
-            // Extrair o email da mensagem
             var emailP = new String(email.getBody());
-            System.out.println("Email extraído: " + emailP);
 
-            // Criptografar o email
-            var encryptedEmail = this.cryptoUtils.encrypt(emailP);
-            System.out.println("Email criptografado: " + encryptedEmail);
 
-            // Buscar usuário pelo email criptografado
-            var findedUser = this.userService.getUserByEmail(encryptedEmail);
-            System.out.println("Usuário encontrado: " + (findedUser != null ? findedUser.toString() : "Nenhum usuário encontrado"));
+            var findedUser = this.userService.getUserByEmail(emailP);
 
-            // Converter o usuário para mensagem de resposta
-            var userBytes = this.messageConverter.convertUserToMessage(findedUser, email.getMessageProperties().getHeader("correlationId"));
-            System.out.println("Usuário convertido para bytes de resposta: "+userBytes);
+    var userBytes = this.messageConverter.convertUserToMessage(findedUser, email.getMessageProperties().getHeader("correlationId"));
+ 
 
-            // Enviar a resposta de volta para o RabbitMQ
-            
             this.returnData.returnUserData(userBytes);
-            System.out.println("Resposta enviada para o RabbitMQ.");
         } else {
-            System.out.println("Mensagem recebida é null. Retornando dados nulos.");
-            this.returnData.returnUserData(null);
+        this.returnData.returnUserData(null);
         }
     }
 }
