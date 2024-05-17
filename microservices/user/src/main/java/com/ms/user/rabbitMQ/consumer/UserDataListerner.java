@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import com.ms.user.config.RabbitMQConfig;
 import com.ms.user.infra.security.CryptoUtils;
 import com.ms.user.rabbitMQ.producer.UserReturnData;
+import com.ms.user.rabbitMQ.producer.UserServiceRegisterReturnData;
 import com.ms.user.rabbitMQ.utils.UserMessageConverter;
 import com.ms.user.service.UserService;
 @Component
@@ -26,24 +27,22 @@ public class UserDataListerner {
     @Autowired
     public UserMessageConverter messageConverter;
     
+
     @RabbitListener(queues = RabbitMQConfig.AUTH_QUEUE)
     public void processUserData(@Payload Message email) throws Exception {
- 
+    	
    
         if (email != null) {
    
 
             var emailP = new String(email.getBody());
-
-
+         
             var findedUser = this.userService.getUserByEmail(emailP);
-
-    var userBytes = this.messageConverter.convertUserToMessage(findedUser, email.getMessageProperties().getHeader("correlationId"));
- 
-
-            this.returnData.returnUserData(userBytes);
-        } else {
-        this.returnData.returnUserData(null);
-        }
+            
+            if (findedUser!=null) {
+            	  var userBytes = this.messageConverter.convertUserToMessage(findedUser, email.getMessageProperties().getHeader("correlationId"));
+            	  this.returnData.returnUserData(userBytes);
+            } 
+        } 
     }
 }

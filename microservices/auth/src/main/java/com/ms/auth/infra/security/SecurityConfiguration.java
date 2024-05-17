@@ -34,30 +34,27 @@ SecurityFilter securityFilter;
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             
             .authorizeHttpRequests(autorize -> autorize
-            		.requestMatchers(HttpMethod.GET, "auth/login").permitAll()
-            		.requestMatchers(HttpMethod.POST, "auth/login").permitAll()
-            		.requestMatchers(HttpMethod.GET, "/register").permitAll()
-            		.requestMatchers(HttpMethod.POST, "/register").permitAll()
+            		.requestMatchers(HttpMethod.GET, "/auth/login").permitAll()
+            		.requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+            		.requestMatchers(HttpMethod.GET, "/auth/register").permitAll()
+            		.requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
     
             )
             .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
             .build();
    
 	}
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
-	@Bean 
-	public AuthenticationManager authenticationManager (AuthenticationConfiguration configuration) throws Exception {
-		return configuration.getAuthenticationManager();
-	}
-	protected void configureAuthenticationManagerBuilder(AuthenticationManagerBuilder authenticationManagerBuilder) {
-		DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-		provider.setUserDetailsService(customUserDetailsService);
-		provider.setPasswordEncoder(passwordEncoder());
-		authenticationManagerBuilder.authenticationProvider(provider);
-	}
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
+
 	
 
 }

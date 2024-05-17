@@ -2,10 +2,10 @@ package com.ms.user.rabbitMQ.utils;
 
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ms.user.model.user.UserDTO;
 import com.ms.user.model.user.UserModel;
 @Component
 public class UserMessageConverter {
@@ -33,4 +33,5 @@ public class UserMessageConverter {
         // Cria uma mensagem com os bytes do JSON
         return new Message(menssageBytes, messageProperties);
     }
+  
 }

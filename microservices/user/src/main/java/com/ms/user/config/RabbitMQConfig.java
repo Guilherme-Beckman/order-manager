@@ -20,6 +20,12 @@ public static final String AUTH_DIRECT_EXCHANGE = "user_exchange";
 public static final String BINDINGKEY_REQUEST = "user.request";
 public static final String BINDINGKEY_RESPONSE = "user.response";
 
+public static final String USER_SERVICE_REQUEST_QUEUE = "user_service_request_queue";
+public static final String USER_SERVICE_RESPONSE_QUEUE = "user_service_response_queue";
+public static final String USER_SERVICE_DIRECT_EXCHANGE = "user_service_exchange";
+public static final String USER_SERVICE_BINDINGKEY_REQUEST = "user.service.request";
+public static final String USER_SERVICE_BINDINGKEY_RESPONSE = "user.service.response";
+
 @Bean
 public Queue authQueue(){
 	return new Queue(AUTH_QUEUE, true);
@@ -29,7 +35,7 @@ public Queue userQueue(){
 	return new Queue(USER_QUEUE, true);
 }
 @Bean 
-DirectExchange exchange() {
+public DirectExchange exchange() {
 	return new DirectExchange(AUTH_DIRECT_EXCHANGE);
 	}
 @Bean
@@ -44,4 +50,26 @@ public Binding bindRequest(DirectExchange exchange, @Qualifier("authQueue") Queu
 public Binding bindResponse(DirectExchange exchange, @Qualifier("userQueue") Queue responseQueue) {
  return BindingBuilder.bind(responseQueue).to(exchange).with(BINDINGKEY_RESPONSE);
 }
+
+@Bean
+public Queue userServiceRequest() {
+	return new Queue(USER_SERVICE_REQUEST_QUEUE, true);
+}
+@Bean
+public Queue userServiceResponse() {
+	return new Queue(USER_SERVICE_RESPONSE_QUEUE, true);
+}
+@Bean
+public DirectExchange userServiceExchange() {
+	return new DirectExchange("user_service_exchange" );
+}
+@Bean
+public Binding bindRequestUserService(DirectExchange exchange, @Qualifier("userServiceRequest") Queue resquestQueue) {
+ return BindingBuilder.bind(resquestQueue).to(exchange).with(USER_SERVICE_BINDINGKEY_REQUEST);
+}
+@Bean
+public Binding bindResponseUserService(DirectExchange exchange, @Qualifier("userServiceResponse") Queue responseQueue) {
+ return BindingBuilder.bind(responseQueue).to(exchange).with(USER_SERVICE_BINDINGKEY_RESPONSE);
+}
+
 }

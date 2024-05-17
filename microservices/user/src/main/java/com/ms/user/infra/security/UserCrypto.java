@@ -17,12 +17,12 @@ public class UserCrypto {
 	public UserDTO cryptoUserData(UserDTO userDTO) throws Exception {
 
 		String cpf = this.cryptoUtils.encrypt(userDTO.cpf()); 
-		String password = this.cryptoUtils.encrypt(userDTO.password());
+		//String password = this.cryptoUtils.encrypt(userDTO.password());
 		String name = this.cryptoUtils.encrypt(userDTO.name());
 		String lastName = this.cryptoUtils.encrypt(userDTO.lastName());
 		String email = this.cryptoUtils.encrypt(userDTO.email());
 		
-		var encryptedUser = new UserDTO(cpf, password, name, lastName, email, userDTO.address());
+		var encryptedUser = new UserDTO(cpf, userDTO.password(), name, lastName, email, userDTO.address());
 	     
 	     return encryptedUser;
 	     

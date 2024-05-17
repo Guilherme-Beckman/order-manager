@@ -12,7 +12,7 @@ public class UserCredentialsRequestor {
     public RabbitTemplate rabbitTemplate;
 
     public void requestUserCredentials(Message email) {
-
+    	
 
         rabbitTemplate.convertAndSend(
             RabbitMQConfig.AUTH_DIRECT_EXCHANGE,
