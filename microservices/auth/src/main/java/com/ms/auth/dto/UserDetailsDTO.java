@@ -20,24 +20,12 @@ public class UserDetailsDTO implements UserDetails {
     private boolean accountNonLocked;
     private boolean credentialsNonExpired;
     private boolean enabled;
+    private String username;
 
     public UserDetailsDTO() {
-        this.address = new ArrayList<>();
     }
 
-    public UserDetailsDTO(String id, String cpf, String password, String name, String lastName, String email) {
-        this.id = id;
-        this.cpf = cpf;
-        this.password = password;
-        this.name = name;
-        this.lastName = lastName;
-        this.email = email;
-        this.address = new ArrayList<>();
-        this.accountNonExpired = true; // Assumindo conta ativa por padrão
-        this.accountNonLocked = true;  // Assumindo conta não bloqueada por padrão
-        this.credentialsNonExpired = true; // Assumindo credenciais ativas por padrão
-        this.enabled = true; // Assumindo usuário ativo por padrão
-    }
+
 
     public String getId() {
         return id;

@@ -1,16 +1,19 @@
 package com.ms.user.model.user;
 
 import java.util.ArrayList;
-
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 
 @Document(collection = "userdb")
-public class UserModel {
+public class UserModel implements UserDetails {
+	private static final long serialVersionUID = 1L;
 	@Id
 	private String id;
 	private String cpf;
@@ -20,8 +23,14 @@ public class UserModel {
 	@Indexed(unique = true)
 	private String email;
 	private List<String> address;
+    private boolean accountNonExpired;
+    private boolean accountNonLocked;
+    private boolean credentialsNonExpired;
+    private boolean enabled;
 	
 	public UserModel() {
+		this.address = new ArrayList<String>();
+		
 	}
 	public UserModel(UserDTO userDTO) {
 		this.cpf = userDTO.cpf();
@@ -30,17 +39,23 @@ public class UserModel {
 		this.lastName = userDTO.lastName();
 		this.email = userDTO.email();
 		this.address = new ArrayList<String>();
-		
+        this.address = new ArrayList<>();
+        this.accountNonExpired = true; // Assumindo conta ativa por padrão
+        this.accountNonLocked = true;  // Assumindo conta não bloqueada por padrão
+        this.credentialsNonExpired = true; // Assumindo credenciais ativas por padrão
+        this.enabled = true; // Assumindo usuário ativo por padrão
 	}
-	public UserModel(String id, String cpf, String password, String name, String lastName, String email) {
-		this.id = id;
-		this.cpf = cpf;
-		this.password = password;
-		this.name = name;
-		this.lastName = lastName;
-		this.email = email;
-		this.address = new ArrayList<String>();
-	}
+
+
+    public UserModel(String id, String cpf, String password, String name, String lastName, String email) {
+        this.id = id;
+        this.cpf = cpf;
+        this.password = password;
+        this.name = name;
+        this.lastName = lastName;
+        this.email = email;
+
+    }
 	public String getId() {
 		return id;
 	}
@@ -77,11 +92,40 @@ public class UserModel {
 	public void setAdress(List<String> address) {
 		this.address = address;
 	}
-	public String getPassword() {
-		return password;
-	}
+	@Override
+    public String getPassword() {
+        return password;
+    }
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return new ArrayList<>();
+	}
+	@Override
+	public String getUsername() {
+		return email;
+	}
+	@Override
+	public boolean isAccountNonExpired() {
+		// TODO Auto-generated method stub
+		return accountNonExpired;
+	}
+	@Override
+	public boolean isAccountNonLocked() {
+		// TODO Auto-generated method stub
+		return accountNonLocked;
+	}
+	@Override
+	public boolean isCredentialsNonExpired() {
+		// TODO Auto-generated method stub
+		return credentialsNonExpired;
+	}
+	@Override
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return enabled;
 	}
 	
 	
