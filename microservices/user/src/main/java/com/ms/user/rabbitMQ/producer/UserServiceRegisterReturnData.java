@@ -13,8 +13,6 @@ public class UserServiceRegisterReturnData{
 	public RabbitTemplate rabbitTemplate;
 	
 	public void returnUserData(Message user) {
-	    System.out.println("UserServiceRegisterReturnData: " + user);
-
 		rabbitTemplate.convertAndSend(RabbitMQConfig.AUTH_DIRECT_EXCHANGE, RabbitMQConfig.USER_SERVICE_BINDINGKEY_RESPONSE, user);
 	}
 }

@@ -13,7 +13,6 @@ public class UserServiceRegisterRequestor {
     RabbitTemplate rabbitTemplate;
 
     public void requestRegister(Message userDTO) {
-        System.out.println("UserServiceRegisterRequestor: Preparing to send registration request to RabbitMQ.");
 
         try {
             rabbitTemplate.convertAndSend(
@@ -21,12 +20,7 @@ public class UserServiceRegisterRequestor {
                     RabbitMQConfig.USER_SERVICE_BINDINGKEY_REQUEST,
                     userDTO);
 
-            System.out.println("UserServiceRegisterRequestor: Successfully sent registration request to RabbitMQ.");
-            System.out.println("UserServiceRegisterRequestor: Exchange: " + RabbitMQConfig.USER_SERVICE_DIRECT_EXCHANGE);
-            System.out.println("UserServiceRegisterRequestor: Routing Key: " + RabbitMQConfig.USER_SERVICE_BINDINGKEY_REQUEST);
-            System.out.println("UserServiceRegisterRequestor: Message: " + new String(userDTO.getBody()));
         } catch (Exception e) {
-            System.out.println("UserServiceRegisterRequestor: Failed to send registration request to RabbitMQ: " + e.getMessage());
             e.printStackTrace();
         }
     }

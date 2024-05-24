@@ -1,6 +1,7 @@
 package com.ms.user.service;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,17 +27,15 @@ public class UserService {
     @Autowired
     public UserCrypto userCrypto;
     @Transactional
-    public UserModel insertUser(UserDTO userDTO) throws Exception {
+    public UserModel insertUser(UserDTO userDTO)  {
     	var encryptedUser = this.userCrypto.cryptoUserData(userDTO);
         UserModel newUser = new UserModel(encryptedUser);
         UserModel savedUser = this.userRepository.insert(newUser);
         AddressDTO address =  userDTO.address();
         return addAdress(savedUser.getId(), address);
-        
-
     }
     @Transactional
-    public UserModel addAdress(String userId, AddressDTO address) throws Exception { 
+    public UserModel addAdress(String userId, AddressDTO address)  { 
     	var findedUser = this.userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
     	 if (!(address.getZipCode() ==null)) {
              address = new AddressDTO(address.getZipCode());
@@ -52,8 +51,12 @@ public class UserService {
     	return this.userRepository.findById(id).orElseThrow();
     }
     
-    public UserModel getUserByEmail(String email){
-    	return this.userRepository.findByEmail(email);
+    public UserModel getUserByEmail(String email) {
+        // Ajusta o email para garantir que está no formato esperado pelo MongoDB
+        
+        UserModel user = userRepository.findByEmail(email.replace("\""," ").trim());
+        System.out.println(user);
+        return user;
     }
    /* public void deleteAll() {
     	this.userRepository.deleteAll();

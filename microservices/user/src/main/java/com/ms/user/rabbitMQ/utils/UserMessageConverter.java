@@ -5,7 +5,6 @@ import org.springframework.amqp.core.MessageProperties;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ms.user.model.user.UserDTO;
 import com.ms.user.model.user.UserModel;
 @Component
 public class UserMessageConverter {
@@ -28,7 +27,7 @@ public class UserMessageConverter {
 
         // Define as propriedades da mensagem
         MessageProperties messageProperties = new MessageProperties();
-        messageProperties.setHeader("correlationId", correlationId);
+        messageProperties.setCorrelationId(correlationId);
         messageProperties.setExpiration("5000");
         // Cria uma mensagem com os bytes do JSON
         return new Message(menssageBytes, messageProperties);

@@ -22,7 +22,7 @@ public class UserController {
 	public UserService userService;
 	
 	@PostMapping
-	public ResponseEntity<UserModel> insertUser(@RequestBody @Valid UserDTO userDTO) throws Exception{
+	public ResponseEntity<UserModel> insertUser(@RequestBody @Valid UserDTO userDTO) {
 	UserModel savedUser=  this.userService.insertUser(userDTO);
 	return ResponseEntity.ok().body(savedUser);
 	}

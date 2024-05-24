@@ -13,7 +13,7 @@ public class UserReturnData{
 	public RabbitTemplate rabbitTemplate;
 	
 	public void returnUserData(Message user) {
-	
+	System.out.println("Id de correleção retornado para a fila de login: "+user.getMessageProperties().getCorrelationId());
 		rabbitTemplate.convertAndSend(RabbitMQConfig.AUTH_DIRECT_EXCHANGE, RabbitMQConfig.BINDINGKEY_RESPONSE, user);
 	}
 }

@@ -13,7 +13,7 @@ public class AddressCrypto {
 	
 
 
-	public AddressDTO cryptoAddressData(AddressDTO addressDTO) throws Exception {
+	public AddressDTO cryptoAddressData(AddressDTO addressDTO)  {
 
 	     String street = this.cryptoUtils.encrypt(addressDTO.getStreet()); 
 	     String number = this.cryptoUtils.encrypt(addressDTO.getNumber());

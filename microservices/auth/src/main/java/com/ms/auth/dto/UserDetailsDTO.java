@@ -77,13 +77,12 @@ public class UserDetailsDTO implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email; // Usuário é geralmente identificado pelo e-mail
+        return email; 
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // Retornar autoridades associadas ao usuário, se necessário
-        // Aqui, estamos retornando uma coleção vazia para simplificar
+
         return new ArrayList<>();
     }
 
@@ -111,4 +110,10 @@ public class UserDetailsDTO implements UserDetails {
     public boolean isEnabled() {
         return enabled;
     }
+
+
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
 }

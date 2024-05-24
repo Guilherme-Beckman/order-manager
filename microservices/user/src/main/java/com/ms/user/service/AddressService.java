@@ -24,7 +24,7 @@ public class AddressService {
 	
 	private static final String VIACEP_URL = "https://viacep.com.br/ws/%s/json/";
 	
-	public AddressModel insertAddress(AddressDTO addressDTO) throws Exception {
+	public AddressModel insertAddress(AddressDTO addressDTO)  {
 		var encryptedAddressData = this.addressCrypto.cryptoAddressData(addressDTO);
 		AddressModel newAddress = new AddressModel(encryptedAddressData);
 		return this.addressRepository.insert(newAddress);

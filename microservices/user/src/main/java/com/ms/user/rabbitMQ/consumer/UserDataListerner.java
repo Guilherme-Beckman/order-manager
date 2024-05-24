@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import com.ms.user.config.RabbitMQConfig;
 import com.ms.user.infra.security.CryptoUtils;
 import com.ms.user.rabbitMQ.producer.UserReturnData;
-import com.ms.user.rabbitMQ.producer.UserServiceRegisterReturnData;
 import com.ms.user.rabbitMQ.utils.UserMessageConverter;
 import com.ms.user.service.UserService;
 @Component
@@ -33,14 +32,14 @@ public class UserDataListerner {
     	
    
         if (email != null) {
-   
-
-            var emailP = new String(email.getBody());
-         
+            String emailP = new String(email.getBody());
+            System.out.println("ide de correlação no listerner: "+email.getMessageProperties().getCorrelationId());
+            System.out.println("email a ser procurado: "+emailP);
             var findedUser = this.userService.getUserByEmail(emailP);
-            
+           
             if (findedUser!=null) {
-            	  var userBytes = this.messageConverter.convertUserToMessage(findedUser, email.getMessageProperties().getHeader("correlationId"));
+            	  var userBytes = this.messageConverter.convertUserToMessage(findedUser, email.getMessageProperties().getCorrelationId());
+            	 
             	  this.returnData.returnUserData(userBytes);
             } 
         } 

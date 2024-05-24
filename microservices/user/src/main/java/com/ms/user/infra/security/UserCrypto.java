@@ -14,7 +14,7 @@ public class UserCrypto {
 	CryptoUtils cryptoUtils;
 
 
-	public UserDTO cryptoUserData(UserDTO userDTO) throws Exception {
+	public UserDTO cryptoUserData(UserDTO userDTO)  {
 
 		String cpf = this.cryptoUtils.encrypt(userDTO.cpf()); 
 		//String password = this.cryptoUtils.encrypt(userDTO.password());
