@@ -24,7 +24,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
        String correlationId = this.messageUtils.generateCorrelationId();
-       System.out.println("Id de correlação criado no CustomUserDetails: "+correlationId);
        CompletableFuture<Message> responseFuture = new CompletableFuture<>();
        pendingResponses.put(correlationId, responseFuture);
        String encryptEmail = this.cryptoUtils.encrypt(email);
@@ -33,10 +32,8 @@ public class CustomUserDetailsService implements UserDetailsService {
        credentialsRequestor.requestUserCredentials(message);
         try {
             Message response = responseFuture.get(5000, TimeUnit.MILLISECONDS);
-            System.out.println(response);
             return messageUtils.convertMessageToUserDetails(response);
         } catch (Exception e) {
-           
             return null;
         } finally {
             pendingResponses.remove(correlationId);

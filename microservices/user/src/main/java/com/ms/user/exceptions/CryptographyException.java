@@ -1,7 +1,9 @@
-package com.ms.auth.exceptions;
+package com.ms.user.exceptions;
 
 public class CryptographyException extends RuntimeException {
-    public CryptographyException(String message) {
+    private static final long serialVersionUID = 1L;
+
+	public CryptographyException(String message) {
         super(message);
     }
 

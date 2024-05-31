@@ -10,13 +10,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-
 
 @Document(collection = "userdb")
 public class UserModel implements UserDetails {
-	
+	private static final long serialVersionUID = 1L;
 	@Id
 	private String id;
 	private String cpf;

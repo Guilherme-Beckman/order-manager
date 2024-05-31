@@ -13,15 +13,9 @@ public class UserServiceRegisterRequestor {
     RabbitTemplate rabbitTemplate;
 
     public void requestRegister(Message userDTO) {
-
-        try {
             rabbitTemplate.convertAndSend(
                     RabbitMQConfig.USER_SERVICE_DIRECT_EXCHANGE,
                     RabbitMQConfig.USER_SERVICE_BINDINGKEY_REQUEST,
-                    userDTO);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+                    userDTO);   
     }
 }

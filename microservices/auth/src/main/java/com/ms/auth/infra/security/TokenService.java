@@ -12,6 +12,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.ms.auth.dto.UserDetailsDTO;
+import com.ms.auth.exceptions.auth.token.TokenException;
 
 @Service
 public class TokenService {
@@ -28,7 +29,7 @@ public class TokenService {
 					.sign(algorithm);
 			return token;
 		} catch (JWTCreationException e) {
-			throw new RuntimeException("Error while generating token:", e);
+			throw new TokenException("Error while generating token");
 		}
 	}
 	public String validadeToken(String token) {

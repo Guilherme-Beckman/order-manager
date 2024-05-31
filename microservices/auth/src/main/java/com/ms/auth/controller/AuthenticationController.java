@@ -1,13 +1,11 @@
 package com.ms.auth.controller;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ms.auth.dto.AuthenticationDTO;
 import com.ms.auth.dto.LoginResponseDTO;
 import com.ms.auth.dto.UserDTO;
@@ -28,12 +26,10 @@ public class AuthenticationController {
     }
     
     @PostMapping("/register")
-    public ResponseEntity<UserDetails> register(@RequestBody @Valid UserDTO data) throws JsonProcessingException{
+    public ResponseEntity<UserDetails> register(@RequestBody @Valid UserDTO data) {
         var user = userService.registerUser(data);
-        if (user != null) {
-            return ResponseEntity.ok().body(user);
-        } else {
-            return ResponseEntity.badRequest().build();
-        }
+        return ResponseEntity.ok().body(user);
+        
     }
+    
 }

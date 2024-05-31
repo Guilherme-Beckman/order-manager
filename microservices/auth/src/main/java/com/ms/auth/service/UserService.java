@@ -1,18 +1,19 @@
 package com.ms.auth.service;
 import java.util.concurrent.CompletableFuture;
+
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import org.springframework.amqp.core.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.ms.auth.dto.AuthenticationDTO;
 import com.ms.auth.dto.UserDTO;
 import com.ms.auth.dto.UserDetailsDTO;
+import com.ms.auth.exceptions.auth.user.UserDataAlreadyExistsException;
 import com.ms.auth.infra.security.TokenService;
 import com.ms.auth.rabbitMQ.producer.UserServiceRegisterRequestor;
 import com.ms.auth.utils.MessageUtils;
@@ -34,7 +35,7 @@ public class UserService{
     public UserDetails registerUser(UserDTO userDTO)  {
 
         if (this.customUserDetailsService.loadUserByUsername(userDTO.email()) != null) {
-            return null;
+            throw new UserDataAlreadyExistsException("Email is already registered");
         }
       
         CompletableFuture<Message> responseFuture = new CompletableFuture<>();
@@ -55,12 +56,8 @@ public class UserService{
     }
     public String userLogin(AuthenticationDTO data){
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
-        System.out.println(usernamePassword);
-        
        	  var auth = this.authenticationManager.authenticate(usernamePassword);  
 			var token = tokenService.generateToken((UserDetailsDTO) auth.getPrincipal());
-
-    
 		return token;
     }
     public void receiveResponse(Message message) {
@@ -68,7 +65,6 @@ public class UserService{
         CompletableFuture<Message> responseFuture = pendingResponses.get(responseCorrelationId);
         if (responseFuture != null) {
             responseFuture.complete(message);
-        } else {
-        }
+        } 
     }
 }

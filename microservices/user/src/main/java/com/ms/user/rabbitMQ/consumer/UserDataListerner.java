@@ -33,8 +33,6 @@ public class UserDataListerner {
    
         if (email != null) {
             String emailP = new String(email.getBody());
-            System.out.println("ide de correlação no listerner: "+email.getMessageProperties().getCorrelationId());
-            System.out.println("email a ser procurado: "+emailP);
             var findedUser = this.userService.getUserByEmail(emailP);
            
             if (findedUser!=null) {

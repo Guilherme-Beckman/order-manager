@@ -1,6 +1,7 @@
 package com.ms.user.infra.security;
 import java.util.Base64;
 
+
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -8,7 +9,7 @@ import javax.crypto.spec.SecretKeySpec;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.ms.auth.exceptions.CryptographyException;
+import com.ms.user.exceptions.CryptographyException;
 @Component
 public class CryptoUtils {
 

@@ -1,6 +1,7 @@
 package com.ms.auth.infra.security;
 import java.util.Base64;
 
+
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -8,7 +9,7 @@ import javax.crypto.spec.SecretKeySpec;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.ms.auth.exceptions.CryptographyException;
+import com.ms.auth.exceptions.auth.crypto.CryptographyException;
 @Component
 public class CryptoUtils {
 
@@ -25,7 +26,7 @@ public class CryptoUtils {
         byte[] encryptedBytes = cipher.doFinal(data.getBytes());
         return Base64.getEncoder().encodeToString(encryptedBytes);
     	}catch(Exception e){
-    		throw new CryptographyException("Error while encrypt data", e.getCause());
+    		throw new CryptographyException("Error while encrypt data");
     	}
     
     }
@@ -40,7 +41,7 @@ public class CryptoUtils {
         return new String(decryptedBytes);
     	}
     	catch(Exception e) {
-    		throw new CryptographyException("Error while decrypt data", e.getCause());
+    		throw new CryptographyException("Error while decrypt data");
     	}
       
     }

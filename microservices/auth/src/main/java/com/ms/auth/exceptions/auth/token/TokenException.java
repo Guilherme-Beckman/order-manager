@@ -1,0 +1,23 @@
+package com.ms.auth.exceptions.auth.token;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
+
+import com.ms.auth.exceptions.auth.AuthException;
+
+public class TokenException extends AuthException{
+	private static final long serialVersionUID = 1L;
+	private String detail;
+	public TokenException(String detail) {
+		this.detail = detail;
+	}
+	@Override
+	public ProblemDetail toProblemDetail() {
+		var pb = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+		pb.setTitle("Problem while processing token");
+		pb.setDetail(detail);
+		return pb;
+	}
+	
+	
+}
