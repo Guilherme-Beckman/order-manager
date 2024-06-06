@@ -21,7 +21,6 @@ public class UserCrypto {
 		String name = this.cryptoUtils.encrypt(userDTO.name());
 		String lastName = this.cryptoUtils.encrypt(userDTO.lastName());
 		String email = this.cryptoUtils.encrypt(userDTO.email());
-		
 		var encryptedUser = new UserDTO(cpf, userDTO.password(), name, lastName, email, userDTO.address());
 	     
 	     return encryptedUser;

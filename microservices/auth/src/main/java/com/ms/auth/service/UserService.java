@@ -12,7 +12,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.ms.auth.dto.AuthenticationDTO;
 import com.ms.auth.dto.UserDTO;
-import com.ms.auth.dto.UserDetailsDTO;
 import com.ms.auth.exceptions.auth.user.UserDataAlreadyExistsException;
 import com.ms.auth.infra.security.TokenService;
 import com.ms.auth.rabbitMQ.producer.UserServiceRegisterRequestor;
@@ -56,8 +55,8 @@ public class UserService{
     }
     public String userLogin(AuthenticationDTO data){
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
-       	  var auth = this.authenticationManager.authenticate(usernamePassword);  
-			var token = tokenService.generateToken((UserDetailsDTO) auth.getPrincipal());
+       	  this.authenticationManager.authenticate(usernamePassword);  
+			var token = tokenService.generateToken(data.login());
 		return token;
     }
     public void receiveResponse(Message message) {

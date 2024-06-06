@@ -4,6 +4,7 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ms.user.model.user.UserModel;
 @Component
@@ -17,19 +18,21 @@ public class UserMessageConverter {
 
     
 
-    public Message convertUserToMessage(UserModel user, String correlationId) throws Exception {
+    public Message convertUserToMessage(UserModel user, String correlationId)  {
         if (user == null) {
-            throw new IllegalArgumentException("O objeto User não pode ser nulo");
+            throw new IllegalArgumentException("User cannot be null");
         }
 
-        // Converte o objeto User para JSON
-        byte[] menssageBytes = objectMapper.writeValueAsBytes(user);
+        byte[] menssageBytes = null;
+		try {
+			menssageBytes = objectMapper.writeValueAsBytes(user);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
 
-        // Define as propriedades da mensagem
         MessageProperties messageProperties = new MessageProperties();
         messageProperties.setCorrelationId(correlationId);
         messageProperties.setExpiration("5000");
-        // Cria uma mensagem com os bytes do JSON
         return new Message(menssageBytes, messageProperties);
     }
   

@@ -28,12 +28,14 @@ public class UserDataListerner {
     
 
     @RabbitListener(queues = RabbitMQConfig.AUTH_QUEUE)
-    public void processUserData(@Payload Message email) throws Exception {
+    public void processUserData(@Payload Message email)  {
     	
    
         if (email != null) {
             String emailP = new String(email.getBody());
-            var findedUser = this.userService.getUserByEmail(emailP);
+            emailP =emailP.replace("\"", "");
+            var encryptedEmail = this.cryptoUtils.encrypt(emailP);
+            var findedUser = this.userService.getUserByEmail(encryptedEmail);
            
             if (findedUser!=null) {
             	  var userBytes = this.messageConverter.convertUserToMessage(findedUser, email.getMessageProperties().getCorrelationId());

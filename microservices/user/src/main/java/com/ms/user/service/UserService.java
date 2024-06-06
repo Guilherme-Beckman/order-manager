@@ -51,17 +51,9 @@ public class UserService {
     }
     
     public UserModel getUserByEmail(String email) {
-        // Ajusta o email para garantir que está no formato esperado pelo MongoDB
-        
         UserModel user = userRepository.findByEmail(email.replace("\""," ").trim());
-        System.out.println(user);
         return user;
     }
-   /* public void deleteAll() {
-    	this.userRepository.deleteAll();
-    	this.address.deleteAll();
-    	
-    }*/
     }
 
 

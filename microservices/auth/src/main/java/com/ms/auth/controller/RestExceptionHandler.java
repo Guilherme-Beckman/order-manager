@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.ms.auth.exceptions.auth.AuthException;
 import com.ms.auth.exceptions.auth.authenticate.AuthenticateMethodException;
+import com.ms.auth.exceptions.jwt.JWTValidationException;
 import com.ms.auth.exceptions.valid.ValidationException;
+
 
 @RestControllerAdvice
 public class RestExceptionHandler {
@@ -17,6 +19,8 @@ public class RestExceptionHandler {
 	private ValidationException validationException;
 	@Autowired
 	private AuthenticateMethodException authenticateMethodException;
+	@Autowired 
+	JWTValidationException jwtValidationException;
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ProblemDetail handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
      return this.validationException.toProblemDetail(e);
@@ -31,4 +35,6 @@ public class RestExceptionHandler {
     public ProblemDetail handleAuthenticationExecetion(AuthenticationException e) {
     	return this.authenticateMethodException.toProblemDetail(e);
     }
+
+    
 }

@@ -8,15 +8,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-import com.ms.auth.infra.security.CryptoUtils;
 import com.ms.auth.rabbitMQ.producer.UserCredentialsRequestor;
 import com.ms.auth.utils.MessageUtils;
 @Component
 public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     public UserCredentialsRequestor credentialsRequestor;
-    @Autowired
-    public CryptoUtils cryptoUtils;
     @Autowired
     MessageUtils messageUtils;
     private final ConcurrentHashMap<String, CompletableFuture<Message>> pendingResponses = new ConcurrentHashMap<>();
@@ -26,8 +23,7 @@ public class CustomUserDetailsService implements UserDetailsService {
        String correlationId = this.messageUtils.generateCorrelationId();
        CompletableFuture<Message> responseFuture = new CompletableFuture<>();
        pendingResponses.put(correlationId, responseFuture);
-       String encryptEmail = this.cryptoUtils.encrypt(email);
-       Message message = this.messageUtils.createMessage(encryptEmail, correlationId);
+       Message message = this.messageUtils.createMessage(email, correlationId);
    
        credentialsRequestor.requestUserCredentials(message);
         try {

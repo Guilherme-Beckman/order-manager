@@ -8,7 +8,7 @@ public class AuthException extends RuntimeException{
 
 	public ProblemDetail toProblemDetail() {
 		var pb = ProblemDetail.forStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-		pb.setTitle("User Microservice Internal Error");
+		pb.setTitle("Auth Microservice Internal Error");
 		return pb;
 	}
 }

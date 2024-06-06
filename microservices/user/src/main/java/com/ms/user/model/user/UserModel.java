@@ -1,19 +1,12 @@
 package com.ms.user.model.user;
-
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
 
 @Document(collection = "userdb")
-public class UserModel implements UserDetails {
-	private static final long serialVersionUID = 1L;
+public class UserModel {
 	@Id
 	private String id;
 	private String cpf;
@@ -27,7 +20,7 @@ public class UserModel implements UserDetails {
     private boolean accountNonLocked;
     private boolean credentialsNonExpired;
     private boolean enabled;
-
+    private boolean isValid;
 	
 	public UserModel() {
 		this.address = new ArrayList<String>();
@@ -45,6 +38,7 @@ public class UserModel implements UserDetails {
         this.accountNonLocked = true;  // Assumindo conta não bloqueada por padrão
         this.credentialsNonExpired = true; // Assumindo credenciais ativas por padrão
         this.enabled = true; // Assumindo usuário ativo por padrão
+        this.isValid = false;
 	}
 
 
@@ -93,40 +87,36 @@ public class UserModel implements UserDetails {
 	public void setAdress(List<String> address) {
 		this.address = address;
 	}
-	@Override
     public String getPassword() {
         return password;
     }
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return new ArrayList<>();
-	}
-	@Override
 	public String getUsername() {
 		return email;
 	}
-	@Override
 	public boolean isAccountNonExpired() {
 		// TODO Auto-generated method stub
 		return accountNonExpired;
 	}
-	@Override
 	public boolean isAccountNonLocked() {
 		// TODO Auto-generated method stub
 		return accountNonLocked;
 	}
-	@Override
 	public boolean isCredentialsNonExpired() {
 		// TODO Auto-generated method stub
 		return credentialsNonExpired;
 	}
-	@Override
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub
 		return enabled;
+	}
+	public boolean isValid() {
+		return isValid;
+	}
+	public void setValid(boolean isValid) {
+		this.isValid = isValid;
 	}
 	
 	
