@@ -3,6 +3,7 @@ package com.ms.auth.config;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
+import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -26,6 +27,9 @@ public static final String USER_SERVICE_DIRECT_EXCHANGE = "user_service_exchange
 public static final String USER_SERVICE_BINDINGKEY_REQUEST = "user_service.request";
 public static final String USER_SERVICE_BINDINGKEY_RESPONSE = "user_service.response";
 
+public static final String EMAIL_CODE_FANOUT_EXCHANGE = "email_code_fanout_exchange";
+public static final String EMAIL_CODE_GENERATED_QUEUE = "email_code_genereted_queue";
+
 @Bean
 public Queue authQueue(){
 	return new Queue(AUTH_QUEUE, true);
@@ -43,8 +47,8 @@ public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
     return new RabbitTemplate(connectionFactory); 
 }
 @Bean
-public Binding bindRequest(DirectExchange exchange, @Qualifier("authQueue") Queue resquestQueue) {
- return BindingBuilder.bind(resquestQueue).to(exchange).with(BINDINGKEY_REQUEST);
+public Binding bindRequest(DirectExchange exchange, @Qualifier("authQueue") Queue requestQueue) {
+ return BindingBuilder.bind(requestQueue).to(exchange).with(BINDINGKEY_REQUEST);
 }
 @Bean
 public Binding bindResponse(DirectExchange exchange, @Qualifier("userQueue") Queue responseQueue) {
@@ -71,5 +75,12 @@ public Binding bindRequestUserService(@Qualifier("userServiceExchange")DirectExc
 public Binding bindResponseUserService(@Qualifier("userServiceExchange")DirectExchange exchange, @Qualifier("userServiceResponse") Queue responseQueue) {
  return BindingBuilder.bind(responseQueue).to(exchange).with(USER_SERVICE_BINDINGKEY_RESPONSE);
 }
-
+@Bean
+public Queue emailCodeQueueGenerated() {
+	return new Queue(EMAIL_CODE_GENERATED_QUEUE, true);
+}
+@Bean 
+public FanoutExchange emailCodeExchangeGenerated() {
+	return new FanoutExchange(EMAIL_CODE_FANOUT_EXCHANGE);
+}
 }

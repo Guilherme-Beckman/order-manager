@@ -20,7 +20,6 @@ public class UserModel {
     private boolean accountNonLocked;
     private boolean credentialsNonExpired;
     private boolean enabled;
-    private boolean isValid;
 	
 	public UserModel() {
 		this.address = new ArrayList<String>();
@@ -37,8 +36,7 @@ public class UserModel {
         this.accountNonExpired = true; // Assumindo conta ativa por padrão
         this.accountNonLocked = true;  // Assumindo conta não bloqueada por padrão
         this.credentialsNonExpired = true; // Assumindo credenciais ativas por padrão
-        this.enabled = true; // Assumindo usuário ativo por padrão
-        this.isValid = false;
+        this.enabled = false; // Assumindo usuário ativo por padrão
 	}
 
 
@@ -111,12 +109,6 @@ public class UserModel {
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub
 		return enabled;
-	}
-	public boolean isValid() {
-		return isValid;
-	}
-	public void setValid(boolean isValid) {
-		this.isValid = isValid;
 	}
 	
 	

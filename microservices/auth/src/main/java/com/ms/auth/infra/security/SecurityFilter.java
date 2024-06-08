@@ -25,24 +25,17 @@ CustomUserDetailsService userDetailsService;
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		var token = this.recoverToken(request);
+		var token = this.tokenService.recoverToken(request);
 		if (token!=null) {
-			var email = tokenService.validadeToken(token);
+			var email = tokenService.validateToken(token);
 			UserDetails user = this.userDetailsService.loadUserByUsername(email);
 			if(user!=null) {
 				var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
 				SecurityContextHolder.getContext().setAuthentication(authentication);
-			}else {
-				filterChain.doFilter(request, response);
 			}
-		}else {
-			filterChain.doFilter(request, response);
 		}
+		filterChain.doFilter(request, response);
 	}
-	  private String recoverToken(HttpServletRequest request){
-	        var authHeader = request.getHeader("Authorization");
-	        if(authHeader == null) return null;
-	        return authHeader.replace("Bearer ", "");
-	    }
+	 
 
 }
