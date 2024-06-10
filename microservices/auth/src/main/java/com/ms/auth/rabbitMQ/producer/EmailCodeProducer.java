@@ -12,7 +12,7 @@ public class EmailCodeProducer {
 @Autowired
 private RabbitTemplate rabbitTemplate;
 
-public void producerEmailCode(Message message) {
+public void produceEmailCode(Message message) {
 	rabbitTemplate.convertAndSend(
 	RabbitMQConfig.EMAIL_CODE_FANOUT_EXCHANGE,
 	message);

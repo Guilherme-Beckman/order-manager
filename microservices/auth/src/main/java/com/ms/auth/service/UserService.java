@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import com.ms.auth.dto.AuthenticationDTO;
 import com.ms.auth.dto.UserDTO;
+import com.ms.auth.dto.UserDetailsDTO;
 import com.ms.auth.exceptions.auth.user.UserDataAlreadyExistsException;
 import com.ms.auth.infra.security.TokenService;
 import com.ms.auth.rabbitMQ.producer.UserServiceRegisterRequestor;
@@ -32,7 +33,7 @@ public class UserService{
     @Autowired
     private TokenService tokenService;
     @Autowired
-    MessageUtils messageUtils;
+    private MessageUtils messageUtils;
     
 
     public UserDetails registerUser(UserDTO userDTO)  {
@@ -57,11 +58,13 @@ public class UserService{
             pendingResponses.remove(correlationId);
         }
     }
+  
     public String userLogin(AuthenticationDTO data){
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
        	 var auth =  this.authenticationManager.authenticate(usernamePassword);
-       	 var user = (UserDetails)auth.getPrincipal();
-			var token = tokenService.generateToken(data.login(), user.isEnabled());
+       	 var user = (UserDetailsDTO)auth.getPrincipal();
+       	 System.out.println(user.isValid()+"isValid");
+			var token = tokenService.generateToken(data.login(), user.isValid());
 		return token;
     }
     public void receiveResponse(Message message) {

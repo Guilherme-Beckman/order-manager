@@ -37,15 +37,15 @@ public class AuthenticationController {
         return ResponseEntity.ok().body(user);
         
     }
-    @PostMapping("/generatecode")
-    public ResponseEntity<String> generateCode(HttpServletRequest request){
-    	String result = this.emailValidationService.generateCode(request);
+    @PostMapping("/sendcode")
+    public ResponseEntity<String> sendCode(HttpServletRequest request){
+    	String result = this.emailValidationService.sendCode(request);
 		return ResponseEntity.ok().body(result);
     }
     @PostMapping("/validate")
-    public ResponseEntity<String> validate(ValidateEmailDTO emailCodeDTO) {
-    	var user = this.emailValidationService.validateEmail(emailCodeDTO);
-        return ResponseEntity.ok().body("lalalla");
+    public ResponseEntity<String> validate(@Valid @RequestBody ValidateEmailDTO emailCodeDTO, HttpServletRequest request) {
+    	var message = this.emailValidationService.validateEmailCode(emailCodeDTO, request);
+        return ResponseEntity.ok().body(message);
         
     }
     

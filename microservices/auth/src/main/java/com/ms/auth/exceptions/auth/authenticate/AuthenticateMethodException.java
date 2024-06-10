@@ -16,7 +16,7 @@ public class AuthenticateMethodException {
 			pb.setDetail("Login or password are incorrect");
 		}
 		else if ( e instanceof DisabledException) {
-				pb.setDetail("This account are locked");
+				pb.setDetail("This account are disable");
 		}else if( e instanceof LockedException) {
 			pb.setDetail("This account is locked");
 		}

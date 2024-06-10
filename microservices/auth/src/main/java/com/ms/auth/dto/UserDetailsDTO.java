@@ -21,7 +21,7 @@ public class UserDetailsDTO implements UserDetails {
     private boolean credentialsNonExpired;
     private boolean enabled;
     private String username;
-
+    private boolean isValid;
     public UserDetailsDTO() {
     }
 
@@ -112,6 +112,18 @@ public class UserDetailsDTO implements UserDetails {
     }
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+
+
+	public boolean isValid() {
+		return isValid;
+	}
+
+
+
+	public void setValid(boolean isValid) {
+		this.isValid = isValid;
 	}
 
 
