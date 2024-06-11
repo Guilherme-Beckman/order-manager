@@ -19,6 +19,7 @@ import com.ms.auth.dto.UserDetailsDTO;
 import com.ms.auth.exceptions.auth.user.UserDataAlreadyExistsException;
 import com.ms.auth.infra.security.TokenService;
 import com.ms.auth.rabbitMQ.producer.UserServiceRegisterRequestor;
+import com.ms.auth.utils.MaxAttemptManager;
 import com.ms.auth.utils.MessageUtils;
 
 @Service
@@ -34,6 +35,8 @@ public class UserService{
     private TokenService tokenService;
     @Autowired
     private MessageUtils messageUtils;
+    @Autowired
+	private MaxAttemptManager maxAttemptManager;
     
 
     public UserDetails registerUser(UserDTO userDTO)  {
@@ -60,10 +63,14 @@ public class UserService{
     }
   
     public String userLogin(AuthenticationDTO data){
+    	  try {
+  	    	this.maxAttemptManager.checkAndUpdateAttempts(data.login());
+  	    }catch(Exception e ) {
+  	    	 throw e;
+  	    }
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
        	 var auth =  this.authenticationManager.authenticate(usernamePassword);
        	 var user = (UserDetailsDTO)auth.getPrincipal();
-       	 System.out.println(user.isValid()+"isValid");
 			var token = tokenService.generateToken(data.login(), user.isValid());
 		return token;
     }
