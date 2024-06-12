@@ -2,29 +2,29 @@ package com.ms.user.service;
 
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import com.ms.user.infra.security.CryptoUtils;
 import com.ms.user.infra.security.UserCrypto;
 import com.ms.user.model.address.AddressDTO;
 import com.ms.user.model.address.AddressModel;
 import com.ms.user.model.user.UserDTO;
 import com.ms.user.model.user.UserModel;
 import com.ms.user.model.user.exceptions.UserNotFoundException;
-import com.ms.user.repository.AddressRepository;
 import com.ms.user.repository.UserRepository;
 
 @Service
 public class UserService {
     @Autowired
-    public UserRepository userRepository;
+    private UserRepository userRepository;
     @Autowired
-    public AddressRepository address;
+    private AddressService addressService;
     @Autowired
-    public AddressService addressService;
-    @Autowired
-    public UserCrypto userCrypto;
+    private UserCrypto userCrypto;
+    @Autowired 
+    private CryptoUtils cryptoUtils;
     @Transactional
     public UserModel insertUser(UserDTO userDTO)  {
     	var encryptedUser = this.userCrypto.cryptoUserData(userDTO);
@@ -54,6 +54,13 @@ public class UserService {
         UserModel user = userRepository.findByEmail(email.replace("\""," ").trim());
         return user;
     }
+	public void validateUserEmail(String email) {
+		var emailE = this.cryptoUtils.encrypt(email);
+		var user = this.getUserByEmail(emailE);
+		user.setValid(true);
+		this.userRepository.save(user);
+		
+	}
     }
 
 

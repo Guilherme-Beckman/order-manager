@@ -30,6 +30,9 @@ public static final String USER_SERVICE_BINDINGKEY_RESPONSE = "user_service.resp
 public static final String EMAIL_CODE_FANOUT_EXCHANGE = "email_code_fanout_exchange";
 public static final String EMAIL_CODE_GENERATED_QUEUE = "email_code_genereted_queue";
 
+public static final String USER_EMAIL_VALIDATE_FANOUT_EXCHANGE = "user_email_validate_fanout_exchange";
+public static final String USER_EMAIL_VALIDATE_QUEUE = "user_email_validate_queue";
+
 @Bean
 public Queue authQueue(){
 	return new Queue(AUTH_QUEUE, true);
@@ -82,5 +85,22 @@ public Queue emailCodeQueueGenerated() {
 @Bean 
 public FanoutExchange emailCodeExchangeGenerated() {
 	return new FanoutExchange(EMAIL_CODE_FANOUT_EXCHANGE);
+}
+@Bean
+public Binding bindEmailCodeExchangeGenerated(@Qualifier("emailCodeExchangeGenerated")FanoutExchange exchange, @Qualifier("emailCodeQueueGenerated") Queue emailCodeQueueGenerated) {
+ return BindingBuilder.bind(emailCodeQueueGenerated).to(exchange);
+}
+
+@Bean
+public Queue userValidateEmailQueue() {
+	return new Queue(USER_EMAIL_VALIDATE_QUEUE, true);
+}
+@Bean 
+public FanoutExchange userValidadeExchange() {
+	return new FanoutExchange(USER_EMAIL_VALIDATE_FANOUT_EXCHANGE);
+}
+@Bean
+public Binding binduValidadeExchange(@Qualifier("userValidadeExchange")FanoutExchange exchange, @Qualifier("userValidateEmailQueue") Queue userValidateEmailQueue) {
+ return BindingBuilder.bind(userValidateEmailQueue).to(exchange);
 }
 }

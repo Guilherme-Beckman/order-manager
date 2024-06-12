@@ -13,6 +13,7 @@ import com.ms.auth.dto.ValidateEmailDTO;
 import com.ms.auth.exceptions.auth.email.code.EmailAlreadyBeenVerifiedException;
 import com.ms.auth.infra.security.TokenService;
 import com.ms.auth.rabbitMQ.producer.EmailCodeProducer;
+import com.ms.auth.rabbitMQ.producer.ValidateUserEmailProducer;
 import com.ms.auth.utils.AttemptManagerExponencial;
 import com.ms.auth.utils.MaxAttemptManager;
 import com.ms.auth.utils.MessageUtils;
@@ -32,6 +33,8 @@ public class EmailValidationService {
 	private AttemptManagerExponencial attemptManagerExponencial;
 	@Autowired
 	private MaxAttemptManager maxAttemptManager;
+	@Autowired
+	private ValidateUserEmailProducer emailValidateUserEmailProducer;
 	private String code;
 	public String sendCode(HttpServletRequest request) {
 	    var token = this.tokenService.recoverToken(request);
@@ -43,6 +46,7 @@ public class EmailValidationService {
 	    }
 	    this.attemptManagerExponencial.checkAndUpdateAttempts(email);
 	     code = this.generateCode();
+	     System.out.println(code);
 	    String tokenEmailCode = this.tokenEmailCode(email, code);
 	    CompletableFuture<String> responseFuture = new CompletableFuture<>();
 	    pendingResponses.put(tokenEmailCode, responseFuture);
@@ -51,7 +55,7 @@ public class EmailValidationService {
 	    
 	    try {
 	        responseFuture.get(60000, TimeUnit.MILLISECONDS);
-	        //this.valdateUserEmail();
+	      
 	        return "Email validated with success";
 	    } catch (Exception e) {
 	        return null;
@@ -91,6 +95,7 @@ public class EmailValidationService {
 	    CompletableFuture<String> responseFuture = pendingResponses.get(tokenEmailCode);
 	        if (pendingResponses!=null) {
 	            responseFuture.complete(emailCodeDTO.emailCode());
+	            this.emailValidateUserEmailProducer.produceValidateUserEmail(email);
 	            return "Email validated successfully";
 	        } 
 	    
