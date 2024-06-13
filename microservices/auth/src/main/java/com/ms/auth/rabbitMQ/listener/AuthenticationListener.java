@@ -1,8 +1,6 @@
-package com.ms.auth.rabbitMQ.consumer;
-
+package com.ms.auth.rabbitMQ.listener;
 
 import org.springframework.amqp.core.Message;
-
 
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,16 +11,16 @@ import com.ms.auth.config.RabbitMQConfig;
 import com.ms.auth.service.CustomUserDetailsService;
 
 @Component
-public class AuthenticationConsumer {
+public class AuthenticationListener{
 	@Autowired
-	public CustomUserDetailsService detailsService;
-	
-@RabbitListener(queues = RabbitMQConfig.USER_QUEUE)
-public void listenAuthQueue(@Payload Message encrytedUserDataOrNull) throws Exception {
-	if(!(encrytedUserDataOrNull == null)) {
-		detailsService.receiveResponse(encrytedUserDataOrNull);
-	}else {
-		throw new Exception();
+	private CustomUserDetailsService detailsService;
+
+	@RabbitListener(queues = RabbitMQConfig.USER_QUEUE)
+	public void listenAuthQueue(@Payload Message encrytedUserDataOrNull) throws Exception {
+		if (encrytedUserDataOrNull != null) {
+			detailsService.receiveResponse(encrytedUserDataOrNull);
+		} else {
+			throw new Exception();
+		}
 	}
-}
 }

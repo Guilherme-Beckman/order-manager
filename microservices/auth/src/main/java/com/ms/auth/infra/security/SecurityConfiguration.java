@@ -18,40 +18,36 @@ import com.ms.auth.service.CustomUserDetailsService;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfiguration  {
-@Autowired
-CustomUserDetailsService customUserDetailsService; 
-@Autowired
-SecurityFilter securityFilter;
-	@Bean
-	public SecurityFilterChain securityFilterChain( HttpSecurity httpSecurity) throws Exception {
+public class SecurityConfiguration {
+	@Autowired
+	CustomUserDetailsService customUserDetailsService;
+	@Autowired
+	SecurityFilter securityFilter;
 
-	return httpSecurity
-            
-            .csrf(csrf -> csrf.disable())
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            
-            .authorizeHttpRequests(autorize -> autorize
-            		.requestMatchers("/auth/login").permitAll()
-            		.requestMatchers("/auth/register").permitAll()
-            		.anyRequest().authenticated()
-            	
-            )
-            .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
-            .build();
-   
+	@Bean
+	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+
+		return httpSecurity
+
+				.csrf(csrf -> csrf.disable())
+				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
+				.authorizeHttpRequests(autorize -> autorize.requestMatchers("/auth/login").permitAll()
+						.requestMatchers("/auth/register").permitAll().anyRequest().authenticated()
+
+				).addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class).build();
+
 	}
 
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
-    }
+	@Bean
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+			throws Exception {
+		return authenticationConfiguration.getAuthenticationManager();
+	}
 
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
-
-	
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 
 }

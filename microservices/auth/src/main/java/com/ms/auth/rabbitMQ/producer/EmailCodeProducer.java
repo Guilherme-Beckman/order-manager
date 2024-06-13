@@ -14,7 +14,7 @@ private RabbitTemplate rabbitTemplate;
 
 public void produceEmailCode(Message message) {
 	rabbitTemplate.convertAndSend(
-	RabbitMQConfig.EMAIL_CODE_FANOUT_EXCHANGE,
+	RabbitMQConfig.EMAIL_CODE_FANOUT_EXCHANGE,"",
 	message);
 }
 

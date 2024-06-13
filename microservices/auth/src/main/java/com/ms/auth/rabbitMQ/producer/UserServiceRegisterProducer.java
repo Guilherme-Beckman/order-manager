@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import com.ms.auth.config.RabbitMQConfig;
 
 @Component
-public class UserServiceRegisterRequestor {
+public class UserServiceRegisterProducer {
     @Autowired
     RabbitTemplate rabbitTemplate;
 

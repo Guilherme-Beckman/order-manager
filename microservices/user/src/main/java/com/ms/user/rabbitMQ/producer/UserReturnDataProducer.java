@@ -8,11 +8,11 @@ import org.springframework.stereotype.Component;
 import com.ms.user.config.RabbitMQConfig;
 
 @Component
-public class UserServiceRegisterReturnData{
+public class UserReturnDataProducer{
 	@Autowired
 	public RabbitTemplate rabbitTemplate;
 	
 	public void returnUserData(Message user) {
-		rabbitTemplate.convertAndSend(RabbitMQConfig.AUTH_DIRECT_EXCHANGE, RabbitMQConfig.USER_SERVICE_BINDINGKEY_RESPONSE, user);
+		rabbitTemplate.convertAndSend(RabbitMQConfig.AUTH_DIRECT_EXCHANGE, RabbitMQConfig.BINDINGKEY_RESPONSE, user);
 	}
 }

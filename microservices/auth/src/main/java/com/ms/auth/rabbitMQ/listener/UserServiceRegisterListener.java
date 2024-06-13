@@ -1,4 +1,4 @@
-package com.ms.auth.rabbitMQ.consumer;
+package com.ms.auth.rabbitMQ.listener;
 
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -19,6 +19,7 @@ public class UserServiceRegisterListener {
     public void listenAuthQueue(@Payload Message user) {
         try {
             if (user != null) {
+           
                 userService.receiveResponse(user);
             } else {
                 throw new Exception("Received null message.");

@@ -1,4 +1,4 @@
-package com.ms.user.rabbitMQ.consumer;
+package com.ms.user.rabbitMQ.listener;
 
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;

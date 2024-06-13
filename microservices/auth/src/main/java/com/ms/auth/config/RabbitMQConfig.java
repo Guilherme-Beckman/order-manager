@@ -50,11 +50,11 @@ public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
     return new RabbitTemplate(connectionFactory); 
 }
 @Bean
-public Binding bindRequest(DirectExchange exchange, @Qualifier("authQueue") Queue requestQueue) {
+public Binding bindRequest(@Qualifier("exchange")DirectExchange exchange, @Qualifier("authQueue") Queue requestQueue) {
  return BindingBuilder.bind(requestQueue).to(exchange).with(BINDINGKEY_REQUEST);
 }
 @Bean
-public Binding bindResponse(DirectExchange exchange, @Qualifier("userQueue") Queue responseQueue) {
+public Binding bindResponse(@Qualifier("exchange")DirectExchange exchange, @Qualifier("userQueue") Queue responseQueue) {
  return BindingBuilder.bind(responseQueue).to(exchange).with(BINDINGKEY_RESPONSE);
 }
 
