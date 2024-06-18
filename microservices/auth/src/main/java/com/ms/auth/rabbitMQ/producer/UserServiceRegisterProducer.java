@@ -14,8 +14,8 @@ public class UserServiceRegisterProducer {
 
     public void requestRegister(Message userDTO) {
             rabbitTemplate.convertAndSend(
-                    RabbitMQConfig.USER_SERVICE_DIRECT_EXCHANGE,
-                    RabbitMQConfig.USER_SERVICE_BINDINGKEY_REQUEST,
+                    RabbitMQConfig.AUTH_USER_REGISTER_USER_DIRECT_EXCHANGE,
+                    RabbitMQConfig.REGISTER_USER_REQUEST_KEY,
                     userDTO);   
     }
 }

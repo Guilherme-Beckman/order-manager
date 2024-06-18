@@ -27,7 +27,7 @@ public class UserDataListerner {
 	@Autowired
 	public UserMessageConverter messageConverter;
 
-	@RabbitListener(queues = RabbitMQConfig.AUTH_QUEUE)
+	@RabbitListener(queues = RabbitMQConfig.LOAD_USER_DETAILS_QUEUE)
 	public void processUserData(@Payload Message email) {
 
 		if (email != null) {

@@ -11,21 +11,21 @@ import com.ms.auth.service.UserService;
 
 @Component
 public class UserServiceRegisterListener {
-    
-    @Autowired
-    public UserService userService;
-    
-    @RabbitListener(queues = RabbitMQConfig.USER_SERVICE_RESPONSE_QUEUE)
-    public void listenAuthQueue(@Payload Message user) {
-        try {
-            if (user != null) {
-           
-                userService.receiveResponse(user);
-            } else {
-                throw new Exception("Received null message.");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+
+	@Autowired
+	public UserService userService;
+
+	@RabbitListener(queues = RabbitMQConfig.RETURN_REGISTERED_USER_QUEUE)
+	public void listenAuthQueue(@Payload Message user) {
+		try {
+			if (user != null) {
+
+				userService.receiveResponse(user);
+			} else {
+				throw new Exception("Received null message.");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

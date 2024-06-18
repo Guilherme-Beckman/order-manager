@@ -15,7 +15,7 @@ public class AuthenticationListener{
 	@Autowired
 	private CustomUserDetailsService detailsService;
 
-	@RabbitListener(queues = RabbitMQConfig.USER_QUEUE)
+	@RabbitListener(queues = RabbitMQConfig.RETURN_USER_DETAILS_QUEUE)
 	public void listenAuthQueue(@Payload Message encrytedUserDataOrNull) throws Exception {
 		if (encrytedUserDataOrNull != null) {
 			detailsService.receiveResponse(encrytedUserDataOrNull);

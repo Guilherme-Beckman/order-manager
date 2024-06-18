@@ -14,17 +14,17 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfig {
 
-	public static final String AUTH_QUEUE = "user_request_queue";
-	public static final String USER_QUEUE = "user_response_queue";
-	public static final String AUTH_DIRECT_EXCHANGE = "user_exchange";
-	public static final String BINDINGKEY_REQUEST = "user.request";
-	public static final String BINDINGKEY_RESPONSE = "user.response";
+	public static final String LOAD_USER_DETAILS_QUEUE = "user_ms.load_user_details_queue";
+	public static final String RETURN_USER_DETAILS_QUEUE = "auth_ms.return_user_details_queue";
+	public static final String AUTH_USER_USER_DETAILS_DIRECT_EXCHANGE = "auth_ms.user_ms_user_details_direct_exchange";
+	public static final String LOAD_USER_DETAILS_REQUEST_KEY = "load.user.details.request";
+	public static final String RETURN_USER_DETAILS_RESPONSE_KEY = "return.user.details.response";
 
-	public static final String USER_SERVICE_REQUEST_QUEUE = "user_service_request_queue";
-	public static final String USER_SERVICE_RESPONSE_QUEUE = "user_service_response_queue";
-	public static final String USER_SERVICE_DIRECT_EXCHANGE = "user_service_exchange";
-	public static final String USER_SERVICE_BINDINGKEY_REQUEST = "user_service.request";
-	public static final String USER_SERVICE_BINDINGKEY_RESPONSE = "user_service.response";
+	public static final String REGISTER_USER_QUEUE = "user_ms.register_user_queue";
+	public static final String RETURN_REGISTERED_USER_QUEUE = "auth_ms.return_registered_user_queue";
+	public static final String AUTH_USER_REGISTER_USER_DIRECT_EXCHANGE = "auth_ms.register_user_direct_exchange";
+	public static final String REGISTER_USER_REQUEST_KEY = "register.user.request";
+	public static final String RETURN_REGISTERED_USER_RESPONSE_KEY = "return.registered.user.response";
 
 	public static final String EMAIL_CODE_FANOUT_EXCHANGE = "email_code_fanout_exchange";
 	public static final String EMAIL_CODE_GENERATED_QUEUE = "email_code_genereted_queue";
@@ -33,60 +33,63 @@ public class RabbitMQConfig {
 	public static final String USER_EMAIL_VALIDATE_QUEUE = "user_email_validate_queue";
 
 	@Bean
-	public Queue authQueue() {
-		return new Queue(AUTH_QUEUE, true);
+	public Queue loadUserDetailsQueue() {
+		return new Queue(LOAD_USER_DETAILS_QUEUE, true);
 	}
 
 	@Bean
-	public Queue userQueue() {
-		return new Queue(USER_QUEUE, true);
+	public Queue returnUserDetailsQueue() {
+		return new Queue(RETURN_USER_DETAILS_QUEUE, true);
 	}
 
 	@Bean
-	public DirectExchange exchange() {
-		return new DirectExchange(AUTH_DIRECT_EXCHANGE);
+	public DirectExchange authUserDirectExchange() {
+		return new DirectExchange(AUTH_USER_USER_DETAILS_DIRECT_EXCHANGE);
 	}
 
 	@Bean
-	public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
-		return new RabbitTemplate(connectionFactory);
+	public Binding loadUserDetailsRequestKey(@Qualifier("authUserDirectExchange") DirectExchange authUserDirectExchange,
+			@Qualifier("loadUserDetailsQueue") Queue loadUserDetailsQueue) {
+		return BindingBuilder.bind(loadUserDetailsQueue).to(authUserDirectExchange).with(LOAD_USER_DETAILS_REQUEST_KEY);
 	}
 
 	@Bean
-	public Binding bindRequest(@Qualifier("exchange")DirectExchange exchange, @Qualifier("authQueue") Queue requestQueue) {
-		return BindingBuilder.bind(requestQueue).to(exchange).with(BINDINGKEY_REQUEST);
+	public Binding returnUserDetailsRequestKey(
+			@Qualifier("authUserDirectExchange") DirectExchange authUserDirectExchange,
+			@Qualifier("returnUserDetailsQueue") Queue returnUserDetailsQueue) {
+		return BindingBuilder.bind(returnUserDetailsQueue).to(authUserDirectExchange)
+				.with(RETURN_USER_DETAILS_RESPONSE_KEY);
 	}
 
 	@Bean
-	public Binding bindResponse(@Qualifier("userServiceExchange")DirectExchange exchange, @Qualifier("userQueue") Queue responseQueue) {
-		return BindingBuilder.bind(responseQueue).to(exchange).with(BINDINGKEY_RESPONSE);
+	public Queue registerUserQueue() {
+		return new Queue(REGISTER_USER_QUEUE, true);
 	}
 
 	@Bean
-	public Queue userServiceRequest() {
-		return new Queue(USER_SERVICE_REQUEST_QUEUE, true);
+	public Queue returnRegisteredUserQueue() {
+		return new Queue(RETURN_REGISTERED_USER_QUEUE, true);
 	}
 
 	@Bean
-	public Queue userServiceResponse() {
-		return new Queue(USER_SERVICE_RESPONSE_QUEUE, true);
+	public DirectExchange authUserRegisterUserDirectExchange() {
+		return new DirectExchange(AUTH_USER_REGISTER_USER_DIRECT_EXCHANGE);
 	}
 
 	@Bean
-	public DirectExchange userServiceExchange() {
-		return new DirectExchange(USER_SERVICE_DIRECT_EXCHANGE);
+	public Binding registerUserRequestKey(
+			@Qualifier("authUserRegisterUserDirectExchange") DirectExchange authUserRegisterUserDirectExchange,
+			@Qualifier("registerUserQueue") Queue registerUserQueue) {
+		return BindingBuilder.bind(registerUserQueue).to(authUserRegisterUserDirectExchange)
+				.with(REGISTER_USER_REQUEST_KEY);
 	}
 
 	@Bean
-	public Binding bindRequestUserService(@Qualifier("userServiceExchange") DirectExchange exchange,
-			@Qualifier("userServiceRequest") Queue resquestQueue) {
-		return BindingBuilder.bind(resquestQueue).to(exchange).with(USER_SERVICE_BINDINGKEY_REQUEST);
-	}
-
-	@Bean
-	public Binding bindResponseUserService(@Qualifier("userServiceExchange") DirectExchange exchange,
-			@Qualifier("userServiceResponse") Queue responseQueue) {
-		return BindingBuilder.bind(responseQueue).to(exchange).with(USER_SERVICE_BINDINGKEY_RESPONSE);
+	public Binding returnRegisteredUserResponseKey(
+			@Qualifier("authUserRegisterUserDirectExchange") DirectExchange authUserRegisterUserDirectExchange,
+			@Qualifier("returnRegisteredUserQueue") Queue returnRegisteredUserQueue) {
+		return BindingBuilder.bind(returnRegisteredUserQueue).to(authUserRegisterUserDirectExchange)
+				.with(RETURN_REGISTERED_USER_RESPONSE_KEY);
 	}
 
 	@Bean
@@ -119,5 +122,10 @@ public class RabbitMQConfig {
 	public Binding binduValidadeExchange(@Qualifier("userValidadeExchange") FanoutExchange exchange,
 			@Qualifier("userValidateEmailQueue") Queue userValidateEmailQueue) {
 		return BindingBuilder.bind(userValidateEmailQueue).to(exchange);
+	}
+
+	@Bean
+	public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
+		return new RabbitTemplate(connectionFactory);
 	}
 }

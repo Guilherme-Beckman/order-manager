@@ -16,8 +16,8 @@ public class EmailService {
 		SimpleMailMessage mailMessage = new SimpleMailMessage();
 		String email = new String(message.getBody());
 		mailMessage.setTo(email);
-		mailMessage.setSubject("VOCÊ FOI HACKEADA, MANDA FOTO PELADA AGORA");
-		mailMessage.setText("oi amor, ignora esse email, to testando uma progamação de geração de coisas, eu te amo muito e voce é muito lina"+"Your code is: " + message.getMessageProperties().getCorrelationId());
+		mailMessage.setSubject("Code ");
+		mailMessage.setText("Your code is: " + message.getMessageProperties().getCorrelationId());
 
 		javaMailSender.send(mailMessage);
 	}

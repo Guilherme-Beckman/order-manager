@@ -28,7 +28,7 @@ public class UserServiceRegisterListener {
 	@Autowired
 	UserServiceRegisterReturnDataProducer registerReturnData;
 
-	@RabbitListener(queues = RabbitMQConfig.USER_SERVICE_REQUEST_QUEUE)
+	@RabbitListener(queues = RabbitMQConfig.REGISTER_USER_QUEUE)
 	public void registerUser(@Payload Message userDTO) {
 
 		try {

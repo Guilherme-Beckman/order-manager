@@ -15,8 +15,8 @@ public class UserCredentialsProducer {
     	
 
         rabbitTemplate.convertAndSend(
-            RabbitMQConfig.AUTH_DIRECT_EXCHANGE,
-            RabbitMQConfig.BINDINGKEY_REQUEST,
+            RabbitMQConfig.AUTH_USER_USER_DETAILS_DIRECT_EXCHANGE,
+            RabbitMQConfig.LOAD_USER_DETAILS_REQUEST_KEY,
             email
         );
 

@@ -13,6 +13,6 @@ public class UserReturnDataProducer{
 	public RabbitTemplate rabbitTemplate;
 	
 	public void returnUserData(Message user) {
-		rabbitTemplate.convertAndSend(RabbitMQConfig.AUTH_DIRECT_EXCHANGE, RabbitMQConfig.BINDINGKEY_RESPONSE, user);
+		rabbitTemplate.convertAndSend(RabbitMQConfig.AUTH_USER_USER_DETAILS_DIRECT_EXCHANGE, RabbitMQConfig.RETURN_USER_DETAILS_RESPONSE_KEY, user);
 	}
 }
