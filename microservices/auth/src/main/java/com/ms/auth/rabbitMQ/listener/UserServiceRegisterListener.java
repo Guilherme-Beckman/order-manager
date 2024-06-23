@@ -7,13 +7,13 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
 import com.ms.auth.config.RabbitMQConfig;
-import com.ms.auth.service.UserService;
+import com.ms.auth.service.UserAuthenticationService;
 
 @Component
 public class UserServiceRegisterListener {
 
 	@Autowired
-	public UserService userService;
+	public UserAuthenticationService userService;
 
 	@RabbitListener(queues = RabbitMQConfig.RETURN_REGISTERED_USER_QUEUE)
 	public void listenAuthQueue(@Payload Message user) {

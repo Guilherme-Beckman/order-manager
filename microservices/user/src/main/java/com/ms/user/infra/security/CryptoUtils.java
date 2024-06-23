@@ -14,7 +14,7 @@ import com.ms.user.exceptions.CryptographyException;
 public class CryptoUtils {
 
     private final SecretKey secretKey;
-    public CryptoUtils(@Value("${security.secret-key}") String encodedKey) {
+    public CryptoUtils(@Value("${spring.security.secret-key}") String encodedKey) {
         this.secretKey = new SecretKeySpec(Base64.getDecoder().decode(encodedKey), "AES");
     }
 

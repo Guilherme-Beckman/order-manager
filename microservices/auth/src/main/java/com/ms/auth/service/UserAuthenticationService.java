@@ -22,7 +22,7 @@ import com.ms.auth.utils.MaxAttemptManager;
 import com.ms.auth.utils.MessageUtils;
 
 @Service
-public class UserService {
+public class UserAuthenticationService {
 	private final ConcurrentHashMap<String, CompletableFuture<Message>> pendingResponses = new ConcurrentHashMap<>();
 	@Autowired
 	private CustomUserDetailsService customUserDetailsService;

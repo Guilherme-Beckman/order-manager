@@ -2,6 +2,7 @@ package com.ms.auth.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +13,7 @@ import com.ms.auth.dto.LoginResponseDTO;
 import com.ms.auth.dto.UserDTO;
 import com.ms.auth.dto.ValidateEmailDTO;
 import com.ms.auth.service.EmailValidationService;
-import com.ms.auth.service.UserService;
+import com.ms.auth.service.UserAuthenticationService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -22,7 +23,7 @@ import jakarta.validation.Valid;
 public class AuthenticationController {
 
     @Autowired
-    private UserService userService;
+    private UserAuthenticationService userService;
     @Autowired 
     EmailValidationService emailValidationService;
     @PostMapping("/login")
@@ -37,8 +38,8 @@ public class AuthenticationController {
         return ResponseEntity.ok().body(user);
         
     }
-    @PostMapping("/sendcode")
-    public ResponseEntity<String> sendCode(HttpServletRequest request){
+    @GetMapping("/sendcode")
+	public ResponseEntity<String> sendCode(HttpServletRequest request){
     	String result = this.emailValidationService.sendCode(request);
 		return ResponseEntity.ok().body(result);
     }
