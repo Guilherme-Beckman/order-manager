@@ -1,6 +1,7 @@
 package com.ms.auth.infra.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,24 +21,6 @@ import com.ms.auth.service.CustomUserDetailsService;
 public class SecurityConfiguration {
 	@Autowired
 	CustomUserDetailsService customUserDetailsService;
-	@Autowired
-	SecurityFilter securityFilter;
-
-	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-
-		return httpSecurity
-
-				.csrf(csrf -> csrf.disable())
-				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-
-				.authorizeHttpRequests(autorize -> autorize.requestMatchers("/auth/login").permitAll()
-						.requestMatchers("/auth/register").permitAll().anyRequest().authenticated()
-
-				).addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class).build();
-
-	}
-
 	@Bean
 	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
 			throws Exception {
