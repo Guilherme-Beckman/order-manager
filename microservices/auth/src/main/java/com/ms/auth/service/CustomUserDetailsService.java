@@ -25,7 +25,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		String correlationId = this.messageUtils.generateCorrelationId();
-		
+
 		CompletableFuture<Message> responseFuture = new CompletableFuture<>();
 		pendingResponses.put(correlationId, responseFuture);
 		Message message = this.messageUtils.createMessage(email, correlationId);

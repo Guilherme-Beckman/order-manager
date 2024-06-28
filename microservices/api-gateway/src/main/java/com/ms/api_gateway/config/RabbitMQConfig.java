@@ -1,5 +1,4 @@
-package com.ms.auth.config;
-
+package com.ms.api_gateway.config;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
@@ -154,7 +153,7 @@ public class RabbitMQConfig {
 
 	@Bean
 	public Binding loadUserDetailsRequestApiGatewayKey(@Qualifier("authUserDirectApiGatewayExchange") DirectExchange authUserDirectApiGatewayExchange,
-			@Qualifier("loadUserDetailsQueue") Queue loadUserDetailsApiGatewayQueue) {
+			@Qualifier("loadUserDetailsApiGatewayQueue") Queue loadUserDetailsApiGatewayQueue) {
 		return BindingBuilder.bind(loadUserDetailsApiGatewayQueue).to(authUserDirectApiGatewayExchange).with(LOAD_USER_DETAILS_REQUEST_API_GATEWAY_KEY);
 	}
 

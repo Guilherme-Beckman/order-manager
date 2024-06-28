@@ -1,5 +1,6 @@
 package com.ms.user.config;
 
+
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
@@ -31,6 +32,12 @@ public class RabbitMQConfig {
 
 	public static final String USER_EMAIL_VALIDATE_FANOUT_EXCHANGE = "user_email_validate_fanout_exchange";
 	public static final String USER_EMAIL_VALIDATE_QUEUE = "user_email_validate_queue";
+
+	public static final String LOAD_USER_DETAILS_API_GATEWAY_QUEUE = "user_ms.load_user_details_api_gateway_queue";
+	public static final String RETURN_USER_DETAILS_API_GATEWAY_QUEUE = "auth_ms.return_user_details_api_gateway_queue";
+	public static final String AUTH_USER_USER_DETAILS_DIRECT_API_GATEWAY_EXCHANGE = "auth_ms.user_ms_user_details_direct_api_gateway_exchange";
+	public static final String LOAD_USER_DETAILS_REQUEST_API_GATEWAY_KEY = "load.user.details.api_gateway_request";
+	public static final String RETURN_USER_DETAILS_RESPONSE_API_GATEWAY_KEY = "return.user.details.api_gateway_response";
 
 	@Bean
 	public Queue loadUserDetailsQueue() {
@@ -127,5 +134,36 @@ public class RabbitMQConfig {
 	@Bean
 	public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
 		return new RabbitTemplate(connectionFactory);
+	}
+
+	@Bean
+	public Queue loadUserDetailsApiGatewayQueue() {
+		return new Queue(LOAD_USER_DETAILS_API_GATEWAY_QUEUE, true);
+	}
+
+	@Bean
+	public Queue returnUserDetailsApiGatewayQueue() {
+		return new Queue(RETURN_USER_DETAILS_API_GATEWAY_QUEUE, true);
+	}
+
+	@Bean
+	public DirectExchange authUserDirectApiGatewayExchange() {
+		return new DirectExchange(AUTH_USER_USER_DETAILS_DIRECT_API_GATEWAY_EXCHANGE);
+	}
+
+	@Bean
+	public Binding loadUserDetailsRequestApiGatewayKey(
+			@Qualifier("authUserDirectApiGatewayExchange") DirectExchange authUserDirectApiGatewayExchange,
+			@Qualifier("loadUserDetailsApiGatewayQueue") Queue loadUserDetailsApiGatewayQueue) {
+		return BindingBuilder.bind(loadUserDetailsApiGatewayQueue).to(authUserDirectApiGatewayExchange)
+				.with(LOAD_USER_DETAILS_REQUEST_API_GATEWAY_KEY);
+	}
+
+	@Bean
+	public Binding returnUserDetailsRequestApiGatewayKey(
+			@Qualifier("authUserDirectApiGatewayExchange") DirectExchange authUserDirectApiGatewayExchange,
+			@Qualifier("returnUserDetailsApiGatewayQueue") Queue returnUserDetailsApiGatewayQueue) {
+		return BindingBuilder.bind(returnUserDetailsApiGatewayQueue).to(authUserDirectApiGatewayExchange)
+				.with(RETURN_USER_DETAILS_RESPONSE_API_GATEWAY_KEY);
 	}
 }

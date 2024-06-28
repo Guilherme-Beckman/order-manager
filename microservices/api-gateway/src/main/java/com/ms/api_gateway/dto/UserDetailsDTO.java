@@ -1,4 +1,4 @@
-package com.ms.auth.dto;
+package com.ms.api_gateway.dto;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,7 +28,27 @@ public class UserDetailsDTO implements UserDetails {
 
 
 
-    public String getId() {
+    public UserDetailsDTO(String id, String cpf, String password, String name, String lastName, String email,
+			List<String> address, boolean accountNonExpired, boolean accountNonLocked, boolean credentialsNonExpired,
+			boolean enabled, String username, boolean isValid) {
+		this.id = id;
+		this.cpf = cpf;
+		this.password = password;
+		this.name = name;
+		this.lastName = lastName;
+		this.email = email;
+		this.address = address;
+		this.accountNonExpired = accountNonExpired;
+		this.accountNonLocked = accountNonLocked;
+		this.credentialsNonExpired = credentialsNonExpired;
+		this.enabled = enabled;
+		this.username = username;
+		this.isValid = isValid;
+	}
+
+
+
+	public String getId() {
         return id;
     }
 
