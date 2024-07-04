@@ -14,7 +14,7 @@ public class TokenNotValidException extends AuthException {
 		var pb = ProblemDetail.forStatus(HttpStatus.UNAUTHORIZED);
 		pb.setTitle("Token not valid");
 		pb.setDetail("Error while validate the code");
-		return super.toProblemDetail();
+		return pb;
 	}
 
 }

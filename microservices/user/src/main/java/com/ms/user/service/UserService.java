@@ -5,14 +5,19 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.ms.user.infra.security.CryptoUtils;
+import com.ms.user.infra.security.TokenService;
 import com.ms.user.infra.security.UserCrypto;
 import com.ms.user.model.address.AddressDTO;
 import com.ms.user.model.address.AddressModel;
 import com.ms.user.model.user.UserDTO;
 import com.ms.user.model.user.UserModel;
+import com.ms.user.model.user.UserPerfilDTO;
 import com.ms.user.model.user.exceptions.UserNotFoundException;
 import com.ms.user.repository.UserRepository;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @Service
 public class UserService {
@@ -24,6 +29,8 @@ public class UserService {
 	private UserCrypto userCrypto;
 	@Autowired
 	private CryptoUtils cryptoUtils;
+	@Autowired
+	private TokenService tokenService;
 
 	@Transactional
 	public UserModel insertUser(UserDTO userDTO) {
@@ -63,5 +70,16 @@ public class UserService {
 		user.setValid(true);
 		this.userRepository.save(user);
 
+	}
+
+	public UserPerfilDTO getUserPerfil(HttpServletRequest request) {
+		var token =  this.tokenService.recoverToken(request);
+		var userInfos = this.tokenService.getTokenInformations(token);
+		var email = userInfos.getSubject();
+		var encryptedEmail = this.cryptoUtils.encrypt(email);
+		var user = this.getUserByEmail(encryptedEmail);
+		var decryptedUserPerfil = this.userCrypto.decryptUserData(user);
+		
+		return decryptedUserPerfil;
 	}
 }

@@ -1,12 +1,11 @@
 package com.ms.user.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.ms.user.exceptions.address.AdressNotFoundException;
 import com.ms.user.infra.security.AddressCrypto;
 import com.ms.user.model.address.AddressDTO;
 import com.ms.user.model.address.AddressModel;
@@ -28,7 +27,7 @@ public class AddressService {
 		return this.addressRepository.insert(newAddress);
 	}
 
-	public AddressDTO addressByCPF(String cep) {
+	public AddressDTO addressByCEP(String cep) {
 		RestTemplate restTemplate = new RestTemplate();
 
 		ResponseEntity<ViaCepResponse> response = restTemplate.getForEntity(String.format(VIACEP_URL, cep),
@@ -48,5 +47,8 @@ public class AddressService {
 		} else {
 			throw new RuntimeException("CEP não encontrado ou erro na consulta.");
 		}
+	}
+	public AddressModel getAddressById(String id) {
+		return this.addressRepository.findById(id).orElseThrow(AdressNotFoundException::new);
 	}
 }

@@ -23,7 +23,6 @@ public class AddressDTO {
     
 	public AddressDTO() {
 	}
-
 	public AddressDTO(@NotBlank String street, @NotBlank String number, String complement,
 			@NotBlank String neighborhood, @NotBlank String city, @NotBlank String state) {
 		this.street = street;
@@ -36,7 +35,7 @@ public class AddressDTO {
 
 	public AddressDTO(@NotBlank String zipCode) {
 		AddressService addressService = new AddressService(); 
-	    AddressDTO dto = addressService.addressByCPF(zipCode); 
+	    AddressDTO dto = addressService.addressByCEP(zipCode); 
 	    this.street = dto.getStreet(); 
 	    this.number = dto.getNumber(); 
 	    this.complement = dto.getComplement(); 
@@ -48,6 +47,17 @@ public class AddressDTO {
 
 	
 	
+	public AddressDTO(String userId, @NotBlank String street, @NotBlank String number, String complement,
+			@NotBlank String neighborhood, @NotBlank String city, @NotBlank String state, String zipCode) {
+		this.userId = userId;
+		this.street = street;
+		this.number = number;
+		this.complement = complement;
+		this.neighborhood = neighborhood;
+		this.city = city;
+		this.state = state;
+		this.zipCode = zipCode;
+	}
 	public String getStreet() {
 		return street;
 	}
