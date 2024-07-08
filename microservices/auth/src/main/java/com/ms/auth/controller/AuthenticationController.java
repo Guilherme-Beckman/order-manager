@@ -6,15 +6,22 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.ms.auth.dto.AuthenticationDTO;
 import com.ms.auth.dto.LoginResponseDTO;
 import com.ms.auth.dto.UserDTO;
 import com.ms.auth.dto.ValidateEmailDTO;
-import com.ms.auth.service.EmailValidationService;
+import com.ms.auth.infra.security.TokenService;
+import com.ms.auth.service.EmailService;
+import com.ms.auth.service.ResetPasswordService;
 import com.ms.auth.service.UserAuthenticationService;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @RestController
 public class AuthenticationController {
@@ -22,7 +29,11 @@ public class AuthenticationController {
 	@Autowired
 	private UserAuthenticationService userService;
 	@Autowired
-	EmailValidationService emailValidationService;
+	private EmailService emailService;
+	@Autowired
+	private ResetPasswordService resetPasswordService;
+	@Autowired
+	private TokenService tokenService;
 
 	@PostMapping("/login")
 	public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid AuthenticationDTO data) {
@@ -38,15 +49,28 @@ public class AuthenticationController {
 	}
 
 	@GetMapping("/sendcode")
-	public ResponseEntity<String> sendCode(HttpServletRequest request) {
-		String result = this.emailValidationService.sendCode(request);
-		return ResponseEntity.ok().body(result);
+	public void sendCode(HttpServletRequest request) {
+		var token = this.tokenService.recoverToken(request);
+		this.emailService.sendCode(token);
 	}
 
 	@PostMapping("/validate")
 	public ResponseEntity<String> validate(@Valid @RequestBody ValidateEmailDTO emailCodeDTO,
 			HttpServletRequest request) {
-		var message = this.emailValidationService.validateEmailCode(emailCodeDTO, request);
+		var message = this.emailService.validateEmailCode(emailCodeDTO, request);
+		return ResponseEntity.ok().body(message);
+
+	}
+
+	@GetMapping("/inviteResetPassword")
+	public void inviteResetPasswordEmail(@RequestBody @NotBlank @NotNull String email) {
+		this.resetPasswordService.inviteResetPasswordEmail(email);
+	}
+
+	@PostMapping("/newPassword")
+	public ResponseEntity<String> newPassword(@RequestParam("email") String email, @RequestParam("token") String token,
+			@RequestBody String newPassword) {
+		var message = this.resetPasswordService.validateEmailCode(email, token, newPassword);
 		return ResponseEntity.ok().body(message);
 
 	}

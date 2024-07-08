@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ms.auth.dto.ValidateEmailDTO;
+import com.ms.auth.exceptions.auth.authenticate.InvalideCodeException;
 import com.ms.auth.exceptions.auth.email.code.EmailAlreadyBeenVerifiedException;
 import com.ms.auth.infra.security.TokenService;
 import com.ms.auth.rabbitMQ.producer.EmailCodeProducer;
@@ -21,7 +22,7 @@ import com.ms.auth.utils.MessageUtils;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Service
-public class EmailValidationService {
+public class EmailService {
 	@Autowired
 	private TokenService tokenService;
 	@Autowired
@@ -35,9 +36,10 @@ public class EmailValidationService {
 	private MaxAttemptManager maxAttemptManager;
 	@Autowired
 	private ValidateUserEmailProducer emailValidateUserEmailProducer;
+	private String code;
 
-	public String sendCode(HttpServletRequest request) {
-		var token = this.tokenService.recoverToken(request);
+	public void sendCode(String token) {
+
 		var userInfos = this.tokenService.getTokenInformations(token);
 		Boolean isEnable = userInfos.getClaim("enable").asBoolean();
 		String email = userInfos.getSubject();
@@ -47,22 +49,20 @@ public class EmailValidationService {
 		}
 
 		this.attemptManagerExponencial.checkAndUpdateAttempts(email);
-		String code = this.generateCode();
+		this.maxAttemptManager.checkAndUpdateAttempts(email);
+		code = this.generateCode();
 
-		String tokenEmailCode = this.tokenEmailCode(email, code);
 		CompletableFuture<String> responseFuture = new CompletableFuture<>();
-		pendingResponses.put(tokenEmailCode, responseFuture);
+		pendingResponses.put(email, responseFuture);
 
 		Message message = this.messageUtils.createMessage(email, code);
 		this.emailCodeProducer.produceEmailCode(message);
 
 		try {
 			responseFuture.get(60000, TimeUnit.MILLISECONDS);
-			return "Email validated with success";
 		} catch (Exception e) {
-			return null;
 		} finally {
-			pendingResponses.remove(tokenEmailCode);
+			pendingResponses.remove(email);
 		}
 	}
 
@@ -72,16 +72,15 @@ public class EmailValidationService {
 		return String.valueOf(code);
 	}
 
-	private String tokenEmailCode(String email, String code) {
-		String token = email + code;
-		return token;
-	}
-
 	public String validateEmailCode(ValidateEmailDTO emailCodeDTO, HttpServletRequest request) {
+
 		var token = this.tokenService.recoverToken(request);
 		var userInfos = this.tokenService.getTokenInformations(token);
 		String email = userInfos.getSubject();
 		Boolean isEnable = userInfos.getClaim("enable").asBoolean();
+		if (isEnable) {
+			throw new EmailAlreadyBeenVerifiedException();
+		}
 
 		try {
 			this.maxAttemptManager.checkAndUpdateAttempts(email);
@@ -90,20 +89,17 @@ public class EmailValidationService {
 			throw e;
 		}
 
-		if (isEnable) {
-			throw new EmailAlreadyBeenVerifiedException();
-		}
+		if (!(emailCodeDTO.emailCode().equals(code))) throw new InvalideCodeException();
 
-		String tokenEmailCode = this.tokenEmailCode(email, emailCodeDTO.emailCode());
-		CompletableFuture<String> responseFuture = pendingResponses.get(tokenEmailCode);
+		CompletableFuture<String> responseFuture = pendingResponses.get(email);
 
 		if (responseFuture != null) {
-			responseFuture.complete(emailCodeDTO.emailCode());
+			responseFuture.complete("");
 			this.emailValidateUserEmailProducer.produceValidateUserEmail(email);
 			return "Email validated successfully";
 		}
 
-		return "";
+		return "Incorrect Code";
 	}
 
 }

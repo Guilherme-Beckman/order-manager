@@ -55,6 +55,24 @@ public class UserService {
 		return this.userRepository.save(findedUser);
 	}
 
+
+
+@Transactional
+public void addAdress(HttpServletRequest request, AddressDTO address) {
+    var user = this.findUserByToken(request);
+    String userId = user.getId();
+    var findedUser = this.userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+    if (address.getZipCode() != null) {
+        address = new AddressDTO(address.getZipCode());
+    }
+    address.setUserId(userId);
+    AddressModel addedAddress = this.addressService.insertAddress(address);
+    List<String> addressesSavedUser = findedUser.getAddress();
+    addressesSavedUser.add(addedAddress.getId());
+    findedUser.setAdress(addressesSavedUser);
+    this.userRepository.save(findedUser);
+}
+
 	public UserModel getUserById(String id) {
 		return this.userRepository.findById(id).orElseThrow();
 	}
@@ -73,13 +91,26 @@ public class UserService {
 	}
 
 	public UserPerfilDTO getUserPerfil(HttpServletRequest request) {
-		var token =  this.tokenService.recoverToken(request);
+		var user = this.findUserByToken(request);
+		var decryptedUserPerfil = this.userCrypto.decryptUserData(user);
+
+		return decryptedUserPerfil;
+	}
+
+	private UserModel findUserByToken(HttpServletRequest request) {
+		var token = this.tokenService.recoverToken(request);
 		var userInfos = this.tokenService.getTokenInformations(token);
 		var email = userInfos.getSubject();
 		var encryptedEmail = this.cryptoUtils.encrypt(email);
 		var user = this.getUserByEmail(encryptedEmail);
-		var decryptedUserPerfil = this.userCrypto.decryptUserData(user);
-		
-		return decryptedUserPerfil;
+		return user;
 	}
+    public void changePassword(String email, String newPassword) {
+        var user = this.getUserByEmail(this.cryptoUtils.encrypt(email));
+        if (user == null) {
+            return; 
+        }
+        user.setPassword(newPassword);
+        this.userRepository.save(user);
+    }
 }

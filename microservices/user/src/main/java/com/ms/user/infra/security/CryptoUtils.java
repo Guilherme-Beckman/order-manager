@@ -1,20 +1,12 @@
 package com.ms.user.infra.security;
-import java.util.ArrayList;
 import java.util.Base64;
-import java.util.List;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
 import com.ms.user.exceptions.CryptographyException;
-import com.ms.user.model.address.AddressDTO;
-import com.ms.user.model.address.AddressModel;
-import com.ms.user.service.AddressService;
 @Component
 public class CryptoUtils {
 	

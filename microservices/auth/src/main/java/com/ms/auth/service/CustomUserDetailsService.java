@@ -32,7 +32,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 		credentialsRequestor.requestUserCredentials(message);
 		try {
-			Message response = responseFuture.get(5000, TimeUnit.MILLISECONDS);
+			Message response = responseFuture.get(3500, TimeUnit.MILLISECONDS);
 			return messageUtils.convertMessageToUserDetails(response);
 		} catch (Exception e) {
 			return null;

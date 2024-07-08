@@ -22,7 +22,7 @@ public class SecurityConfiguration {
 				.csrf(csrf -> csrf.disable())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(autorize -> autorize
-						.requestMatchers("/register", "/login", "/sendcode", "/validate").permitAll())
+						.requestMatchers("/register", "/login", "/sendcode", "/validate","/inviteResetPassword","/newPassword").permitAll())
 				.build();
 
 	}

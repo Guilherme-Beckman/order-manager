@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 public class EmailService {
 	@Autowired
 	private JavaMailSender javaMailSender;
-	
 
 	public void sendEmailCode(Message message) {
 		SimpleMailMessage mailMessage = new SimpleMailMessage();
@@ -19,6 +18,19 @@ public class EmailService {
 		mailMessage.setSubject("Code ");
 		mailMessage.setText("Your code is: " + message.getMessageProperties().getCorrelationId());
 
+		javaMailSender.send(mailMessage);
+	}
+
+	public void sendEmailResetLink(Message message) {
+		String email = new String(message.getBody());
+		email = email.replace("\"", "").trim();
+		String resetUrl = "http://localhost:8989/auth/newPassword?email=" + email + "&token="
+				+ message.getMessageProperties().getCorrelationId();
+		SimpleMailMessage mailMessage = new SimpleMailMessage();
+		mailMessage.setTo(email);
+		mailMessage.setSubject("Reset link");
+		mailMessage.setText("Your reset link: " + resetUrl);
+		System.out.println(resetUrl);
 		javaMailSender.send(mailMessage);
 	}
 

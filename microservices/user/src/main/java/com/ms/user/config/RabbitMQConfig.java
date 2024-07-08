@@ -29,7 +29,6 @@ public class RabbitMQConfig {
 
 	public static final String EMAIL_CODE_FANOUT_EXCHANGE = "email_code_fanout_exchange";
 	public static final String EMAIL_CODE_GENERATED_QUEUE = "email_code_genereted_queue";
-
 	public static final String USER_EMAIL_VALIDATE_FANOUT_EXCHANGE = "user_email_validate_fanout_exchange";
 	public static final String USER_EMAIL_VALIDATE_QUEUE = "user_email_validate_queue";
 
@@ -38,6 +37,11 @@ public class RabbitMQConfig {
 	public static final String AUTH_USER_USER_DETAILS_DIRECT_API_GATEWAY_EXCHANGE = "auth_ms.user_ms_user_details_direct_api_gateway_exchange";
 	public static final String LOAD_USER_DETAILS_REQUEST_API_GATEWAY_KEY = "load.user.details.api_gateway_request";
 	public static final String RETURN_USER_DETAILS_RESPONSE_API_GATEWAY_KEY = "return.user.details.api_gateway_response";
+
+	public static final String EMAIL_RESET_LINK_FANOUT_EXCHANGE = "email_reset_link_fanout_exchange";
+	public static final String EMAIL_RESET_LINK_GENERATED_QUEUE = "email_reset_link_genereted_queue";
+	public static final String USER_EMAIL_RESET_LINK_FANOUT_EXCHANGE = "user_email_reset_link_fanout_exchange";
+	public static final String USER_EMAIL_RESET_LINK_QUEUE = "user_email_reset_link_queue";
 
 	@Bean
 	public Queue loadUserDetailsQueue() {
@@ -154,7 +158,7 @@ public class RabbitMQConfig {
 	@Bean
 	public Binding loadUserDetailsRequestApiGatewayKey(
 			@Qualifier("authUserDirectApiGatewayExchange") DirectExchange authUserDirectApiGatewayExchange,
-			@Qualifier("loadUserDetailsApiGatewayQueue") Queue loadUserDetailsApiGatewayQueue) {
+			@Qualifier("loadUserDetailsQueue") Queue loadUserDetailsApiGatewayQueue) {
 		return BindingBuilder.bind(loadUserDetailsApiGatewayQueue).to(authUserDirectApiGatewayExchange)
 				.with(LOAD_USER_DETAILS_REQUEST_API_GATEWAY_KEY);
 	}
@@ -165,5 +169,38 @@ public class RabbitMQConfig {
 			@Qualifier("returnUserDetailsApiGatewayQueue") Queue returnUserDetailsApiGatewayQueue) {
 		return BindingBuilder.bind(returnUserDetailsApiGatewayQueue).to(authUserDirectApiGatewayExchange)
 				.with(RETURN_USER_DETAILS_RESPONSE_API_GATEWAY_KEY);
+	}
+
+	@Bean
+	public Queue emailResetLinkQueueGenerated() {
+		return new Queue(EMAIL_RESET_LINK_GENERATED_QUEUE, true);
+	}
+
+	@Bean
+	public FanoutExchange emailResetLinkExchangeGenerated() {
+		return new FanoutExchange(EMAIL_RESET_LINK_FANOUT_EXCHANGE);
+	}
+
+	@Bean
+	public Binding bindEmailResetLinkExchangeGenerated(
+			@Qualifier("emailResetLinkExchangeGenerated") FanoutExchange exchange,
+			@Qualifier("emailResetLinkQueueGenerated") Queue emailResetLinkQueueGenerated) {
+		return BindingBuilder.bind(emailResetLinkQueueGenerated).to(exchange);
+	}
+
+	@Bean
+	public Queue userResetLinkEmailQueue() {
+		return new Queue(USER_EMAIL_RESET_LINK_QUEUE, true);
+	}
+
+	@Bean
+	public FanoutExchange userResetLinkExchange() {
+		return new FanoutExchange(USER_EMAIL_RESET_LINK_FANOUT_EXCHANGE);
+	}
+
+	@Bean
+	public Binding bindResetLinkExchange(@Qualifier("userResetLinkExchange") FanoutExchange exchange,
+			@Qualifier("userResetLinkEmailQueue") Queue userResetLinkEmailQueue) {
+		return BindingBuilder.bind(userResetLinkEmailQueue).to(exchange);
 	}
 }

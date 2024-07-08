@@ -48,6 +48,7 @@ public class AddressService {
 			throw new RuntimeException("CEP não encontrado ou erro na consulta.");
 		}
 	}
+
 	public AddressModel getAddressById(String id) {
 		return this.addressRepository.findById(id).orElseThrow(AdressNotFoundException::new);
 	}

@@ -3,7 +3,6 @@ package com.ms.auth.service;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
-
 import org.springframework.amqp.core.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,7 +10,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import com.ms.auth.dto.AuthenticationDTO;
 import com.ms.auth.dto.UserDTO;
 import com.ms.auth.dto.UserDetailsDTO;
@@ -81,5 +79,7 @@ public class UserAuthenticationService {
 			responseFuture.complete(message);
 		}
 	}
+
+
 
 }

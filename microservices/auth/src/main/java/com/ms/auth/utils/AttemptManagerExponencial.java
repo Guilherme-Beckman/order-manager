@@ -14,7 +14,6 @@ public class AttemptManagerExponencial {
 
     public void checkAndUpdateAttempts(String key) {
         AttemptsInfo attemptInfo = attemptRecords.getOrDefault(key, new AttemptsInfo());
-        
        
             LocalDateTime now = LocalDateTime.now();
             long blockDuration = calculateBlockDuration(attemptInfo.attempts);
@@ -24,15 +23,29 @@ public class AttemptManagerExponencial {
             	 attemptInfo.attempts++;
                  attemptInfo.lastAttempt = LocalDateTime.now();
                  attemptRecords.put(key, attemptInfo);
-            }
-      
+            } 
+    }
+
+    public void checkAndUpdateAttempts(String key, int TIME_IN_MINUTES) {
+        AttemptsInfo attemptInfo = attemptRecords.getOrDefault(key, new AttemptsInfo());
        
+            LocalDateTime now = LocalDateTime.now();
+            long blockDuration = calculateBlockDuration(attemptInfo.attempts, TIME_IN_MINUTES);
+            if (now.isBefore(attemptInfo.lastAttempt.plusMinutes(blockDuration))) {
+            	throw new ExceededNumberOfAttempts("Try again after: " + blockDuration  +" minute(s)" );
+            } else {
+            	 attemptInfo.attempts++;
+                 attemptInfo.lastAttempt = LocalDateTime.now();
+                 attemptRecords.put(key, attemptInfo);
+            } 
     }
 
     private Long calculateBlockDuration(int attempts) {
         return BASE_BLOCK_DURATION_MINUTES * (long) Math.pow(2, attempts - 1);
     }
-
+    private Long calculateBlockDuration(int attempts, int time) {
+        return time * (long) Math.pow(2, attempts - 1);
+    }
     private static class AttemptsInfo {
         int attempts = 0;
         LocalDateTime lastAttempt = LocalDateTime.now();

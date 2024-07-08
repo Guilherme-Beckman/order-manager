@@ -10,14 +10,14 @@ import com.ms.email.config.RabbitMQConfig;
 import com.ms.email.service.EmailService;
 
 @Component
-public class EmailCodeListener {
+public class EmailResetLinkListener {
 	@Autowired
 	private EmailService emailService;
 
-	@RabbitListener(queues = RabbitMQConfig.EMAIL_CODE_GENERATED_QUEUE)
+	@RabbitListener(queues = RabbitMQConfig.EMAIL_RESET_LINK_GENERATED_QUEUE)
 	public void listenEmailCodeQueue(@Payload Message message) {
 		if (message != null) {
-			this.emailService.sendEmailCode(message);
+			this.emailService.sendEmailResetLink(message);
 		}
 	}
 }
