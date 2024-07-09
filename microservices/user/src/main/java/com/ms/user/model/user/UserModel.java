@@ -35,11 +35,11 @@ public class UserModel {
 		this.lastName = userDTO.lastName();
 		this.email = userDTO.email();
 		this.address = new ArrayList<String>();
-		this.address = new ArrayList<>();
 		this.accountNonExpired = true; // Assumindo conta ativa por padrão
 		this.accountNonLocked = true; // Assumindo conta não bloqueada por padrão
 		this.credentialsNonExpired = true; // Assumindo credenciais ativas por padrão
 		this.enabled = true; // Assumindo usuário ativo por padrão
+		this.isValid = false;
 	}
 
 	public UserModel(String id, String cpf, String password, String name, String lastName, String email) {

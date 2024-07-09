@@ -7,7 +7,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
 import com.ms.auth.config.RabbitMQConfig;
-import com.ms.auth.service.UserAuthenticationService;
+import com.ms.auth.service.clients.UserAuthenticationService;
 
 @Component
 public class UserServiceRegisterListener {

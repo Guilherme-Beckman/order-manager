@@ -1,4 +1,4 @@
-package com.ms.auth.service;
+package com.ms.auth.service.clients;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
@@ -9,12 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.ms.auth.rabbitMQ.producer.UserCredentialsProducer;
 import com.ms.auth.utils.MessageUtils;
 
-@Component
+@Service
 public class CustomUserDetailsService implements UserDetailsService {
 	@Autowired
 	public UserCredentialsProducer credentialsRequestor;

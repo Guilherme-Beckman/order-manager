@@ -1,4 +1,4 @@
-package com.ms.auth.dto;
+package com.ms.auth.dto.clients;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,9 +23,6 @@ public class UserDetailsDTO implements UserDetails {
     @SuppressWarnings("unused")
 	private String username;
     private boolean isValid;
-    public UserDetailsDTO() {
-    }
-
 
 
     public String getId() {

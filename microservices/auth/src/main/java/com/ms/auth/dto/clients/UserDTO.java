@@ -1,4 +1,6 @@
-package com.ms.auth.dto;
+package com.ms.auth.dto.clients;
+
+import com.ms.auth.dto.address.AddressDTO;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

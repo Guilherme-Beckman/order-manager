@@ -29,8 +29,12 @@ public class TokenService {
 			Boolean enable) {
 		try {
 			Algorithm algorithm = Algorithm.HMAC256(secret);
-			String token = JWT.create().withIssuer("auth").withSubject(login).withClaim("enable", enable)
-					.withExpiresAt(generateExpirationDate()).sign(algorithm);
+			String token = JWT.create().
+					withIssuer("auth").
+					withSubject(login).
+					withClaim("enable", enable).
+					withExpiresAt(generateExpirationDate()).
+					sign(algorithm);
 			return token;
 		} catch (JWTCreationException e) {
 			throw new TokenException("Error while generating token");

@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ms.auth.dto.AuthenticationDTO;
-import com.ms.auth.dto.LoginResponseDTO;
-import com.ms.auth.dto.UserDTO;
-import com.ms.auth.dto.ValidateEmailDTO;
+import com.ms.auth.dto.clients.AuthenticationDTO;
+import com.ms.auth.dto.clients.LoginResponseDTO;
+import com.ms.auth.dto.clients.UserDTO;
+import com.ms.auth.dto.clients.ValidateEmailDTO;
 import com.ms.auth.infra.security.TokenService;
-import com.ms.auth.service.EmailService;
-import com.ms.auth.service.ResetPasswordService;
-import com.ms.auth.service.UserAuthenticationService;
+import com.ms.auth.service.clients.EmailService;
+import com.ms.auth.service.clients.ResetPasswordService;
+import com.ms.auth.service.clients.UserAuthenticationService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -24,7 +24,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 @RestController
-public class AuthenticationController {
+public class AuthenticationClientController {
 
 	@Autowired
 	private UserAuthenticationService userService;
@@ -35,17 +35,17 @@ public class AuthenticationController {
 	@Autowired
 	private TokenService tokenService;
 
-	@PostMapping("/login")
-	public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid AuthenticationDTO data) {
-		var token = this.userService.userLogin(data);
-		return ResponseEntity.ok(new LoginResponseDTO(token));
-	}
-
 	@PostMapping("/register")
 	public ResponseEntity<UserDetails> register(@RequestBody @Valid UserDTO data) {
 		var user = this.userService.registerUser(data);
 		return ResponseEntity.ok().body(user);
 
+	}
+
+	@PostMapping("/login")
+	public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid AuthenticationDTO data) {
+		var token = this.userService.userLogin(data);
+		return ResponseEntity.ok(new LoginResponseDTO(token));
 	}
 
 	@GetMapping("/sendcode")

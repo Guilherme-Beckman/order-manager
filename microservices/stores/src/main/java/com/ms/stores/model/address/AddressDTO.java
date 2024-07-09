@@ -1,29 +1,31 @@
-package com.ms.auth.dto;
+package com.ms.stores.model.address;
+
+
+import com.ms.stores.service.AddressService;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 public class AddressDTO {
 
 	private String userId;
+	@NotBlank
 	private String street;
+	@NotBlank
 	private String number;
 	private String complement;
+	@NotBlank
 	private String neighborhood;
+	@NotBlank
 	private String city;
+	@NotBlank
 	private String state;
 	private String zipCode;
 
 	public AddressDTO() {
 	}
 
-	public AddressDTO(
-			@NotNull(message = "Street must not be null") @NotBlank(message = "Street must not be blank") String street,
-			@NotNull(message = "Number must not be null") @NotBlank(message = "Number must not be blank") String number,
-			String complement,
-			@NotNull(message = "Neighborhood must not be null") @NotBlank(message = "Neighborhood must not be blank") String neighborhood,
-			@NotNull(message = "City must not be null") @NotBlank(message = "City must not be blank") String city,
-			@NotNull(message = "State must not be null") @NotBlank(message = "State must not be blank") String state) {
+	public AddressDTO(@NotBlank String street, @NotBlank String number, String complement,
+			@NotBlank String neighborhood, @NotBlank String city, @NotBlank String state) {
 		this.street = street;
 		this.number = number;
 		this.complement = complement;
@@ -32,11 +34,30 @@ public class AddressDTO {
 		this.state = state;
 	}
 
-	public AddressDTO(@NotNull(message = "ZipCode must not be null") @NotBlank(message = "ZipCode must not be blank") String zipCode) {
+	public AddressDTO(@NotBlank String zipCode) {
+		AddressService addressService = new AddressService();
+		AddressDTO dto = addressService.addressByCEP(zipCode);
+		this.street = dto.getStreet();
+		this.number = dto.getNumber();
+		this.complement = dto.getComplement();
+		this.neighborhood = dto.getNeighborhood();
+		this.city = dto.getCity();
+		this.state = dto.getState();
 		this.zipCode = zipCode;
 	}
 
-	// Getters and Setters
+	public AddressDTO(String userId, @NotBlank String street, @NotBlank String number, String complement,
+			@NotBlank String neighborhood, @NotBlank String city, @NotBlank String state, String zipCode) {
+		this.userId = userId;
+		this.street = street;
+		this.number = number;
+		this.complement = complement;
+		this.neighborhood = neighborhood;
+		this.city = city;
+		this.state = state;
+		this.zipCode = zipCode;
+	}
+
 	public String getStreet() {
 		return street;
 	}
@@ -100,4 +121,5 @@ public class AddressDTO {
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
+
 }

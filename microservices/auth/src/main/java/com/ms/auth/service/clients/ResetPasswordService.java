@@ -1,4 +1,4 @@
-package com.ms.auth.service;
+package com.ms.auth.service.clients;
 
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
