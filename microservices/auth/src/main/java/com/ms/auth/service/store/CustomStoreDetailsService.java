@@ -30,13 +30,11 @@ public class CustomStoreDetailsService implements UserDetailsService {
 		CompletableFuture<Message> responseFuture = new CompletableFuture<>();
 		pendingResponses.put(correlationId, responseFuture);
 		Message message = this.messageUtils.createMessage(email, correlationId);
-		System.out.println("pediu para verificar se tem usuario");
 		credentialsRequestor.requestStoreCredentials(message);
 		try {
 			Message response = responseFuture.get(5000, TimeUnit.MILLISECONDS);
 			return messageUtils.convertMessageToStoreDetails(response);
 		} catch (Exception e) {
-			System.out.println("ta retornando null");
 			return null;
 		} finally {
 			pendingResponses.remove(correlationId);
@@ -45,7 +43,6 @@ public class CustomStoreDetailsService implements UserDetailsService {
 
 	public void receiveResponse(Message message) {
 		String responseCorrelationId = (String) message.getMessageProperties().getCorrelationId();
-		System.out.println("ra recebendo a mensagem da maneira como deveria");
 		CompletableFuture<Message> responseFuture = pendingResponses.get(responseCorrelationId);
 		if (responseFuture != null) {
 			System.out.println("ta aqui");

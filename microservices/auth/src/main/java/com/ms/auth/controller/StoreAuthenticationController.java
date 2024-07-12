@@ -19,7 +19,6 @@ public class StoreAuthenticationController {
 
 	@PostMapping("/register-store")
 	public ResponseEntity<StoreDetailsDTO> registerStore(@RequestBody @Valid StoreDTO data){
-		System.out.println("passou pelo controller 1 ");
 		var store = this.storeService.registerStore(data);
 		return ResponseEntity.ok().body(store);
 	}

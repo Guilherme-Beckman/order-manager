@@ -19,7 +19,6 @@ public class MessageUtils {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             var user = objectMapper.readValue(message.getBody(), UserDetailsDTO.class);
-            System.out.println("ta retornando de boas aqui no convert");
             return user;
         } catch (Exception e) {
             throw new ConvertMessageToUserDetailsException("Error while converting message into UserDetails");      
@@ -29,7 +28,6 @@ public class MessageUtils {
             try {
                 ObjectMapper objectMapper = new ObjectMapper();
                 var user = objectMapper.readValue(message.getBody(), StoreDetailsDTO.class);
-                System.out.println("ta retornando de boas aqui no convert");
                 return user;
             } catch (Exception e) {
                 throw new ConvertMessageToUserDetailsException("Error while converting message into UserDetails");      

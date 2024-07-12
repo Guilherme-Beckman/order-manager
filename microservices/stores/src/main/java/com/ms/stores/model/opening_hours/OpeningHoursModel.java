@@ -11,11 +11,11 @@ public class OpeningHoursModel {
 	private String id;
 	private String storeId;
 	private DayOfWeek dayOfWeek;
-	private LocalTime openTime;
-	private LocalTime closeTime;
+	private String openTime;
+	private String closeTime;
 	
 	
-	public OpeningHoursModel(String id, String storeId, DayOfWeek dayOfWeek, LocalTime openTime, LocalTime closeTime) {
+	public OpeningHoursModel(String id, String storeId, DayOfWeek dayOfWeek, String openTime, String closeTime) {
 		this.id = id;
 		this.storeId = storeId;
 		this.dayOfWeek = dayOfWeek;
@@ -47,16 +47,16 @@ public class OpeningHoursModel {
 	public void setDayOfWeek(DayOfWeek dayOfWeek) {
 		this.dayOfWeek = dayOfWeek;
 	}
-	public LocalTime getOpenTime() {
+	public String getOpenTime() {
 		return openTime;
 	}
-	public void setOpenTime(LocalTime openTime) {
+	public void setOpenTime(String openTime) {
 		this.openTime = openTime;
 	}
-	public LocalTime getCloseTime() {
+	public String getCloseTime() {
 		return closeTime;
 	}
-	public void setCloseTime(LocalTime closeTime) {
+	public void setCloseTime(String closeTime) {
 		this.closeTime = closeTime;
 	}
 	

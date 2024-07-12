@@ -6,8 +6,10 @@ import java.util.concurrent.TimeUnit;
 
 import org.springframework.amqp.core.Message;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.ms.auth.dto.clients.UserDTO;
 import com.ms.auth.dto.store.StoreDTO;
 import com.ms.auth.dto.store.StoreDetailsDTO;
 import com.ms.auth.exceptions.auth.user.UserDataAlreadyExistsException;
@@ -33,14 +35,14 @@ public class StoreAuthenticationService {
 
 	public StoreDetailsDTO registerStore(StoreDTO data) {
 		if (this.customStoreDetailsService.loadUserByUsername(data.email()) != null) {
-			System.out.println("loja já existe excessão 00 ");
 			throw new UserDataAlreadyExistsException("Email is already registered");
 		}
-
+		String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
+		StoreDTO newStore = new StoreDTO(data.name(), data.email(), encryptedPassword, data.address(), data.phone(), data.CNPJ(), data.opening_hours());
 		CompletableFuture<Message> responseFuture = new CompletableFuture<>();
 		String correlationId = this.messageUtils.generateCorrelationId();
 		pendingResponses.put(correlationId, responseFuture);
-		Message message = this.messageUtils.createMessage(data, correlationId);
+		Message message = this.messageUtils.createMessage(newStore, correlationId);
 		registerRequestor.requestRegister(message);
 
 		try {
@@ -54,7 +56,6 @@ public class StoreAuthenticationService {
 	}
 
 	public void receiveResponse(Message message) {
-		System.out.println("recebeu 6");
 		String responseCorrelationId = (String) message.getMessageProperties().getCorrelationId();
 		CompletableFuture<Message> responseFuture = pendingResponses.get(responseCorrelationId);
 		if (responseFuture != null) {
