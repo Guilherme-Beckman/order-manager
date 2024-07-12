@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 
 public class StoreDetails implements UserDetails{
+	private static final long serialVersionUID = 1L;
 	private String id;
 	private String name;
 	private String email;

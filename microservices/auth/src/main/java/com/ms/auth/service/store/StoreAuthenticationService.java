@@ -1,42 +1,52 @@
 package com.ms.auth.service.store;
 
-
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.amqp.core.Message;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.ms.auth.rabbitMQ.producer.store.StoreCredentialsProducer;
+import com.ms.auth.dto.store.StoreDTO;
+import com.ms.auth.dto.store.StoreDetailsDTO;
+import com.ms.auth.exceptions.auth.user.UserDataAlreadyExistsException;
+import com.ms.auth.infra.security.TokenService;
+import com.ms.auth.rabbitMQ.producer.store.StoreServiceRegisterProducer;
 import com.ms.auth.utils.MessageUtils;
 
 @Service
-public class CustomStoreDetailsService implements UserDetailsService {
-	@Autowired
-	public StoreCredentialsProducer credentialsRequestor;
-	@Autowired
-	private MessageUtils messageUtils;
+public class StoreAuthenticationService {
 	private final ConcurrentHashMap<String, CompletableFuture<Message>> pendingResponses = new ConcurrentHashMap<>();
 
-	@Override
-	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		String correlationId = this.messageUtils.generateCorrelationId();
+	@Autowired
+	private CustomStoreDetailsService customStoreDetailsService;
+	
+	@Autowired
+	private StoreServiceRegisterProducer registerRequestor;
+	
+	@Autowired
+	private MessageUtils messageUtils;
+	
+	@Autowired
+	private TokenService tokenService;
+
+	public StoreDetailsDTO registerStore(StoreDTO data) {
+		if (this.customStoreDetailsService.loadUserByUsername(data.email()) != null) {
+			System.out.println("loja já existe excessão 00 ");
+			throw new UserDataAlreadyExistsException("Email is already registered");
+		}
 
 		CompletableFuture<Message> responseFuture = new CompletableFuture<>();
+		String correlationId = this.messageUtils.generateCorrelationId();
 		pendingResponses.put(correlationId, responseFuture);
-		Message message = this.messageUtils.createMessage(email, correlationId);
-		System.out.println("pediu para verificar se tem usuario");
-		credentialsRequestor.requestStoreCredentials(message);
+		Message message = this.messageUtils.createMessage(data, correlationId);
+		registerRequestor.requestRegister(message);
+
 		try {
 			Message response = responseFuture.get(5000, TimeUnit.MILLISECONDS);
 			return messageUtils.convertMessageToStoreDetails(response);
 		} catch (Exception e) {
-			System.out.println("ta retornando null");
 			return null;
 		} finally {
 			pendingResponses.remove(correlationId);
@@ -44,11 +54,10 @@ public class CustomStoreDetailsService implements UserDetailsService {
 	}
 
 	public void receiveResponse(Message message) {
+		System.out.println("recebeu 6");
 		String responseCorrelationId = (String) message.getMessageProperties().getCorrelationId();
-		System.out.println("ra recebendo a mensagem da maneira como deveria");
 		CompletableFuture<Message> responseFuture = pendingResponses.get(responseCorrelationId);
 		if (responseFuture != null) {
-			System.out.println("ta aqui");
 			responseFuture.complete(message);
 		}
 	}

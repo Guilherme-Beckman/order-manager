@@ -1,4 +1,4 @@
-package com.ms.auth.rabbitMQ.listener;
+package com.ms.auth.rabbitMQ.listener.clients;
 
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -10,7 +10,7 @@ import com.ms.auth.config.RabbitMQConfig;
 import com.ms.auth.service.clients.CustomUserDetailsService;
 
 @Component
-public class AuthenticationListener {
+public class UserAuthenticationListener {
 	@Autowired
 	private CustomUserDetailsService detailsService;
 

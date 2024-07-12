@@ -1,6 +1,7 @@
 package com.ms.auth.utils;
 
 import java.util.UUID;
+
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ms.auth.dto.clients.UserDetailsDTO;
+import com.ms.auth.dto.store.StoreDetailsDTO;
 import com.ms.auth.exceptions.auth.message.ConvertMessageToUserDetailsException;
 @Component
 public class MessageUtils {
@@ -17,10 +19,21 @@ public class MessageUtils {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             var user = objectMapper.readValue(message.getBody(), UserDetailsDTO.class);
+            System.out.println("ta retornando de boas aqui no convert");
             return user;
         } catch (Exception e) {
             throw new ConvertMessageToUserDetailsException("Error while converting message into UserDetails");      
 }
+    }
+        public StoreDetailsDTO convertMessageToStoreDetails(Message message) {
+            try {
+                ObjectMapper objectMapper = new ObjectMapper();
+                var user = objectMapper.readValue(message.getBody(), StoreDetailsDTO.class);
+                System.out.println("ta retornando de boas aqui no convert");
+                return user;
+            } catch (Exception e) {
+                throw new ConvertMessageToUserDetailsException("Error while converting message into UserDetails");      
+    }
        
 } 
     public Message createMessage (Object content, String correlationId)  {

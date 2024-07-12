@@ -19,7 +19,7 @@ private JWTAuthenticationFilter authenticationFilter;
 	@Bean
 	public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
 		SecurityWebFilterChain chain = http.csrf(csrf -> csrf.disable())
-				.authorizeExchange(exchange -> exchange.pathMatchers("/auth/login", "/auth/register","/auth/inviteResetPassword","/auth/newPassword","products/addProduct").permitAll()
+				.authorizeExchange(exchange -> exchange.pathMatchers("/auth/login", "/auth/register","/auth/inviteResetPassword","/auth/newPassword","products/addProduct","auth/register-store").permitAll()
 						.anyExchange().authenticated())
 				.securityContextRepository(NoOpServerSecurityContextRepository.getInstance())
 				.addFilterBefore(authenticationFilter, SecurityWebFiltersOrder.AUTHENTICATION)

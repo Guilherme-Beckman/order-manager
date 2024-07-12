@@ -1,4 +1,5 @@
-package com.ms.auth.config;
+package com.ms.stores.config;
+
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;

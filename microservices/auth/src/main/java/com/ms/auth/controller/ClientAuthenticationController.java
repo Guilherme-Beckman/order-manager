@@ -24,7 +24,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 @RestController
-public class AuthenticationClientController {
+public class ClientAuthenticationController {
 
 	@Autowired
 	private UserAuthenticationService userService;
@@ -44,6 +44,7 @@ public class AuthenticationClientController {
 
 	@PostMapping("/login")
 	public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid AuthenticationDTO data) {
+		System.out.println("um usuario esta tentando logar controller");
 		var token = this.userService.userLogin(data);
 		return ResponseEntity.ok(new LoginResponseDTO(token));
 	}

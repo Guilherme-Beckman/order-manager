@@ -13,7 +13,7 @@ public class StoreModel {
 	private String name;
 	private String email;
 	private String password;
-	private List<String> addresses;
+	private String addressId;
 	private String phone;
 	private String CNPJ;
 	private List<String> opening_hours;
@@ -27,12 +27,12 @@ public class StoreModel {
 	public StoreModel() {
 	}
 
-	public StoreModel(String name, String email, String password, List<String> addresses, String phone, String cNPJ,
+	public StoreModel(String name, String email, String password, String addressId, String phone, String cNPJ,
 			List<String> opening_hours, List<String> products) {
 		this.name = name;
 		this.email = email;
 		this.password = password;
-		this.addresses = addresses;
+		this.setAddressId(addressId);
 		this.phone = phone;
 		this.CNPJ = cNPJ;
 		this.opening_hours = opening_hours;
@@ -48,7 +48,6 @@ public class StoreModel {
 		this.name = storeDto.name();
 		this.email = storeDto.email();
 		this.password = storeDto.password();
-		this.addresses = new ArrayList<String>();
 		this.phone = storeDto.phone();
 		this.CNPJ = storeDto.CNPJ();
 		this.opening_hours = new ArrayList<>();
@@ -92,13 +91,6 @@ public class StoreModel {
 		this.name = name;
 	}
 
-	public List<String> getAddresses() {
-		return addresses;
-	}
-
-	public void setAddresses(List<String> addresses) {
-		this.addresses = addresses;
-	}
 
 	public String getPhone() {
 		return phone;
@@ -170,5 +162,16 @@ public class StoreModel {
 
 	public void setValid(boolean isValid) {
 		this.isValid = isValid;
+	}
+
+	public String getAddressId() {
+		return addressId;
+	}
+
+	public void setAddressId(String addressId) {
+		this.addressId = addressId;
+	}
+	public String getUsername() {
+		return email;
 	}
 }

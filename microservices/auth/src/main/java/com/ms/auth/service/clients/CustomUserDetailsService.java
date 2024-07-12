@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.ms.auth.rabbitMQ.producer.UserCredentialsProducer;
+import com.ms.auth.rabbitMQ.producer.clients.UserCredentialsProducer;
 import com.ms.auth.utils.MessageUtils;
 
 @Service
@@ -19,7 +19,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 	@Autowired
 	public UserCredentialsProducer credentialsRequestor;
 	@Autowired
-	MessageUtils messageUtils;
+	private MessageUtils messageUtils;
 	private final ConcurrentHashMap<String, CompletableFuture<Message>> pendingResponses = new ConcurrentHashMap<>();
 
 	@Override
@@ -32,9 +32,11 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 		credentialsRequestor.requestUserCredentials(message);
 		try {
-			Message response = responseFuture.get(3500, TimeUnit.MILLISECONDS);
+			Message response = responseFuture.get(5000, TimeUnit.MILLISECONDS);
+			System.out.println("esta retornando de boas");
 			return messageUtils.convertMessageToUserDetails(response);
 		} catch (Exception e) {
+			System.out.println("esta retornando null");
 			return null;
 		} finally {
 			pendingResponses.remove(correlationId);

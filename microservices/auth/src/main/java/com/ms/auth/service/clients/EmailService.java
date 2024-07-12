@@ -14,7 +14,7 @@ import com.ms.auth.exceptions.auth.authenticate.InvalideCodeException;
 import com.ms.auth.exceptions.auth.email.code.EmailAlreadyBeenVerifiedException;
 import com.ms.auth.infra.security.TokenService;
 import com.ms.auth.rabbitMQ.producer.EmailCodeProducer;
-import com.ms.auth.rabbitMQ.producer.ValidateUserEmailProducer;
+import com.ms.auth.rabbitMQ.producer.clients.UserValidateEmailProducer;
 import com.ms.auth.utils.AttemptManagerExponencial;
 import com.ms.auth.utils.MaxAttemptManager;
 import com.ms.auth.utils.MessageUtils;
@@ -35,7 +35,7 @@ public class EmailService {
 	@Autowired
 	private MaxAttemptManager maxAttemptManager;
 	@Autowired
-	private ValidateUserEmailProducer emailValidateUserEmailProducer;
+	private UserValidateEmailProducer emailValidateUserEmailProducer;
 	private String code;
 
 	public void sendCode(String token) {

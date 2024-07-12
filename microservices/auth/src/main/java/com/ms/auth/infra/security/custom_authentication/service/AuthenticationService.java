@@ -6,6 +6,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 
 import com.ms.auth.infra.security.custom_authentication.tokens.StoreAuthenticationToken;
+//import com.ms.auth.infra.security.custom_authentication.tokens.StoreAuthenticationToken;
 import com.ms.auth.infra.security.custom_authentication.tokens.UserAuthenticationToken;
 
 @Service
@@ -15,6 +16,7 @@ public class AuthenticationService {
     private AuthenticationManager authenticationManager;
 
     public Authentication authenticateUser(String username, String password) throws AuthenticationException {
+    	System.out.println("ta dentro do autenticate service ");
         UserAuthenticationToken authRequest = new UserAuthenticationToken(username, password);
         return authenticationManager.authenticate(authRequest);
     }

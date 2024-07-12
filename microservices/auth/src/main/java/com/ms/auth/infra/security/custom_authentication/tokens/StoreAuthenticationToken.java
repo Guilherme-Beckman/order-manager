@@ -7,7 +7,7 @@ public class StoreAuthenticationToken extends UsernamePasswordAuthenticationToke
 	public StoreAuthenticationToken(Object principal, Object credentials) {
 		super(principal, credentials);
 	}
-
+	
 
 
 }

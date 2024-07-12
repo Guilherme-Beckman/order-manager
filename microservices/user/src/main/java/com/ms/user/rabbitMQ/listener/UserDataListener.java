@@ -13,7 +13,7 @@ import com.ms.user.rabbitMQ.utils.UserMessageConverter;
 import com.ms.user.service.UserService;
 
 @Component
-public class UserDataListerner {
+public class UserDataListener {
 
 	@Autowired
 	public UserService userService;

@@ -1,4 +1,4 @@
-package com.ms.auth.rabbitMQ.listener;
+package com.ms.auth.rabbitMQ.listener.store;
 
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -7,20 +7,20 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
 import com.ms.auth.config.RabbitMQConfig;
-import com.ms.auth.service.clients.UserAuthenticationService;
+import com.ms.auth.service.store.StoreAuthenticationService;
 
 @Component
-public class UserServiceRegisterListener {
+public class StoreServiceRegisterListener {
 
 	@Autowired
-	public UserAuthenticationService userService;
+	public StoreAuthenticationService storeAuthenticationService;
 
-	@RabbitListener(queues = RabbitMQConfig.RETURN_REGISTERED_USER_QUEUE)
-	public void listenAuthQueue(@Payload Message user) {
+	@RabbitListener(queues = RabbitMQConfig.RETURN_REGISTERED_STORE_QUEUE)
+	public void listenAuthQueue(@Payload Message store) {
 		try {
-			if (user != null) {
+			if (store != null) {
 
-				userService.receiveResponse(user);
+				storeAuthenticationService.receiveResponse(store);
 			} else {
 				throw new Exception("Received null message.");
 			}

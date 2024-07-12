@@ -1,4 +1,4 @@
-package com.ms.auth.rabbitMQ.producer;
+package com.ms.auth.rabbitMQ.producer.clients;
 
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;

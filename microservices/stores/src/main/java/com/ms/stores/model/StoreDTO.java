@@ -9,7 +9,7 @@ public record StoreDTO(
 		String name,
 		String email,
 		String password,
-		List<AddressDTO> addresses,
+		AddressDTO address,
 		String phone,
 		String CNPJ,
 		List<OpeningHoursDTO> opening_hours

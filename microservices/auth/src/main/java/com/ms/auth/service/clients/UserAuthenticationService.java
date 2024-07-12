@@ -6,8 +6,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.springframework.amqp.core.Message;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,7 +16,7 @@ import com.ms.auth.dto.clients.UserDetailsDTO;
 import com.ms.auth.exceptions.auth.user.UserDataAlreadyExistsException;
 import com.ms.auth.infra.security.TokenService;
 import com.ms.auth.infra.security.custom_authentication.service.AuthenticationService;
-import com.ms.auth.rabbitMQ.producer.UserServiceRegisterProducer;
+import com.ms.auth.rabbitMQ.producer.clients.UserServiceRegisterProducer;
 import com.ms.auth.utils.MaxAttemptManager;
 import com.ms.auth.utils.MessageUtils;
 
@@ -72,7 +70,9 @@ public class UserAuthenticationService {
 		}
 		//var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
 		//var auth = this.authenticationManager.authenticate(usernamePassword);
+		System.out.println("ta tentando autentica no service antes de propriamente chamar o metodo");
 		var auth = this.authenticationService.authenticateUser(data.login(), data.password());
+		System.out.println("passou do metedo authenticateUser");
 		var user = (UserDetailsDTO) auth.getPrincipal();
 		var token = tokenService.generateToken(data.login(), user.isValid());
 		return token;
