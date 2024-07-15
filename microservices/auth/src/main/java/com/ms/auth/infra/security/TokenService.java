@@ -1,7 +1,6 @@
 package com.ms.auth.infra.security;
 
 import java.time.Instant;
-
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
@@ -14,6 +13,7 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.ms.auth.exceptions.auth.token.TokenException;
+import com.ms.auth.service.TypeOfUser;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.constraints.NotBlank;
@@ -24,15 +24,15 @@ public class TokenService {
 	@Value("${api.security.token.secret}")
 	public String secret;
 
+	
 	public String generateToken(
-			@NotBlank(message = "login must not be blank") @NotNull(message = "login must not be null") String login,
-			Boolean enable) {
+			@NotBlank(message = "login must not be blank") @NotNull(message = "login must not be null") String login, TypeOfUser typeOfUser) {
 		try {
 			Algorithm algorithm = Algorithm.HMAC256(secret);
 			String token = JWT.create().
 					withIssuer("auth").
 					withSubject(login).
-					withClaim("enable", enable).
+					withClaim("typeOfUser", typeOfUser.name()).
 					withExpiresAt(generateExpirationDate()).
 					sign(algorithm);
 			return token;

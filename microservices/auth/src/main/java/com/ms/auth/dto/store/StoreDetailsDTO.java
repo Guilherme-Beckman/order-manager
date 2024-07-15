@@ -1,11 +1,14 @@
 package com.ms.auth.dto.store;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import com.ms.auth.dto.Role;
 
 public class StoreDetailsDTO implements UserDetails{
 	private static final long serialVersionUID = 1L;
@@ -24,8 +27,7 @@ public class StoreDetailsDTO implements UserDetails{
 	private boolean accountNonLocked;
 	private boolean credentialsNonExpired;
 	private boolean enabled;
-	private boolean isValid;
-	
+	private List<Role> roles;
 	public String getId() {
 		return id;
 	}
@@ -90,12 +92,7 @@ public class StoreDetailsDTO implements UserDetails{
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
-	public boolean isValid() {
-		return isValid;
-	}
-	public void setValid(boolean isValid) {
-		this.isValid = isValid;
-	}
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
@@ -104,11 +101,11 @@ public class StoreDetailsDTO implements UserDetails{
 	        return email; 
 	    }
 
-	    @Override
-	    public Collection<? extends GrantedAuthority> getAuthorities() {
-
-	        return new ArrayList<>();
-	    }
+	   @Override
+		public Collection<? extends GrantedAuthority> getAuthorities() {
+			return this.getRoles().stream().map(role -> new SimpleGrantedAuthority(role.name()))
+					.collect(Collectors.toList());
+		}
 
 	    @Override
 	    public String getPassword() {
@@ -136,6 +133,12 @@ public class StoreDetailsDTO implements UserDetails{
 	    }
 		public void setUsername(String username) {
 			this.username = username;
+		}
+		public List<Role> getRoles() {
+			return roles;
+		}
+		public void setRoles(List<Role> roles) {
+			this.roles = roles;
 		}
 
 

@@ -2,6 +2,7 @@ package com.ms.user.model.user;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -21,13 +22,13 @@ public class UserModel {
 	private boolean accountNonLocked;
 	private boolean credentialsNonExpired;
 	private boolean enabled;
-	private boolean isValid;
+	private List<Role> roles;
 
 	public UserModel() {
 		this.address = new ArrayList<String>();
-
+		this.roles = new ArrayList<>();
+		roles.add(Role.ROLE_USER);
 	}
-
 	public UserModel(UserDTO userDTO) {
 		this.cpf = userDTO.cpf();
 		this.password = userDTO.password();
@@ -39,7 +40,8 @@ public class UserModel {
 		this.accountNonLocked = true; // Assumindo conta não bloqueada por padrão
 		this.credentialsNonExpired = true; // Assumindo credenciais ativas por padrão
 		this.enabled = true; // Assumindo usuário ativo por padrão
-		this.isValid = false;
+		this.roles = new ArrayList<>();
+		roles.add(Role.ROLE_USER);
 	}
 
 	public UserModel(String id, String cpf, String password, String name, String lastName, String email) {
@@ -49,7 +51,7 @@ public class UserModel {
 		this.name = name;
 		this.lastName = lastName;
 		this.email = email;
-
+		
 	}
 
 	public String getId() {
@@ -132,12 +134,13 @@ public class UserModel {
 		return enabled;
 	}
 
-	public boolean isValid() {
-		return isValid;
+
+	public List<Role> getRoles() {
+		return roles;
 	}
 
-	public void setValid(boolean isValid) {
-		this.isValid = isValid;
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
 	}
 
 }

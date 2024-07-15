@@ -56,6 +56,12 @@ public class RabbitMQConfig {
 	public static final String REGISTER_STORE_REQUEST_KEY = "register.store.request";
 	public static final String RETURN_REGISTERED_STORE_RESPONSE_KEY = "return.registered.store.response";
 	
+	public static final String LOAD_STORE_DETAILS_API_GATEWAY_QUEUE = "store_ms.load_store_details_api_gateway_queue";
+	public static final String RETURN_STORE_DETAILS_API_GATEWAY_QUEUE = "auth_ms.return_store_details_api_gateway_queue";
+	public static final String AUTH_STORE_STORE_DETAILS_DIRECT_API_GATEWAY_EXCHANGE = "auth_ms.store_ms_store_details_direct_api_gateway_exchange";
+	public static final String LOAD_STORE_DETAILS_REQUEST_API_GATEWAY_KEY = "load.store.details.api_gateway_request";
+	public static final String RETURN_STORE_DETAILS_RESPONSE_API_GATEWAY_KEY = "return.store.details.api_gateway_response";
+
 	@Bean
 	public Queue loadUserDetailsQueue() {
 		return new Queue(LOAD_USER_DETAILS_QUEUE, true);
@@ -277,4 +283,35 @@ public class RabbitMQConfig {
 		return BindingBuilder.bind(returnRegisteredStoreQueue).to(authStoreRegisterStoreDirectExchange)
 				.with(RETURN_REGISTERED_STORE_RESPONSE_KEY);
 	}
+	
+	//store
+		@Bean
+		public Queue loadStoreDetailsApiGatewayQueue() {
+			return new Queue(LOAD_STORE_DETAILS_API_GATEWAY_QUEUE, true);
+		}
+
+		@Bean
+		public Queue returnStoreDetailsApiGatewayQueue() {
+			return new Queue(RETURN_STORE_DETAILS_API_GATEWAY_QUEUE, true);
+		}
+
+		@Bean
+		public DirectExchange authStoreDirectApiGatewayExchange() {
+			return new DirectExchange(AUTH_STORE_STORE_DETAILS_DIRECT_API_GATEWAY_EXCHANGE);
+		}
+
+		@Bean
+		public Binding loadStoreDetailsRequestApiGatewayKey(@Qualifier("authStoreDirectApiGatewayExchange") DirectExchange authStoreDirectApiGatewayExchange,
+				@Qualifier("loadStoreDetailsApiGatewayQueue") Queue loadStoreDetailsApiGatewayQueue) {
+			return BindingBuilder.bind(loadStoreDetailsApiGatewayQueue).to(authStoreDirectApiGatewayExchange).with(LOAD_STORE_DETAILS_REQUEST_API_GATEWAY_KEY);
+		}
+
+		@Bean
+		public Binding returnStoreDetailsRequestApiGatewayKey(
+				@Qualifier("authStoreDirectApiGatewayExchange") DirectExchange authStoreDirectApiGatewayExchange,
+				@Qualifier("returnStoreDetailsApiGatewayQueue") Queue returnStoreDetailsApiGatewayQueue) {
+			return BindingBuilder.bind(returnStoreDetailsApiGatewayQueue).to(authStoreDirectApiGatewayExchange)
+					.with(RETURN_STORE_DETAILS_RESPONSE_API_GATEWAY_KEY);
+		}
+		
 }

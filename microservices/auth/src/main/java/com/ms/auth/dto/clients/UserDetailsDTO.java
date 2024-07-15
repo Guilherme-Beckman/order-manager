@@ -1,129 +1,127 @@
 package com.ms.auth.dto.clients;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import com.ms.auth.dto.Role;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class UserDetailsDTO implements UserDetails {
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 	private String id;
-    private String cpf;
-    private String password;
-    private String name;
-    private String lastName;
-    private String email;
-    private List<String> address;
-    private boolean accountNonExpired;
-    private boolean accountNonLocked;
-    private boolean credentialsNonExpired;
-    private boolean enabled;
-    @SuppressWarnings("unused")
+	private String cpf;
+	private String password;
+	private String name;
+	private String lastName;
+	private String email;
+	private List<String> address;
+	private boolean accountNonExpired;
+	private boolean accountNonLocked;
+	private boolean credentialsNonExpired;
+	private boolean enabled;
+	@SuppressWarnings("unused")
 	private String username;
-    private boolean isValid;
+	private List<Role> roles;
+	
+	public String getId() {
+		return id;
+	}
 
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public String getId() {
-        return id;
-    }
+	public String getCpf() {
+		return cpf;
+	}
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
 
-    public String getCpf() {
-        return cpf;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getLastName() {
+		return lastName;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
 
-    public String getLastName() {
-        return lastName;
-    }
+	public String getEmail() {
+		return email;
+	}
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-    public String getEmail() {
-        return email;
-    }
+	public List<String> getAddress() {
+		return address;
+	}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	public void setAddress(List<String> address) {
+		this.address = address;
+	}
 
-    public List<String> getAddress() {
-        return address;
-    }
+	@Override
+	public String getUsername() {
+		return email;
+	}
 
-    public void setAddress(List<String> address) {
-        this.address = address;
-    }
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return this.getRoles().stream().map(role -> new SimpleGrantedAuthority(role.name()))
+				.collect(Collectors.toList());
+	}
 
-    @Override
-    public String getUsername() {
-        return email; 
-    }
+	@Override
+	public String getPassword() {
+		return password;
+	}
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+	@Override
+	public boolean isAccountNonExpired() {
+		return accountNonExpired;
+	}
 
-        return new ArrayList<>();
-    }
+	@Override
+	public boolean isAccountNonLocked() {
+		return accountNonLocked;
+	}
 
-    @Override
-    public String getPassword() {
-        return password;
-    }
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return credentialsNonExpired;
+	}
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return accountNonExpired;
-    }
+	@Override
+	public boolean isEnabled() {
+		return enabled;
+	}
 
-    @Override
-    public boolean isAccountNonLocked() {
-        return accountNonLocked;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return credentialsNonExpired;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return enabled;
-    }
 	public void setUsername(String username) {
 		this.username = username;
 	}
 
-
-
-	public boolean isValid() {
-		return isValid;
+	public List<Role> getRoles() {
+		return roles;
 	}
 
-
-
-	public void setValid(boolean isValid) {
-		this.isValid = isValid;
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
 	}
-
-
 
 }

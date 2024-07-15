@@ -41,12 +41,8 @@ public class EmailService {
 	public void sendCode(String token) {
 
 		var userInfos = this.tokenService.getTokenInformations(token);
-		Boolean isEnable = userInfos.getClaim("enable").asBoolean();
 		String email = userInfos.getSubject();
 
-		if (isEnable) {
-			throw new EmailAlreadyBeenVerifiedException();
-		}
 
 		this.attemptManagerExponencial.checkAndUpdateAttempts(email);
 		this.maxAttemptManager.checkAndUpdateAttempts(email);
@@ -77,10 +73,6 @@ public class EmailService {
 		var token = this.tokenService.recoverToken(request);
 		var userInfos = this.tokenService.getTokenInformations(token);
 		String email = userInfos.getSubject();
-		Boolean isEnable = userInfos.getClaim("enable").asBoolean();
-		if (isEnable) {
-			throw new EmailAlreadyBeenVerifiedException();
-		}
 
 		try {
 			this.maxAttemptManager.checkAndUpdateAttempts(email);

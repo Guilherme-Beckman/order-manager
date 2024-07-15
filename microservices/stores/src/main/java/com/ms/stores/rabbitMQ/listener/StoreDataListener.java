@@ -43,7 +43,7 @@ public class StoreDataListener {
 				try {
 					var storeBytes = this.messageConverter.convertStoreToMessage(findedStore,
 							email.getMessageProperties().getCorrelationId());
-
+					System.out.println("esta retornado o user: "+storeBytes);
 					this.returnData.returnStoreData(storeBytes);
 				} catch (Exception e) {
 					e.printStackTrace();

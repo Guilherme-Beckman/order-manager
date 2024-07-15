@@ -1,6 +1,7 @@
 package com.ms.stores.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
@@ -22,9 +23,14 @@ public class StoreModel {
 	private boolean accountNonLocked;
 	private boolean credentialsNonExpired;
 	private boolean enabled;
-	private boolean isValid;
+	private List<Role> roles;
 
+
+	
 	public StoreModel() {
+		this.opening_hours = new ArrayList<>();
+		this.roles = new ArrayList<>();
+		roles.add(Role.ROLE_STORE);
 	}
 
 	public StoreModel(String name, String email, String password, String addressId, String phone, String cNPJ,
@@ -41,7 +47,6 @@ public class StoreModel {
 		this.accountNonLocked = true; // Assumindo conta não bloqueada por padrão
 		this.credentialsNonExpired = true; // Assumindo credenciais ativas por padrão
 		this.enabled = true; // Assumindo usuário ativo por padrão
-		this.isValid = false;
 	}
 
 	public StoreModel(StoreDTO storeDto) {
@@ -55,8 +60,9 @@ public class StoreModel {
 		this.accountNonLocked = true; // Assumindo conta não bloqueada por padrão
 		this.credentialsNonExpired = true; // Assumindo credenciais ativas por padrão
 		this.enabled = true; // Assumindo usuário ativo por padrão
-		this.isValid = false;
-
+		this.roles = new ArrayList<>();
+		roles.add(Role.ROLE_STORE);
+		
 	}
 
 	public String getEmail() {
@@ -90,7 +96,6 @@ public class StoreModel {
 	public void setName(String name) {
 		this.name = name;
 	}
-
 
 	public String getPhone() {
 		return phone;
@@ -156,14 +161,6 @@ public class StoreModel {
 		this.enabled = enabled;
 	}
 
-	public boolean isValid() {
-		return isValid;
-	}
-
-	public void setValid(boolean isValid) {
-		this.isValid = isValid;
-	}
-
 	public String getAddressId() {
 		return addressId;
 	}
@@ -171,7 +168,16 @@ public class StoreModel {
 	public void setAddressId(String addressId) {
 		this.addressId = addressId;
 	}
+
 	public String getUsername() {
 		return email;
+	}
+
+	public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
 	}
 }

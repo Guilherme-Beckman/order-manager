@@ -17,6 +17,7 @@ public class UserServiceRegisterListener {
 
 	@RabbitListener(queues = RabbitMQConfig.RETURN_REGISTERED_USER_QUEUE)
 	public void listenAuthQueue(@Payload Message user) {
+		System.out.println(user);
 		try {
 			if (user != null) {
 

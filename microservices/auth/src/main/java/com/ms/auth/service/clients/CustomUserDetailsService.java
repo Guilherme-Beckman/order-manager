@@ -17,7 +17,7 @@ import com.ms.auth.utils.MessageUtils;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 	@Autowired
-	public UserCredentialsProducer credentialsRequestor;
+	private UserCredentialsProducer credentialsRequestor;
 	@Autowired
 	private MessageUtils messageUtils;
 	private final ConcurrentHashMap<String, CompletableFuture<Message>> pendingResponses = new ConcurrentHashMap<>();

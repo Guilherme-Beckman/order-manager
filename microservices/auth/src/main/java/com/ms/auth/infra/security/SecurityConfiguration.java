@@ -14,11 +14,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import com.ms.auth.infra.security.custom_authentication.providers.StoreAuthenticationProvider;
-import com.ms.auth.infra.security.custom_authentication.providers.UserAuthenticationProvider;
+import com.ms.auth.infra.security.customAuthentication.providers.StoreAuthenticationProvider;
+import com.ms.auth.infra.security.customAuthentication.providers.UserAuthenticationProvider;
 
-//import com.ms.auth.infra.security.custom_authentication.providers.StoreAuthenticationProvider;
-//import com.ms.auth.infra.security.custom_authentication.providers.UserAuthenticationProvider;
 
 @Configuration
 @EnableWebSecurity
@@ -38,21 +36,23 @@ public class SecurityConfiguration {
 
 				.csrf(csrf -> csrf.disable())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-				.authorizeHttpRequests(autorize -> autorize.requestMatchers("/register", "/login", "/sendcode",
-						"/validate", "/inviteResetPassword", "/newPassword", "/register-store").permitAll().anyRequest().authenticated())
+				.authorizeHttpRequests(autorize -> autorize.requestMatchers(
+						"/register",
+						"/login", 
+						"/sendcode",
+						"/validate", 
+						"/inviteResetPassword", 
+						"/newPassword", 
+						"/register-store",
+						"/login-store",
+						"/products"
+						).permitAll().anyRequest().authenticated())
 				.build();
 
 	}
 
-    /*@Bean
-    public AuthenticationManager authManager(HttpSecurity http) throws Exception {
-        AuthenticationManagerBuilder authenticationManagerBuilder = 
-            http.getSharedObject(AuthenticationManagerBuilder.class);
-        authenticationManagerBuilder
-        .authenticationProvider(userAuthenticationProvider);
-        return authenticationManagerBuilder.build();
-    }*/
-	
+
+
 
 	@Bean
 	   public AuthenticationManager authenticationManager() {

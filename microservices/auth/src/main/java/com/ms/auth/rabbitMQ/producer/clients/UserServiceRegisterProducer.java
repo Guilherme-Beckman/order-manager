@@ -13,6 +13,7 @@ public class UserServiceRegisterProducer {
     RabbitTemplate rabbitTemplate;
 
     public void requestRegister(Message userDTO) {
+    	System.out.println("userDto: "+userDTO);
             rabbitTemplate.convertAndSend(
                     RabbitMQConfig.AUTH_USER_REGISTER_USER_DIRECT_EXCHANGE,
                     RabbitMQConfig.REGISTER_USER_REQUEST_KEY,

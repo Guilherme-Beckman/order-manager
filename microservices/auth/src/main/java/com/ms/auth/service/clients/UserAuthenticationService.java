@@ -15,8 +15,9 @@ import com.ms.auth.dto.clients.UserDTO;
 import com.ms.auth.dto.clients.UserDetailsDTO;
 import com.ms.auth.exceptions.auth.user.UserDataAlreadyExistsException;
 import com.ms.auth.infra.security.TokenService;
-import com.ms.auth.infra.security.custom_authentication.service.AuthenticationService;
+import com.ms.auth.infra.security.customAuthentication.service.AuthenticationService;
 import com.ms.auth.rabbitMQ.producer.clients.UserServiceRegisterProducer;
+import com.ms.auth.service.TypeOfUser;
 import com.ms.auth.utils.MaxAttemptManager;
 import com.ms.auth.utils.MessageUtils;
 
@@ -27,8 +28,6 @@ public class UserAuthenticationService {
 	private CustomUserDetailsService customUserDetailsService;
 	@Autowired
 	private UserServiceRegisterProducer registerRequestor;
-	//@Autowired
-	//private AuthenticationManager authenticationManager;
 	@Autowired
 	private TokenService tokenService;
 	@Autowired
@@ -70,15 +69,13 @@ public class UserAuthenticationService {
 		}
 		//var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
 		//var auth = this.authenticationManager.authenticate(usernamePassword);
-		System.out.println("ta tentando autentica no service antes de propriamente chamar o metodo");
-		var auth = this.authenticationService.authenticateUser(data.login(), data.password());
-		System.out.println("passou do metedo authenticateUser");
-		var user = (UserDetailsDTO) auth.getPrincipal();
-		var token = tokenService.generateToken(data.login(), user.isValid());
+		this.authenticationService.authenticateUser(data.login(), data.password());
+		var token = tokenService.generateToken(data.login(), TypeOfUser.CLIENT);
 		return token;
 	}
 
 	public void receiveResponse(Message message) {
+		System.out.println("recebdoe mensagem");
 		String responseCorrelationId = (String) message.getMessageProperties().getCorrelationId();
 		CompletableFuture<Message> responseFuture = pendingResponses.get(responseCorrelationId);
 		if (responseFuture != null) {

@@ -11,6 +11,7 @@ import com.ms.user.infra.security.TokenService;
 import com.ms.user.infra.security.UserCrypto;
 import com.ms.user.model.address.AddressDTO;
 import com.ms.user.model.address.AddressModel;
+import com.ms.user.model.user.Role;
 import com.ms.user.model.user.UserDTO;
 import com.ms.user.model.user.UserModel;
 import com.ms.user.model.user.UserPerfilDTO;
@@ -85,7 +86,8 @@ public void addAdress(HttpServletRequest request, AddressDTO address) {
 	public void validateUserEmail(String email) {
 		var emailE = this.cryptoUtils.encrypt(email);
 		var user = this.getUserByEmail(emailE);
-		user.setValid(true);
+		user.getRoles().add(Role.ROLE_VERIFIED_EMAIL);
+		user.setRoles(user.getRoles());
 		this.userRepository.save(user);
 
 	}

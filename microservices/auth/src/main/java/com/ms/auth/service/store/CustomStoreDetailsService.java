@@ -18,7 +18,7 @@ import com.ms.auth.utils.MessageUtils;
 @Service
 public class CustomStoreDetailsService implements UserDetailsService {
 	@Autowired
-	public StoreCredentialsProducer credentialsRequestor;
+	private StoreCredentialsProducer credentialsRequestor;
 	@Autowired
 	private MessageUtils messageUtils;
 	private final ConcurrentHashMap<String, CompletableFuture<Message>> pendingResponses = new ConcurrentHashMap<>();
@@ -30,9 +30,11 @@ public class CustomStoreDetailsService implements UserDetailsService {
 		CompletableFuture<Message> responseFuture = new CompletableFuture<>();
 		pendingResponses.put(correlationId, responseFuture);
 		Message message = this.messageUtils.createMessage(email, correlationId);
+		System.out.println("ta mandando a mesnsagem");
 		credentialsRequestor.requestStoreCredentials(message);
 		try {
 			Message response = responseFuture.get(5000, TimeUnit.MILLISECONDS);
+			System.out.println("ta retorando taqnuilo");
 			return messageUtils.convertMessageToStoreDetails(response);
 		} catch (Exception e) {
 			return null;
@@ -45,7 +47,7 @@ public class CustomStoreDetailsService implements UserDetailsService {
 		String responseCorrelationId = (String) message.getMessageProperties().getCorrelationId();
 		CompletableFuture<Message> responseFuture = pendingResponses.get(responseCorrelationId);
 		if (responseFuture != null) {
-			System.out.println("ta aqui");
+			System.out.println("ta aqui recebdno a mensagem");
 			responseFuture.complete(message);
 		}
 	}

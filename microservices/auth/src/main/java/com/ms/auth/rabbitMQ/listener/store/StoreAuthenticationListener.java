@@ -18,6 +18,7 @@ public class StoreAuthenticationListener {
 	public void listenAuthQueue(@Payload Message encrytedStoreDataOrNull) throws Exception {
 		System.out.println("ta pasando algo pelo listener que verifica se tem loja bro");
 		if (encrytedStoreDataOrNull != null) {
+			System.out.println("marcou o recebimento da loja");
 			detailsService.receiveResponse(encrytedStoreDataOrNull);
 		} else {
 			throw new Exception();

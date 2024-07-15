@@ -6,15 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ms.stores.exceptions.StoreNotFoundException;
 import com.ms.stores.infra.security.CryptoUtils;
 import com.ms.stores.infra.security.StoreCryto;
+import com.ms.stores.model.Role;
 import com.ms.stores.model.StoreDTO;
 import com.ms.stores.model.StoreModel;
 import com.ms.stores.model.address.AddressDTO;
 import com.ms.stores.model.address.AddressModel;
 import com.ms.stores.model.opening_hours.OpeningHoursDTO;
-import com.ms.stores.model.opening_hours.OpeningHoursModel;
 import com.ms.stores.repository.StoreRepository;
 
 
@@ -93,13 +92,15 @@ public void addAdress(HttpServletRequest request, AddressDTO address) {
 		StoreModel user = storeRepository.findByEmail(email.replace("\"", " ").trim());
 		return user;
 	}
-
+	
 	public void validateStoreEmail(String email) {
 		var emailE = this.cryptoUtils.encrypt(email);
 		var store = this.getStoreByEmail(emailE);
-		store.setValid(true);
+		store.getRoles().add(Role.ROLE_VERIFIED_EMAIL);
+		store.setRoles(store.getRoles());
 		this.storeRepository.save(store);
 
+	}
 	}
 
 	/*public UserPerfilDTO getUserPerfil(HttpServletRequest request) {
@@ -125,4 +126,4 @@ public void addAdress(HttpServletRequest request, AddressDTO address) {
         user.setPassword(newPassword);
         this.userRepository.save(user);
     }*/
-}
+

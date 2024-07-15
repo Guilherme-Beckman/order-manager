@@ -15,14 +15,22 @@ import com.ms.auth.exceptions.auth.message.ConvertMessageToUserDetailsException;
 public class MessageUtils {
 	@Autowired
 	private ObjectMapper objectMapper;
-    public UserDetailsDTO convertMessageToUserDetails(Message message) {
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            var user = objectMapper.readValue(message.getBody(), UserDetailsDTO.class);
-            return user;
-        } catch (Exception e) {
-            throw new ConvertMessageToUserDetailsException("Error while converting message into UserDetails");      
-}
+	public UserDetailsDTO convertMessageToUserDetails(Message message) {
+	    System.out.println("Iniciando a conversão da mensagem para UserDetailsDTO.");
+
+	    try {
+	        ObjectMapper objectMapper = new ObjectMapper();
+	        System.out.println("Deserializando a mensagem: " + message.getBody());
+
+	        var user = objectMapper.readValue(message.getBody(), UserDetailsDTO.class);
+	        System.out.println("Conversão bem-sucedida: " + user);
+	        
+	        return user;
+	    } catch (Exception e) {
+	        System.out.println("Erro durante a conversão: " + e.getMessage());
+	        throw new ConvertMessageToUserDetailsException("Error while converting message into UserDetails");
+	    }
+	
     }
         public StoreDetailsDTO convertMessageToStoreDetails(Message message) {
             try {

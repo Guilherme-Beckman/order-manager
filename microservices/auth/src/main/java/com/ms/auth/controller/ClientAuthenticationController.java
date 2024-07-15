@@ -44,7 +44,6 @@ public class ClientAuthenticationController {
 
 	@PostMapping("/login")
 	public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid AuthenticationDTO data) {
-		System.out.println("um usuario esta tentando logar controller");
 		var token = this.userService.userLogin(data);
 		return ResponseEntity.ok(new LoginResponseDTO(token));
 	}
