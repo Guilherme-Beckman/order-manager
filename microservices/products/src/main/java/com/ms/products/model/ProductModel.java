@@ -38,11 +38,11 @@ public class ProductModel {
 	
 
 	public ProductModel() {
+		this.reviews = new ArrayList<>();
 	}
 	
 	public ProductModel(ProductDTO productDTO) {
 		this.ownerid = productDTO.ownerid();
-		this.menuId = productDTO.menuId();
 		this.name = productDTO.name();
 		this.price = productDTO.price();
 		this.description = productDTO.description();

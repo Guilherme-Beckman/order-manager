@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import com.ms.auth.dto.clients.AuthenticationDTO;
 import com.ms.auth.dto.clients.UserDTO;
-import com.ms.auth.dto.clients.UserDetailsDTO;
 import com.ms.auth.exceptions.auth.user.UserDataAlreadyExistsException;
 import com.ms.auth.infra.security.TokenService;
 import com.ms.auth.infra.security.customAuthentication.service.AuthenticationService;
@@ -67,15 +66,12 @@ public class UserAuthenticationService {
 		} catch (Exception e) {
 			throw e;
 		}
-		//var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
-		//var auth = this.authenticationManager.authenticate(usernamePassword);
 		this.authenticationService.authenticateUser(data.login(), data.password());
 		var token = tokenService.generateToken(data.login(), TypeOfUser.CLIENT);
 		return token;
 	}
 
 	public void receiveResponse(Message message) {
-		System.out.println("recebdoe mensagem");
 		String responseCorrelationId = (String) message.getMessageProperties().getCorrelationId();
 		CompletableFuture<Message> responseFuture = pendingResponses.get(responseCorrelationId);
 		if (responseFuture != null) {

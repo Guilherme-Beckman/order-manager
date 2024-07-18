@@ -4,14 +4,12 @@ package com.ms.stores.infra.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.ms.stores.model.StoreDTO;
+import com.ms.stores.model.store.StoreDTO;
 
 @Component
 public class StoreCryto {
 	@Autowired
 	private CryptoUtils cryptoUtils;
-	@Autowired
-	private DecryptAddresses addressCrypto;
 
 	public StoreDTO cryptoStoreData(StoreDTO storeDTO) {
 

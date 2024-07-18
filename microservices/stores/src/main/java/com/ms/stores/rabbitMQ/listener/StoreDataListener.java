@@ -30,27 +30,21 @@ public class StoreDataListener {
 
 	@RabbitListener(queues = RabbitMQConfig.LOAD_STORE_DETAILS_QUEUE)
 	public void processStoreData(@Payload Message email) {
-		System.out.println("esta no listener da store 4 ");
 		if (email != null) {
 			String emailP = new String(email.getBody());
 			emailP = emailP.replace("\"", "");
 			var encryptedEmail = this.cryptoUtils.encrypt(emailP);
 			var findedStore = this.storeService.getStoreByEmail(encryptedEmail);
-			System.out.println(findedStore + "achou isso dai ");
-			System.out.println(findedStore != null);
 			if (findedStore != null) {
-				System.out.println("ta dentro de extamaente onde voce pensa que está");
 				try {
 					var storeBytes = this.messageConverter.convertStoreToMessage(findedStore,
 							email.getMessageProperties().getCorrelationId());
-					System.out.println("esta retornado o user: "+storeBytes);
 					this.returnData.returnStoreData(storeBytes);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 		
 			}
-			System.out.println("não achou aqui no listener tlgf");
 		}
 	}
 }

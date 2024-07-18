@@ -10,7 +10,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ms.auth.dto.clients.AuthenticationDTO;
-import com.ms.auth.dto.clients.UserDetailsDTO;
 import com.ms.auth.dto.store.StoreDTO;
 import com.ms.auth.dto.store.StoreDetailsDTO;
 import com.ms.auth.exceptions.auth.user.UserDataAlreadyExistsException;
@@ -21,7 +20,6 @@ import com.ms.auth.service.TypeOfUser;
 import com.ms.auth.utils.MaxAttemptManager;
 import com.ms.auth.utils.MessageUtils;
 
-import jakarta.validation.Valid;
 
 @Service
 public class StoreAuthenticationService {
@@ -77,8 +75,6 @@ public class StoreAuthenticationService {
 		} catch (Exception e) {
 			throw e;
 		}
-		//var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
-		//var auth = this.authenticationManager.authenticate(usernamePassword);
 		this.authenticationService.authenticateStore(data.login(), data.password());
 		var token = tokenService.generateToken(data.login(), TypeOfUser.STORE);
 		return token;

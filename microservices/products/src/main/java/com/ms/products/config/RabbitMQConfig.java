@@ -1,4 +1,4 @@
-package com.ms.stores.config;
+package com.ms.products.config;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
@@ -342,22 +342,8 @@ public class RabbitMQConfig {
 			@Qualifier("addProductExchange") TopicExchange addProductExchange) {
 		return BindingBuilder.bind(addProductQueue).to(addProductExchange).with(ADD_PRODUCT_KEY);
 	}
-	
-
-	    @Bean(name = "rabbitTemplateForProducts")
-	    public RabbitTemplate rabbitTemplateForProducts(ConnectionFactory connectionFactory) {
-	        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
-	        rabbitTemplate.setMessageConverter(jsonMessageConverter());
-	        rabbitTemplate.setReplyTimeout(6000); 
-	        rabbitTemplate.setMessageConverter(jsonMessageConverter());
-	        return rabbitTemplate;
-	    }
-
-	    @Bean
-	    public Jackson2JsonMessageConverter jsonMessageConverter() {
-	        return new Jackson2JsonMessageConverter();
-	    }
-	}
-
-
-
+    @Bean
+    public Jackson2JsonMessageConverter jsonMessageConverter() {
+        return new Jackson2JsonMessageConverter();
+    }
+}

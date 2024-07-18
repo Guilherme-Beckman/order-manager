@@ -27,15 +27,16 @@ public class MessageUtils {
 			throw new ConvertMessageToUserDetailsException("Error while converting message into UserDetails");
 		}
 	}
-	   public StoreDetailsDTO convertMessageToStoreDetails(Message message) {
-           try {
-               ObjectMapper objectMapper = new ObjectMapper();
-               var user = objectMapper.readValue(message.getBody(), StoreDetailsDTO.class);
-               return user;
-           } catch (Exception e) {
-               throw new ConvertMessageToUserDetailsException("Error while converting message into UserDetails");      
-   }
-	   }
+
+	public StoreDetailsDTO convertMessageToStoreDetails(Message message) {
+		try {
+			ObjectMapper objectMapper = new ObjectMapper();
+			var user = objectMapper.readValue(message.getBody(), StoreDetailsDTO.class);
+			return user;
+		} catch (Exception e) {
+			throw new ConvertMessageToUserDetailsException("Error while converting message into StoreDetails");
+		}
+	}
 
 	public Message createMessage(Object content, String correlationId) {
 		try {

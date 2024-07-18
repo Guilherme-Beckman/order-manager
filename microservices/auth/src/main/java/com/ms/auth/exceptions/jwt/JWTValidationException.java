@@ -1,6 +1,5 @@
 package com.ms.auth.exceptions.jwt;
 
-
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,29 +12,31 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpServletResponse;
+
 @Component
-public class JWTValidationException  {
+public class JWTValidationException {
 	@Autowired
 	private ObjectMapper objectMapper;
+
 	public ProblemDetail toProblemDetail(JWTVerificationException e, HttpServletResponse response) {
-	        ProblemDetail pb = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Token Validation failed");
-	        pb.setTitle("Token Validation Error");
-	        String detail = e.getMessage();
-	        pb.setDetail(detail);
-	        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-	        response.setContentType("application/json");
-			String jsonResponse = null;
-			try {
-				jsonResponse = objectMapper.writeValueAsString(pb);
-			} catch (JsonProcessingException e1) {
-				e1.printStackTrace();
-			}
-	        try {
-				response.getWriter().write(jsonResponse);
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-	        return pb;
+		ProblemDetail pb = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Token Validation failed");
+		pb.setTitle("Token Validation Error");
+		String detail = e.getMessage();
+		pb.setDetail(detail);
+		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		response.setContentType("application/json");
+		String jsonResponse = null;
+		try {
+			jsonResponse = objectMapper.writeValueAsString(pb);
+		} catch (JsonProcessingException e1) {
+			e1.printStackTrace();
+		}
+		try {
+			response.getWriter().write(jsonResponse);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		return pb;
 	}
-	
+
 }

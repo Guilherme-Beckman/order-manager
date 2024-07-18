@@ -20,7 +20,6 @@ public class AuthenticationService {
     }
 
     public Authentication authenticateStore(String username, String password) throws AuthenticationException {
-    	System.out.println("lalala");
         StoreAuthenticationToken authRequest = new StoreAuthenticationToken(username, password);
         return authenticationManager.authenticate(authRequest);
     }

@@ -11,7 +11,6 @@ public class StoreCredentialsProducer {
 	@Autowired
 	private RabbitTemplate rabbitTemplate;
 	public void requestStoreCredentials(Message email) {
-		System.out.println("ta convertendo a mensagem");
 	     rabbitTemplate.convertAndSend(
 	             RabbitMQConfig.AUTH_STORE_STORE_DETAILS_DIRECT_EXCHANGE,
 	             RabbitMQConfig.LOAD_STORE_DETAILS_REQUEST_KEY,

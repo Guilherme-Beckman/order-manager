@@ -1,4 +1,4 @@
-package com.ms.products.model;
+package com.ms.stores.model.products;
 public record ProductDTO(
 		String ownerid,
 		String name, 

@@ -8,12 +8,12 @@ import org.springframework.stereotype.Component;
 import com.ms.stores.config.RabbitMQConfig;
 
 @Component
-public class StoreReturnDataProducer{
+public class StoreReturnDataProducer {
 	@Autowired
 	public RabbitTemplate rabbitTemplate;
-	
+
 	public void returnStoreData(Message store) {
-		System.out.println("ta aquiaaaaaaaa a");
-		rabbitTemplate.convertAndSend(RabbitMQConfig.AUTH_STORE_STORE_DETAILS_DIRECT_EXCHANGE, RabbitMQConfig.RETURN_STORE_DETAILS_RESPONSE_KEY, store);
+		rabbitTemplate.convertAndSend(RabbitMQConfig.AUTH_STORE_STORE_DETAILS_DIRECT_EXCHANGE,
+				RabbitMQConfig.RETURN_STORE_DETAILS_RESPONSE_KEY, store);
 	}
 }

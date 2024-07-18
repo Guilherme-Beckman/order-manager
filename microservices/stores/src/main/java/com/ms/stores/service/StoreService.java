@@ -6,21 +6,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ms.products.model.ProductModel;
 import com.ms.stores.infra.security.CryptoUtils;
 import com.ms.stores.infra.security.StoreCryto;
+import com.ms.stores.infra.security.TokenService;
 import com.ms.stores.model.Role;
-import com.ms.stores.model.StoreDTO;
-import com.ms.stores.model.StoreModel;
 import com.ms.stores.model.address.AddressDTO;
 import com.ms.stores.model.address.AddressModel;
 import com.ms.stores.model.opening_hours.OpeningHoursDTO;
+import com.ms.stores.model.products.ProductDTO;
+import com.ms.stores.model.store.StoreDTO;
+import com.ms.stores.model.store.StoreModel;
+import com.ms.stores.rabbitMQ.producer.AddProductProducer;
 import com.ms.stores.repository.StoreRepository;
 
+import jakarta.servlet.http.HttpServletRequest;
 
 @Service
 public class StoreService {
 	@Autowired
-	private StoreRepository storeRepository; 
+	private StoreRepository storeRepository;
 	@Autowired
 	private AddressService addressService;
 	@Autowired
@@ -29,8 +34,10 @@ public class StoreService {
 	private CryptoUtils cryptoUtils;
 	@Autowired
 	private OpeningHoursService openingHoursService;
-	/*@Autowired
-	private TokenService tokenService;*/
+	@Autowired
+	private TokenService tokenService;
+	@Autowired
+	private AddProductProducer addProductProducer;
 
 	@Transactional
 	public StoreModel insertUser(StoreDTO storeDTO) {
@@ -54,76 +61,50 @@ public class StoreService {
 		savedStore.setAddressId(addedAddress.getId());
 		return savedStore;
 	}
+
 	@Transactional
 	public StoreModel addOpeningHours(StoreModel savedStore, List<OpeningHoursDTO> openingHoursDTOs) {
-		openingHoursDTOs.forEach(data ->{
+		openingHoursDTOs.forEach(data -> {
 			var hours = this.openingHoursService.addOpeningHours(savedStore.getId(), data);
 			savedStore.getOpening_hours().add(hours.getId());
 		});
-		savedStore.setOpening_hours(savedStore.getOpening_hours());
 		return savedStore;
-		
+
 	}
-
-
-
-/*@Transactional
-public void addAdress(HttpServletRequest request, AddressDTO address) {
-    var user = this.findUserByToken(request);
-    String userId = user.getId();
-    var findedUser = this.userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-    if (address.getZipCode() != null) {
-        address = new AddressDTO(address.getZipCode());
-    }
-    address.setUserId(userId);
-    AddressModel addedAddress = this.addressService.insertAddress(address);
-    List<String> addressesSavedUser = findedUser.getAddress();
-    addressesSavedUser.add(addedAddress.getId());
-    findedUser.setAdress(addressesSavedUser);
-    this.userRepository.save(findedUser);
-}*/
 
 	public StoreModel getStoreById(String id) {
 		return this.storeRepository.findById(id).orElseThrow();
 	}
 
 	public StoreModel getStoreByEmail(String email) {
-		System.out.println("aqui no getStoreByEmail: "+email);
+		System.out.println("email: "+email);
 		StoreModel user = storeRepository.findByEmail(email.replace("\"", " ").trim());
 		return user;
 	}
-	
+
 	public void validateStoreEmail(String email) {
 		var emailE = this.cryptoUtils.encrypt(email);
 		var store = this.getStoreByEmail(emailE);
 		store.getRoles().add(Role.ROLE_VERIFIED_EMAIL);
-		store.setRoles(store.getRoles());
 		this.storeRepository.save(store);
 
 	}
+
+	@Transactional
+	public ProductModel addNewProduct(ProductDTO productDTO, HttpServletRequest httpRequest) {
+		var token = this.tokenService.recoverToken(httpRequest);
+		var storeInfo = this.tokenService.getTokenInformations(token);
+		var encrytedStore = this.cryptoUtils.encrypt(storeInfo.getSubject());
+		var store  = this.getStoreByEmail(encrytedStore);
+		ProductDTO newProductDTO = new ProductDTO(store.getId(), productDTO.name(), productDTO.price(),
+				productDTO.description(), productDTO.avaliability(), null);
+		
+		var addedProduct = this.addProductProducer.addProduct(newProductDTO);
+		this.storeRepository.save(this.addProduct(store, addedProduct.getId()));
+		return addedProduct;
 	}
-
-	/*public UserPerfilDTO getUserPerfil(HttpServletRequest request) {
-		var user = this.findUserByToken(request);
-		var decryptedUserPerfil = this.userCrypto.decryptUserData(user);
-
-		return decryptedUserPerfil;
+	public StoreModel addProduct(StoreModel storeModel, String productId) {
+		storeModel.getProducts().add(productId);
+		return storeModel;
 	}
-
-	private UserModel findUserByToken(HttpServletRequest request) {
-		var token = this.tokenService.recoverToken(request);
-		var userInfos = this.tokenService.getTokenInformations(token);
-		var email = userInfos.getSubject();
-		var encryptedEmail = this.cryptoUtils.encrypt(email);
-		var user = this.getUserByEmail(encryptedEmail);
-		return user;
-	}
-    public void changePassword(String email, String newPassword) {
-        var user = this.getUserByEmail(this.cryptoUtils.encrypt(email));
-        if (user == null) {
-            return; 
-        }
-        user.setPassword(newPassword);
-        this.userRepository.save(user);
-    }*/
-
+}

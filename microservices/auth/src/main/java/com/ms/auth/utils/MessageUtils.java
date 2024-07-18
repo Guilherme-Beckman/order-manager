@@ -16,18 +16,13 @@ public class MessageUtils {
 	@Autowired
 	private ObjectMapper objectMapper;
 	public UserDetailsDTO convertMessageToUserDetails(Message message) {
-	    System.out.println("Iniciando a conversão da mensagem para UserDetailsDTO.");
 
 	    try {
 	        ObjectMapper objectMapper = new ObjectMapper();
-	        System.out.println("Deserializando a mensagem: " + message.getBody());
-
 	        var user = objectMapper.readValue(message.getBody(), UserDetailsDTO.class);
-	        System.out.println("Conversão bem-sucedida: " + user);
 	        
 	        return user;
 	    } catch (Exception e) {
-	        System.out.println("Erro durante a conversão: " + e.getMessage());
 	        throw new ConvertMessageToUserDetailsException("Error while converting message into UserDetails");
 	    }
 	

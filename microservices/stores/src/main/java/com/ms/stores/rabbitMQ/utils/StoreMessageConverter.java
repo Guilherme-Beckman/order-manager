@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ms.stores.model.StoreModel;
+import com.ms.stores.model.store.StoreModel;
 
 @Component
 public class StoreMessageConverter {
@@ -33,5 +33,7 @@ public class StoreMessageConverter {
 		messageProperties.setExpiration("5000");
 		return new Message(menssageBytes, messageProperties);
 	}
+	
+
 
 }

@@ -7,7 +7,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +26,6 @@ public class StoreAuthenticationProvider implements AuthenticationProvider{
 		String username = authentication.getName();
 		String password = (String)authentication.getCredentials();
 		UserDetails userDetails = storeDetailsService.loadUserByUsername(username);
-		System.out.println(userDetails);
 
 		if (userDetails != null && passwordEncoder.matches(password, userDetails.getPassword())) {
 			return new UserAuthenticationToken(userDetails, password);

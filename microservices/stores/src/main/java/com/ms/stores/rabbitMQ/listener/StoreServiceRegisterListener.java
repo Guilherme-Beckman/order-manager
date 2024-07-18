@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ms.stores.config.RabbitMQConfig;
-import com.ms.stores.model.StoreDTO;
+import com.ms.stores.model.store.StoreDTO;
 import com.ms.stores.rabbitMQ.producer.StoreServiceRegisterReturnDataProducer;
 import com.ms.stores.rabbitMQ.utils.StoreMessageConverter;
 import com.ms.stores.service.StoreService;
@@ -32,7 +32,6 @@ public class StoreServiceRegisterListener {
 	public void registerStore(@Payload Message storeDTO) {
 
 		try {
-			System.out.println("ouviu a mensagem 4");
 			var store = this.objectMapper.readValue(storeDTO.getBody(), StoreDTO.class);
 			var storedb = this.userService.insertUser(store);
 			var storeBytes = this.storeMessageConverter.convertStoreToMessage(storedb,

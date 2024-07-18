@@ -37,7 +37,6 @@ public class JWTAuthenticationFilter implements WebFilter {
 
 			if (email != null) {
 				if (this.tokenService.isClient(token)) {
-					System.out.println("é um cliente");
 					return reactiveCustomUserDetailsService.loadUserByUsername(email).flatMap(userDetails -> {
 						SecurityContextImpl context = new SecurityContextImpl(new UsernamePasswordAuthenticationToken(
 								userDetails, null, userDetails.getAuthorities()));
@@ -45,12 +44,9 @@ public class JWTAuthenticationFilter implements WebFilter {
 								.contextWrite(ReactiveSecurityContextHolder.withSecurityContext(Mono.just(context)));
 					});
 				} else if (this.tokenService.isStore(token)) {
-					System.out.println("é uma loja");
 					return reactiveCustomStoreDetailsService.loadStoreByUsername(email).flatMap(userDetails -> {
 						SecurityContextImpl context = new SecurityContextImpl(new UsernamePasswordAuthenticationToken(
 								userDetails, null, userDetails.getAuthorities()));
-						System.out.println(userDetails.getAuthorities());
-						System.out.println(context);
 						return chain.filter(exchange)
 								.contextWrite(ReactiveSecurityContextHolder.withSecurityContext(Mono.just(context)));
 					});

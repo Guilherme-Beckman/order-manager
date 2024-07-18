@@ -10,16 +10,12 @@ import com.ms.apiGateway.config.RabbitMQConfig;
 
 @Component
 public class UserCredentialsProducerApiGateway {
-    @Autowired
-    public RabbitTemplate rabbitTemplate;
+	@Autowired
+	public RabbitTemplate rabbitTemplate;
 
-    public void requestUserCredentials(Message email) {
-        rabbitTemplate.convertAndSend(
-            RabbitMQConfig.AUTH_USER_USER_DETAILS_DIRECT_API_GATEWAY_EXCHANGE,
-            RabbitMQConfig.LOAD_USER_DETAILS_REQUEST_API_GATEWAY_KEY,
-            email
-        );
+	public void requestUserCredentials(Message email) {
+		rabbitTemplate.convertAndSend(RabbitMQConfig.AUTH_USER_USER_DETAILS_DIRECT_API_GATEWAY_EXCHANGE,
+				RabbitMQConfig.LOAD_USER_DETAILS_REQUEST_API_GATEWAY_KEY, email);
 
-
-    }
+	}
 }

@@ -33,10 +33,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 		credentialsRequestor.requestUserCredentials(message);
 		try {
 			Message response = responseFuture.get(5000, TimeUnit.MILLISECONDS);
-			System.out.println("esta retornando de boas");
 			return messageUtils.convertMessageToUserDetails(response);
 		} catch (Exception e) {
-			System.out.println("esta retornando null");
 			return null;
 		} finally {
 			pendingResponses.remove(correlationId);

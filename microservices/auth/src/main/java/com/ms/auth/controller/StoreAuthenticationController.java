@@ -2,7 +2,6 @@ package com.ms.auth.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,18 +20,15 @@ public class StoreAuthenticationController {
 	private StoreAuthenticationService storeService;
 
 	@PostMapping("/register-store")
-	public ResponseEntity<StoreDetailsDTO> registerStore(@RequestBody @Valid StoreDTO data){
+	public ResponseEntity<StoreDetailsDTO> registerStore(@RequestBody @Valid StoreDTO data) {
 		var store = this.storeService.registerStore(data);
 		return ResponseEntity.ok().body(store);
 	}
+
 	@PostMapping("/login-store")
 	public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid AuthenticationDTO data) {
-		System.out.println("loja fazendo login");
 		var token = this.storeService.storeLogin(data);
 		return ResponseEntity.ok(new LoginResponseDTO(token));
 	}
-	@GetMapping("/products")
-	public ResponseEntity<String> products(){
-		return ResponseEntity.ok().body("Acesso certo");
-	}
+
 }

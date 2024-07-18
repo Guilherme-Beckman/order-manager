@@ -16,15 +16,14 @@ import com.ms.apiGateway.utils.MessageUtils;
 import reactor.core.publisher.Mono;
 
 @Component
-public class ReactiveCustomUserDetailsService  {
+public class ReactiveCustomUserDetailsService {
 	@Autowired
 	private UserCredentialsProducerApiGateway credentialsRequestor;
 	@Autowired
 	private MessageUtils messageUtils;
 	private final ConcurrentHashMap<String, CompletableFuture<Message>> pendingResponses = new ConcurrentHashMap<>();
 
-	
-	public Mono<UserDetails> loadUserByUsername(String email)  {
+	public Mono<UserDetails> loadUserByUsername(String email) {
 		return Mono.create(sink -> {
 			String correlationId = this.messageUtils.generateCorrelationId();
 
@@ -33,36 +32,25 @@ public class ReactiveCustomUserDetailsService  {
 			Message message = this.messageUtils.createMessage(email, correlationId);
 
 			credentialsRequestor.requestUserCredentials(message);
-			
-			responseFuture
-			.orTimeout(1000, TimeUnit.MILLISECONDS)
-			.whenComplete((response,error)->{
+
+			responseFuture.orTimeout(1000, TimeUnit.MILLISECONDS).whenComplete((response, error) -> {
 				pendingResponses.remove(correlationId);
-				if( error != null) {
+				if (error != null) {
 					sink.error(error);
-				}else {
+				} else {
 					try {
 						UserDetails userDetails = messageUtils.convertMessageToUserDetails(response);
 						sink.success(userDetails);
+					} catch (Exception e) {
+						sink.error(e);
 					}
-					catch (Exception e) {
-	                    sink.error(e);
-	                }
 				}
 			});
 		});
-		
-		
-		
+
 	}
-/*try {
-			Message response = responseFuture.get(5000, TimeUnit.MILLISECONDS);
-			return messageUtils.convertMessageToUserDetails(response);
-		} catch (Exception e) {
-			return null;
-		} finally {
-			pendingResponses.remove(correlationId);
-		}*/
+
+
 	public void receiveResponse(Message message) {
 		String responseCorrelationId = (String) message.getMessageProperties().getCorrelationId();
 

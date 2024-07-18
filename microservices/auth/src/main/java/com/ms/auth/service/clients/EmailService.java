@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import com.ms.auth.dto.clients.ValidateEmailDTO;
 import com.ms.auth.exceptions.auth.authenticate.InvalideCodeException;
-import com.ms.auth.exceptions.auth.email.code.EmailAlreadyBeenVerifiedException;
 import com.ms.auth.infra.security.TokenService;
 import com.ms.auth.rabbitMQ.producer.EmailCodeProducer;
 import com.ms.auth.rabbitMQ.producer.clients.UserValidateEmailProducer;

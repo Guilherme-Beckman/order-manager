@@ -39,7 +39,6 @@ public class UserDataListener {
 			if (findedUser != null) {
 				var userBytes = this.messageConverter.convertUserToMessage(findedUser,
 						email.getMessageProperties().getCorrelationId());
-				System.out.println(userBytes);
 				this.returnData.returnUserData(userBytes);
 			}
 		}

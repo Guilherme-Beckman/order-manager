@@ -28,6 +28,7 @@ public class UserModel {
 		this.address = new ArrayList<String>();
 		this.roles = new ArrayList<>();
 		roles.add(Role.ROLE_USER);
+		roles.add(Role.ROLE_NON_VERIFIED_EMAIL);
 	}
 	public UserModel(UserDTO userDTO) {
 		this.cpf = userDTO.cpf();
@@ -36,12 +37,13 @@ public class UserModel {
 		this.lastName = userDTO.lastName();
 		this.email = userDTO.email();
 		this.address = new ArrayList<String>();
-		this.accountNonExpired = true; // Assumindo conta ativa por padrão
-		this.accountNonLocked = true; // Assumindo conta não bloqueada por padrão
-		this.credentialsNonExpired = true; // Assumindo credenciais ativas por padrão
-		this.enabled = true; // Assumindo usuário ativo por padrão
+		this.accountNonExpired = true; 
+		this.accountNonLocked = true; 
+		this.credentialsNonExpired = true; 
+		this.enabled = true; 
 		this.roles = new ArrayList<>();
 		roles.add(Role.ROLE_USER);
+		roles.add(Role.ROLE_NON_VERIFIED_EMAIL);
 	}
 
 	public UserModel(String id, String cpf, String password, String name, String lastName, String email) {

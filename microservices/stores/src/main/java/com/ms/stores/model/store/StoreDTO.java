@@ -1,4 +1,4 @@
-package com.ms.stores.model;
+package com.ms.stores.model.store;
 
 import java.util.List;
 

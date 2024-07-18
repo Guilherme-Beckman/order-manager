@@ -1,11 +1,12 @@
-package com.ms.stores.model;
+package com.ms.stores.model.store;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.ms.stores.model.Role;
 
 @Document(collection = "stores")
 public class StoreModel {
@@ -28,6 +29,7 @@ public class StoreModel {
 
 	
 	public StoreModel() {
+		this.products = new ArrayList<>();
 		this.opening_hours = new ArrayList<>();
 		this.roles = new ArrayList<>();
 		roles.add(Role.ROLE_STORE);
@@ -43,10 +45,10 @@ public class StoreModel {
 		this.CNPJ = cNPJ;
 		this.opening_hours = opening_hours;
 		this.products = products;
-		this.accountNonExpired = true; // Assumindo conta ativa por padrão
-		this.accountNonLocked = true; // Assumindo conta não bloqueada por padrão
-		this.credentialsNonExpired = true; // Assumindo credenciais ativas por padrão
-		this.enabled = true; // Assumindo usuário ativo por padrão
+		this.accountNonExpired = true; 
+		this.accountNonLocked = true;
+		this.credentialsNonExpired = true; 
+		this.enabled = true; 
 	}
 
 	public StoreModel(StoreDTO storeDto) {
@@ -55,11 +57,12 @@ public class StoreModel {
 		this.password = storeDto.password();
 		this.phone = storeDto.phone();
 		this.CNPJ = storeDto.CNPJ();
+		this.products = new ArrayList<>();
 		this.opening_hours = new ArrayList<>();
-		this.accountNonExpired = true; // Assumindo conta ativa por padrão
-		this.accountNonLocked = true; // Assumindo conta não bloqueada por padrão
-		this.credentialsNonExpired = true; // Assumindo credenciais ativas por padrão
-		this.enabled = true; // Assumindo usuário ativo por padrão
+		this.accountNonExpired = true; 
+		this.accountNonLocked = true; 
+		this.credentialsNonExpired = true;
+		this.enabled = true; 
 		this.roles = new ArrayList<>();
 		roles.add(Role.ROLE_STORE);
 		

@@ -9,11 +9,11 @@ import com.ms.stores.repository.OpeningHoursRepository;
 
 @Service
 public class OpeningHoursService {
-	
+
 	@Autowired
 	private OpeningHoursRepository openingHoursRepository;
-	
-	public OpeningHoursModel addOpeningHours (String storeId, OpeningHoursDTO openingHoursDTO) {
+
+	public OpeningHoursModel addOpeningHours(String storeId, OpeningHoursDTO openingHoursDTO) {
 		var newHours = new OpeningHoursModel(openingHoursDTO);
 		newHours.setStoreId(storeId);
 		return this.openingHoursRepository.save(newHours);

@@ -36,7 +36,6 @@ public class AddressDTO {
 		this.zipCode = zipCode;
 	}
 
-	// Getters and Setters
 	public String getStreet() {
 		return street;
 	}

@@ -39,13 +39,29 @@ public class UserService {
 		UserModel newUser = new UserModel(encryptedUser);
 		UserModel savedUser = this.userRepository.insert(newUser);
 		AddressDTO address = userDTO.address();
-		return addAdress(savedUser.getId(), address);
+		UserModel userWithAddress = addAdress(savedUser, address);
+		return this.userRepository.save(userWithAddress);
 	}
 
 	@Transactional
-	public UserModel addAdress(String userId, AddressDTO address) {
-		var findedUser = this.userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+	public UserModel addAdress(UserModel userModel, AddressDTO address) {
 		if (!(address.getZipCode() == null)) {
+			address = new AddressDTO(address.getZipCode());
+		}
+		address.setUserId(userModel.getId());
+		AddressModel addedAddress = this.addressService.insertAddress(address);
+		List<String> addressesSavedUser = userModel.getAddress();
+		addressesSavedUser.add(addedAddress.getId());
+		userModel.setAdress(addressesSavedUser);
+		return userModel;
+	}
+
+	@Transactional
+	public void addAdress(HttpServletRequest request, AddressDTO address) {
+		var user = this.findUserByToken(request);
+		String userId = user.getId();
+		var findedUser = this.userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+		if (address.getZipCode() != null) {
 			address = new AddressDTO(address.getZipCode());
 		}
 		address.setUserId(userId);
@@ -53,26 +69,8 @@ public class UserService {
 		List<String> addressesSavedUser = findedUser.getAddress();
 		addressesSavedUser.add(addedAddress.getId());
 		findedUser.setAdress(addressesSavedUser);
-		return this.userRepository.save(findedUser);
+		this.userRepository.save(findedUser);
 	}
-
-
-
-@Transactional
-public void addAdress(HttpServletRequest request, AddressDTO address) {
-    var user = this.findUserByToken(request);
-    String userId = user.getId();
-    var findedUser = this.userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-    if (address.getZipCode() != null) {
-        address = new AddressDTO(address.getZipCode());
-    }
-    address.setUserId(userId);
-    AddressModel addedAddress = this.addressService.insertAddress(address);
-    List<String> addressesSavedUser = findedUser.getAddress();
-    addressesSavedUser.add(addedAddress.getId());
-    findedUser.setAdress(addressesSavedUser);
-    this.userRepository.save(findedUser);
-}
 
 	public UserModel getUserById(String id) {
 		return this.userRepository.findById(id).orElseThrow();
@@ -86,6 +84,7 @@ public void addAdress(HttpServletRequest request, AddressDTO address) {
 	public void validateUserEmail(String email) {
 		var emailE = this.cryptoUtils.encrypt(email);
 		var user = this.getUserByEmail(emailE);
+		user.getRoles().remove(Role.ROLE_NON_VERIFIED_EMAIL);
 		user.getRoles().add(Role.ROLE_VERIFIED_EMAIL);
 		user.setRoles(user.getRoles());
 		this.userRepository.save(user);
@@ -107,12 +106,13 @@ public void addAdress(HttpServletRequest request, AddressDTO address) {
 		var user = this.getUserByEmail(encryptedEmail);
 		return user;
 	}
-    public void changePassword(String email, String newPassword) {
-        var user = this.getUserByEmail(this.cryptoUtils.encrypt(email));
-        if (user == null) {
-            return; 
-        }
-        user.setPassword(newPassword);
-        this.userRepository.save(user);
-    }
+
+	public void changePassword(String email, String newPassword) {
+		var user = this.getUserByEmail(this.cryptoUtils.encrypt(email));
+		if (user == null) {
+			return;
+		}
+		user.setPassword(newPassword);
+		this.userRepository.save(user);
+	}
 }

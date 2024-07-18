@@ -10,7 +10,7 @@ import com.ms.apiGateway.config.RabbitMQConfig;
 import com.ms.apiGateway.service.ReactiveCustomStoreDetailsService;
 
 @Component
-public class StoreAuthenticationListener{
+public class StoreAuthenticationListener {
 	@Autowired
 	private ReactiveCustomStoreDetailsService detailsService;
 

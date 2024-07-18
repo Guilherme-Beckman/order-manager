@@ -14,41 +14,38 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 
 @Component
-@Order(-2)//indica a prioridade de excução 
+@Order(-2)
 public class GlobalWebExceptionHandler implements WebExceptionHandler {
 
     @Override
-    public Mono<Void>//fluxo assincrono que retornara apenas um valor ou lancara error
-    handle(ServerWebExchange exchange//requisição no ambiente solicitação e resposta
+    public Mono<Void>
+    handle(ServerWebExchange exchange
     		, Throwable ex) {
 
-        if (exchange.getResponse().isCommitted()//metodo que verifica se a resposta já foi enviada
+        if (exchange.getResponse().isCommitted()
         		) {
             return Mono.error(ex);
         }
-        //definição de valores padrão
         HttpStatusCode status = HttpStatus.INTERNAL_SERVER_ERROR;
         String type = "about:blank"; // Default type conforme a RFC 7807
         String title = "Internal Server Error";
         String detail = ex.getMessage();
 
-        // Identificar o tipo de exceção e ajustar a resposta
         if (ex instanceof AuthException) {
 
-            exchange.getResponse().setStatusCode(status);//seta a resposta como o tipo definido 
-            exchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_PROBLEM_JSON);//ajusta para pb
-
-            DataBuffer dataBuffer //area temporaria de memoria que é usada para transmitir para transmitir informações
+            exchange.getResponse().setStatusCode(status);
+            exchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_PROBLEM_JSON);
+            DataBuffer dataBuffer 
             = buildProblemDetail(exchange, (AuthException) ex);
             return exchange.getResponse().writeWith(Mono.just(dataBuffer));
         } else if (ex instanceof ResponseStatusException) {
             status =  ((ResponseStatusException) ex).getStatusCode();
             type = "https://example.com/" + status.value();
             title = "HTTP Status " + status.value();
-            exchange.getResponse().setStatusCode(status);//seta a resposta como o tipo definido 
-            exchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_PROBLEM_JSON);//ajusta para pb
+            exchange.getResponse().setStatusCode(status);
+            exchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_PROBLEM_JSON);
 
-            DataBuffer dataBuffer //area temporaria de memoria que é usada para transmitir para transmitir informações
+            DataBuffer dataBuffer 
             = buildProblemDetail(exchange, status, type, title, detail);
 
             return exchange.getResponse().writeWith(Mono.just(dataBuffer));
@@ -65,8 +62,8 @@ public class GlobalWebExceptionHandler implements WebExceptionHandler {
             byte[] bytes = objectMapper.writeValueAsBytes(problemDetail);
             
             return exchange.getResponse()
-            		.bufferFactory()//retorna a fabrica de buffer relacionada a resposta
-            		.wrap(bytes);//"enrola" bytes dentro do buffer
+            		.bufferFactory()
+            		.wrap(bytes);
         } catch (Exception e) {
             byte[] fallback = ("{\"title\":\"Internal Server Error\",\"status\":500,\"detail\":\"An error occurred while processing the error response.\"}").getBytes();
             return exchange.getResponse().bufferFactory().wrap(fallback);//faz a mesma coisa, mas com error padrão
