@@ -22,7 +22,8 @@ public class SecurityConfiguration {
 	public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
 		return http.csrf(csrf -> csrf.disable())
 				.authorizeExchange(exchange -> exchange
-						.pathMatchers("/auth/login", "/auth/register", "/auth/register-store", "/auth/login-store")
+						.pathMatchers("/auth/login", "/auth/register", "/auth/register-store", "/auth/login-store",
+								"/products/all")
 						.permitAll().pathMatchers("/stores/addProduct").hasRole("STORE")
 						.pathMatchers("/auth/inviteResetPassword", "/auth/newPassword").hasRole("USER")
 						.pathMatchers("/auth/sendcode", "/auth/validate").hasRole("NON_VERIFIED_EMAIL")
