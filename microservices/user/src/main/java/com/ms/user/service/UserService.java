@@ -40,7 +40,7 @@ public class UserService {
 		UserModel savedUser = this.userRepository.insert(newUser);
 		AddressDTO address = userDTO.address();
 		UserModel userWithAddress = addAdress(savedUser, address);
-		return this.userRepository.save(userWithAddress);
+		return this.userRepository.insert(userWithAddress);
 	}
 
 	@Transactional

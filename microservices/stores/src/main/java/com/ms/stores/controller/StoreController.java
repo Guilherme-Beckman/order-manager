@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ms.products.model.ProductModel;
+import com.ms.products.model.product.ProductModel;
 import com.ms.stores.model.products.ProductDTO;
 import com.ms.stores.service.StoreService;
 

@@ -24,15 +24,17 @@ public class TokenService {
 	@Value("${api.security.token.secret}")
 	public String secret;
 
-	
 	public String generateToken(
-			@NotBlank(message = "login must not be blank") @NotNull(message = "login must not be null") String login, TypeOfUser typeOfUser) {
+			@NotBlank(message = "login must not be blank") @NotNull(message = "login must not be null") String login,
+			TypeOfUser typeOfUser, String name, String userId) {
 		try {
 			Algorithm algorithm = Algorithm.HMAC256(secret);
 			String token = JWT.create().
 					withIssuer("auth").
 					withSubject(login).
 					withClaim("typeOfUser", typeOfUser.name()).
+					withClaim("name", name).
+					withClaim("userId", userId).
 					withExpiresAt(generateExpirationDate()).
 					sign(algorithm);
 			return token;

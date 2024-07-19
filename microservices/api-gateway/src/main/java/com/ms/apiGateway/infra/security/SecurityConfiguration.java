@@ -25,7 +25,7 @@ public class SecurityConfiguration {
 						.pathMatchers("/auth/login", "/auth/register", "/auth/register-store", "/auth/login-store",
 								"/products/all")
 						.permitAll().pathMatchers("/stores/addProduct").hasRole("STORE")
-						.pathMatchers("/auth/inviteResetPassword", "/auth/newPassword").hasRole("USER")
+						.pathMatchers("/auth/inviteResetPassword", "/auth/newPassword","products/review/**").hasRole("USER")
 						.pathMatchers("/auth/sendcode", "/auth/validate").hasRole("NON_VERIFIED_EMAIL")
 						.pathMatchers("/user/addAddress", "/user/perfil").hasRole("VERIFIED_EMAIL").anyExchange()
 						.authenticated())

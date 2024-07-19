@@ -1,4 +1,4 @@
-package com.ms.products.model;
+package com.ms.products.model.product;
 
 import java.util.ArrayList;
 import java.util.List;

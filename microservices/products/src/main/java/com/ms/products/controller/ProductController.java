@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ms.products.model.ProductModel;
+import com.ms.products.model.product.ProductModel;
 import com.ms.products.service.ProductService;
 
 @RestController
@@ -20,4 +20,5 @@ public class ProductController {
 		var allProducts = this.productService.getAllProducts();
 		return ResponseEntity.ok().body(allProducts);
 	}
+
 }

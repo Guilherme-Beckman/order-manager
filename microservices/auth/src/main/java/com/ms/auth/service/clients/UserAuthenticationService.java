@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.ms.auth.dto.clients.AuthenticationDTO;
 import com.ms.auth.dto.clients.UserDTO;
+import com.ms.auth.dto.clients.UserDetailsDTO;
 import com.ms.auth.exceptions.auth.user.UserDataAlreadyExistsException;
 import com.ms.auth.infra.security.TokenService;
 import com.ms.auth.infra.security.customAuthentication.service.AuthenticationService;
@@ -35,7 +36,7 @@ public class UserAuthenticationService {
 	private MaxAttemptManager maxAttemptManager;
 	@Autowired
 	private AuthenticationService authenticationService;
-
+	
 	public UserDetails registerUser(UserDTO userDTO) {
 
 		if (this.customUserDetailsService.loadUserByUsername(userDTO.email()) != null) {
@@ -66,8 +67,8 @@ public class UserAuthenticationService {
 		} catch (Exception e) {
 			throw e;
 		}
-		this.authenticationService.authenticateUser(data.login(), data.password());
-		var token = tokenService.generateToken(data.login(), TypeOfUser.CLIENT);
+		var authUser = (UserDetailsDTO) this.authenticationService.authenticateUser(data.login(), data.password()).getPrincipal();
+		var token = tokenService.generateToken(data.login(), TypeOfUser.CLIENT,   authUser.getName(), authUser.getId());
 		return token;
 	}
 
@@ -78,7 +79,5 @@ public class UserAuthenticationService {
 			responseFuture.complete(message);
 		}
 	}
-
-
 
 }

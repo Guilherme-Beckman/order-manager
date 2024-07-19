@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ms.products.model.ProductDTO;
-import com.ms.products.model.ProductModel;
+import com.ms.products.model.product.ProductDTO;
+import com.ms.products.model.product.ProductModel;
 import com.ms.products.repository.ProductRepository;
 
 
@@ -18,7 +18,7 @@ public class ProductService {
 
 	public ProductModel addNewProduct(ProductDTO productDTO) {
 		ProductModel productModel = new ProductModel(productDTO);
-		return this.productRepository.save(productModel);
+		return this.productRepository.insert(productModel);
 	}
 
 	public List<ProductModel> getAllProducts() {
@@ -31,5 +31,11 @@ public class ProductService {
 		}
 		);
 		return availableProducts;
+	}
+	public ProductModel saveNewProduct(ProductModel productModel) {
+		return this.productRepository.save( productModel);
+	}
+	public ProductModel getProductById(String id) {
+		return this.productRepository.findById(id).orElseThrow();
 	}
 }

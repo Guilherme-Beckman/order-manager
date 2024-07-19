@@ -20,7 +20,6 @@ import com.ms.auth.service.TypeOfUser;
 import com.ms.auth.utils.MaxAttemptManager;
 import com.ms.auth.utils.MessageUtils;
 
-
 @Service
 public class StoreAuthenticationService {
 	private final ConcurrentHashMap<String, CompletableFuture<Message>> pendingResponses = new ConcurrentHashMap<>();
@@ -35,7 +34,7 @@ public class StoreAuthenticationService {
 	private MaxAttemptManager maxAttemptManager;
 	@Autowired
 	private MessageUtils messageUtils;
-	
+
 	@Autowired
 	private TokenService tokenService;
 
@@ -44,7 +43,8 @@ public class StoreAuthenticationService {
 			throw new UserDataAlreadyExistsException("Email is already registered");
 		}
 		String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
-		StoreDTO newStore = new StoreDTO(data.name(), data.email(), encryptedPassword, data.address(), data.phone(), data.CNPJ(), data.opening_hours());
+		StoreDTO newStore = new StoreDTO(data.name(), data.email(), encryptedPassword, data.address(), data.phone(),
+				data.CNPJ(), data.opening_hours());
 		CompletableFuture<Message> responseFuture = new CompletableFuture<>();
 		String correlationId = this.messageUtils.generateCorrelationId();
 		pendingResponses.put(correlationId, responseFuture);
@@ -68,15 +68,15 @@ public class StoreAuthenticationService {
 			responseFuture.complete(message);
 		}
 	}
-	
+
 	public String storeLogin(AuthenticationDTO data) {
 		try {
 			this.maxAttemptManager.checkAndUpdateAttempts(data.login());
 		} catch (Exception e) {
 			throw e;
 		}
-		this.authenticationService.authenticateStore(data.login(), data.password());
-		var token = tokenService.generateToken(data.login(), TypeOfUser.STORE);
+		var authStore = (StoreDetailsDTO) this.authenticationService.authenticateStore(data.login(), data.password()).getPrincipal();
+		var token = tokenService.generateToken(data.login(), TypeOfUser.STORE, authStore.getName(), authStore.getId());
 		return token;
 	}
 }

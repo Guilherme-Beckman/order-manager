@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ms.products.model.ProductModel;
+import com.ms.products.model.product.ProductModel;
 import com.ms.stores.infra.security.CryptoUtils;
 import com.ms.stores.infra.security.StoreCryto;
 import com.ms.stores.infra.security.TokenService;
