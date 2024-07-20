@@ -40,7 +40,7 @@ public class UserService {
 		UserModel savedUser = this.userRepository.insert(newUser);
 		AddressDTO address = userDTO.address();
 		UserModel userWithAddress = addAdress(savedUser, address);
-		return this.userRepository.insert(userWithAddress);
+		return this.userRepository.save(userWithAddress);
 	}
 
 	@Transactional
@@ -78,6 +78,7 @@ public class UserService {
 
 	public UserModel getUserByEmail(String email) {
 		UserModel user = userRepository.findByEmail(email.replace("\"", " ").trim());
+		System.out.println(user);
 		return user;
 	}
 

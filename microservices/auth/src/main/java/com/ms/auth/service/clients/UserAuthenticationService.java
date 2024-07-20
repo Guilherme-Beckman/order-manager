@@ -55,6 +55,7 @@ public class UserAuthenticationService {
 			Message response = responseFuture.get(5000, TimeUnit.MILLISECONDS);
 			return messageUtils.convertMessageToUserDetails(response);
 		} catch (Exception e) {
+			System.out.println("ta indo null");
 			return null;
 		} finally {
 			pendingResponses.remove(correlationId);

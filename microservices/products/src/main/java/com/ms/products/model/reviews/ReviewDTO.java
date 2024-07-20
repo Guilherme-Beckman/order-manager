@@ -4,9 +4,8 @@ import java.time.LocalDateTime;
 
 public record ReviewDTO(
     String productId,
-    String userId,
     String userName,
     String comment,
-    int rating,
+    Float rating,
     LocalDateTime createdAt
     ) {}

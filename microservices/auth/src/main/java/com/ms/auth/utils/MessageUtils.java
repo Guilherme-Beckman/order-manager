@@ -20,7 +20,7 @@ public class MessageUtils {
 	    try {
 	        ObjectMapper objectMapper = new ObjectMapper();
 	        var user = objectMapper.readValue(message.getBody(), UserDetailsDTO.class);
-	        
+	        System.out.println("user:"+ user);
 	        return user;
 	    } catch (Exception e) {
 	        throw new ConvertMessageToUserDetailsException("Error while converting message into UserDetails");
@@ -33,6 +33,7 @@ public class MessageUtils {
                 var user = objectMapper.readValue(message.getBody(), StoreDetailsDTO.class);
                 return user;
             } catch (Exception e) {
+            	e.printStackTrace();
                 throw new ConvertMessageToUserDetailsException("Error while converting message into UserDetails");      
     }
        

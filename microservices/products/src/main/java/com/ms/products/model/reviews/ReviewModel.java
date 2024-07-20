@@ -13,13 +13,12 @@ public class ReviewModel {
 	private String userId;
 	private String userName;
 	private String comment;
-	private int rating;
+	private Float rating;
 	private LocalDateTime createdAt;
 	
 	
 	public ReviewModel(ReviewDTO reviewDTO) {
 		this.productId = reviewDTO.productId();
-		this.userId = reviewDTO.userId();
 		this.userName = reviewDTO.userName();
 		this.comment = reviewDTO.comment();
 		this.rating = reviewDTO.rating();
@@ -28,7 +27,7 @@ public class ReviewModel {
 	public ReviewModel() {
 	}
 
-	public ReviewModel(String id, String productId, String userId, String userName, String comment, int rating,
+	public ReviewModel(String id, String productId, String userId, String userName, String comment, Float rating,
 			LocalDateTime createdAt) {
 		this.id = id;
 		this.productId = productId;
@@ -62,10 +61,10 @@ public class ReviewModel {
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
-	public int getRating() {
+	public Float getRating() {
 		return rating;
 	}
-	public void setRating(int rating) {
+	public void setRating(Float rating) {
 		this.rating = rating;
 	}
 	public LocalDateTime getCreatedAt() {
