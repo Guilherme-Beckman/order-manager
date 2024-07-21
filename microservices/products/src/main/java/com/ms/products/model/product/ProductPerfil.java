@@ -11,7 +11,6 @@ public record ProductPerfil (
 		Integer price,
 		String menuId,
 		String description,
-		String image,
 		Float rating,
 		Integer reviewsCount,
 		List<ReviewDTO> reviews

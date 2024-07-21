@@ -78,13 +78,16 @@ public class UserService {
 
 	public UserModel getUserByEmail(String email) {
 		UserModel user = userRepository.findByEmail(email.replace("\"", " ").trim());
-		System.out.println(user);
+		if(user!=null) {
+			user.setName(this.cryptoUtils.decrypt(user.getName()));
+		}
 		return user;
 	}
 
 	public void validateUserEmail(String email) {
 		var emailE = this.cryptoUtils.encrypt(email);
 		var user = this.getUserByEmail(emailE);
+		user.setName(this.cryptoUtils.encrypt(user.getName()));
 		user.getRoles().remove(Role.ROLE_NON_VERIFIED_EMAIL);
 		user.getRoles().add(Role.ROLE_VERIFIED_EMAIL);
 		user.setRoles(user.getRoles());
@@ -113,6 +116,7 @@ public class UserService {
 		if (user == null) {
 			return;
 		}
+		user.setName(this.cryptoUtils.encrypt(user.getName()));
 		user.setPassword(newPassword);
 		this.userRepository.save(user);
 	}

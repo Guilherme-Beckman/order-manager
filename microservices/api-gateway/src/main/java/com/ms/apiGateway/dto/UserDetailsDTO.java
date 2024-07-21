@@ -16,6 +16,7 @@ public class UserDetailsDTO implements UserDetails {
 	private String name;
 	private String lastName;
 	private String email;
+	private String phone;
 	private List<String> address;
 	private boolean accountNonExpired;
 	private boolean accountNonLocked;
@@ -119,6 +120,14 @@ public class UserDetailsDTO implements UserDetails {
 
 	public void setRoles(List<Role> roles) {
 		this.roles = roles;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
 }

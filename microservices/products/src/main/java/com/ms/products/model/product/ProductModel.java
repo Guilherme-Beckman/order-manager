@@ -19,10 +19,9 @@ public class ProductModel {
 	private Float rating;
 	private Integer reviewsCount;
 	private List<String> reviews;
-	private String image;
 
 	public ProductModel(String id, String ownerid, String menuId, String name, Integer price, String description,
-			boolean avaliability, String image) {
+			boolean avaliability) {
 		this.id = id;
 		this.ownerid = ownerid;
 		this.menuId = menuId;
@@ -33,7 +32,6 @@ public class ProductModel {
 		this.rating = 0F;
 		this.reviewsCount = 0;
 		this.reviews = new ArrayList<>();
-		this.image = image;
 	}
 	
 
@@ -50,7 +48,6 @@ public class ProductModel {
 		this.rating = 0F;
 		this.reviewsCount = 0;
 		this.reviews = new ArrayList<>();
-		this.image = productDTO.image();
 	}
 
 	public String getId() {
@@ -133,12 +130,6 @@ public class ProductModel {
 		this.reviews = reviews;
 	}
 
-	public String getImage() {
-		return image;
-	}
 
-	public void setImage(String image) {
-		this.image = image;
-	}
 
 }

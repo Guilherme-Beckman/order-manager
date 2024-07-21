@@ -27,7 +27,9 @@ public record UserDTO(
     @Email(message = "email must be a valid email address") 
     @NotBlank(message = "email must not be blank") 
     String email,
-
+    @NotNull(message = "phone must not be null") 
+    @NotBlank(message = "phone must not be blank") 
+    String phone,
     @NotNull(message = "address must not be null") 
     AddressDTO address
 ) {}

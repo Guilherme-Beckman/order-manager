@@ -12,5 +12,7 @@ public record UserDTO(
     @NotBlank String name,   
     @NotBlank String lastName,  
     @Email @NotBlank String email,
+    @NotBlank @NotNull String phone,
     @NotNull AddressDTO address  
+    
 ) {}

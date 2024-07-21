@@ -69,6 +69,10 @@ public class RabbitMQConfig {
 	public static final String ADD_PRODUCT_EXCHANGE = "add_product.exchange";
 	public static final String ADD_PRODUCT_KEY = "add_product_key";
 
+	public static final String PRODUCTS_BY_STORE_ID_QUEUE = "products_by_store_id.queue";
+	public static final String PRODUCT_BY_STORE_EXCHANGE = "products_by_store_id.exchange";
+	public static final String PRODUCTS_BY_STORE_KEY = "products_by_store_id.key";
+
 	@Bean
 	public Queue loadUserDetailsQueue() {
 		return new Queue(LOAD_USER_DETAILS_QUEUE, true);
@@ -341,22 +345,35 @@ public class RabbitMQConfig {
 			@Qualifier("addProductExchange") TopicExchange addProductExchange) {
 		return BindingBuilder.bind(addProductQueue).to(addProductExchange).with(ADD_PRODUCT_KEY);
 	}
-	
 
-	    @Bean(name = "rabbitTemplateForProducts")
-	    public RabbitTemplate rabbitTemplateForProducts(ConnectionFactory connectionFactory) {
-	        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
-	        rabbitTemplate.setMessageConverter(jsonMessageConverter());
-	        rabbitTemplate.setReplyTimeout(6000); 
-	        rabbitTemplate.setMessageConverter(jsonMessageConverter());
-	        return rabbitTemplate;
-	    }
-
-	    @Bean
-	    public Jackson2JsonMessageConverter jsonMessageConverter() {
-	        return new Jackson2JsonMessageConverter();
-	    }
+	@Bean(name = "rabbitTemplateForProducts")
+	public RabbitTemplate rabbitTemplateForProducts(ConnectionFactory connectionFactory) {
+		RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
+		rabbitTemplate.setMessageConverter(jsonMessageConverter());
+		rabbitTemplate.setReplyTimeout(6000);
+		rabbitTemplate.setMessageConverter(jsonMessageConverter());
+		return rabbitTemplate;
 	}
 
+	@Bean
+	public Jackson2JsonMessageConverter jsonMessageConverter() {
+		return new Jackson2JsonMessageConverter();
+	}
+	
+	@Bean
+	public Queue productByStoreIdQueue() {
+		return new Queue(PRODUCTS_BY_STORE_ID_QUEUE);
+	}
 
+	@Bean
+	public TopicExchange productByStoreIdExchange() {
+		return new TopicExchange(PRODUCT_BY_STORE_EXCHANGE);
+	}
 
+	@Bean
+	public Binding productByStoreIdExchangeBindingKey(@Qualifier("productByStoreIdQueue") Queue productByStoreIdQueue,
+			@Qualifier("productByStoreIdExchange") TopicExchange productByStoreIdExchange) {
+		return BindingBuilder.bind(productByStoreIdQueue).to(productByStoreIdExchange).with(PRODUCTS_BY_STORE_KEY);
+	}
+	
+}

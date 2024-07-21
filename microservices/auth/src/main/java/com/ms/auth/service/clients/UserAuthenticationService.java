@@ -46,7 +46,7 @@ public class UserAuthenticationService {
 		CompletableFuture<Message> responseFuture = new CompletableFuture<>();
 		String encryptedPassword = new BCryptPasswordEncoder().encode(userDTO.password());
 		UserDTO newUser = new UserDTO(userDTO.cpf(), encryptedPassword, userDTO.name(), userDTO.lastName(),
-				userDTO.email(), userDTO.address());
+				userDTO.email(),userDTO.phone(), userDTO.address());
 		String correlationId = this.messageUtils.generateCorrelationId();
 		pendingResponses.put(correlationId, responseFuture);
 		Message message = this.messageUtils.createMessage(newUser, correlationId);

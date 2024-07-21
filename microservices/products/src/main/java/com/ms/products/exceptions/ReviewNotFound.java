@@ -2,6 +2,8 @@ package com.ms.products.exceptions;
 
 public class ReviewNotFound extends RuntimeException {
 
+	private static final long serialVersionUID = 1L;
+
 	public ReviewNotFound() {
 		super();
 		// TODO Auto-generated constructor stub

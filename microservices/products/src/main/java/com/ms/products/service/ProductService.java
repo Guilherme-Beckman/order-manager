@@ -62,11 +62,14 @@ public class ProductService {
 	            product.getPrice(),
 	            product.getMenuId(),
 	            product.getDescription(),
-	            product.getImage(),
 	            product.getRating(),
 	            product.getReviewsCount(),
 	            reviewDTOs
 	            );
+	}
+	
+	public List<ProductModel> findByStoreId (String storeId){
+		return this.productRepository.findByOwnerid(storeId);
 	}
 }
 	

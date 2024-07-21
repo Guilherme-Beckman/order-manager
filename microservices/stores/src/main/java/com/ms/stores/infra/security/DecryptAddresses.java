@@ -17,9 +17,7 @@ public class DecryptAddresses {
 	@Autowired
 	private CryptoUtils cryptoUtils;
 
-	public List<AddressDTO> decryptAddresses(List<String> addressesId) {
-		List<AddressDTO> decryptedAddresses = new ArrayList<>();
-		addressesId.forEach(id -> {
+	public AddressDTO decryptAddresses(String id) {
 			AddressModel addressModel = this.addressService.getAddressById(id);
 			String userId = addressModel.getUserId();
 			String street = addressModel.getStreet();
@@ -41,8 +39,6 @@ public class DecryptAddresses {
 			AddressDTO addressDTO = new AddressDTO(userId, street, number, complement, neighborhood, city, state,
 					zipCode);
 
-			decryptedAddresses.add(addressDTO);
-		});
-		return decryptedAddresses;
+		return addressDTO;
 	}
 }

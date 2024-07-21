@@ -27,7 +27,8 @@ public class SecurityConfiguration {
 						.permitAll().pathMatchers("/stores/addProduct").hasRole("STORE")
 						.pathMatchers("/auth/inviteResetPassword", "/auth/newPassword","products/review/**").hasRole("USER")
 						.pathMatchers("/auth/sendcode", "/auth/validate").hasRole("NON_VERIFIED_EMAIL")
-						.pathMatchers("/user/addAddress", "/user/perfil").hasRole("VERIFIED_EMAIL").anyExchange()
+						.pathMatchers("/clients/addAddress", "/clients/perfil").hasRole("VERIFIED_EMAIL")
+						.anyExchange()
 						.authenticated())
 				.securityContextRepository(NoOpServerSecurityContextRepository.getInstance())
 				.addFilterBefore(authenticationFilter, SecurityWebFiltersOrder.AUTHENTICATION).build();

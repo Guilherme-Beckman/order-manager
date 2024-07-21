@@ -9,6 +9,7 @@ public record UserPerfilDTO(
 		String name,
 		String lastName,
 		String email,
+		String phone,
 		List<AddressDTO> adresses
 		
 		) {

@@ -42,7 +42,7 @@ public class EmailService {
 		var userInfos = this.tokenService.getTokenInformations(token);
 		String email = userInfos.getSubject();
 
-
+		System.out.println(email);
 		this.attemptManagerExponencial.checkAndUpdateAttempts(email);
 		this.maxAttemptManager.checkAndUpdateAttempts(email);
 		code = this.generateCode();

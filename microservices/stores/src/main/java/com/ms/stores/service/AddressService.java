@@ -48,6 +48,7 @@ public class AddressService {
 	}
 
 	public AddressModel getAddressById(String id) {
+		System.out.println(id);
 		return this.addressRepository.findById(id).orElseThrow(AdressNotFoundException::new);
 	}
 }

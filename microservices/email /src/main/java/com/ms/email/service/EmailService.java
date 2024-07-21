@@ -14,6 +14,7 @@ public class EmailService {
 	public void sendEmailCode(Message message) {
 		SimpleMailMessage mailMessage = new SimpleMailMessage();
 		String email = new String(message.getBody());
+		System.out.println(email);
 		mailMessage.setTo(email);
 		mailMessage.setSubject("Code ");
 		mailMessage.setText("Your code is: " + message.getMessageProperties().getCorrelationId());

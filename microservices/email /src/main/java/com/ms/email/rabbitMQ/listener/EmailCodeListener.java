@@ -16,6 +16,7 @@ public class EmailCodeListener {
 
 	@RabbitListener(queues = RabbitMQConfig.EMAIL_CODE_GENERATED_QUEUE)
 	public void listenEmailCodeQueue(@Payload Message message) {
+		System.out.println(message);
 		if (message != null) {
 			this.emailService.sendEmailCode(message);
 		}

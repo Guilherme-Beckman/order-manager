@@ -4,9 +4,7 @@ public record ProductDTO(
 		String name, 
 		Integer price, 
 		String description,
-		boolean avaliability, 
-		String image
-
+		boolean avaliability
 ) {
 
 }

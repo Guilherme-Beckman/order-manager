@@ -17,6 +17,7 @@ public class UserModel {
 	private String lastName;
 	@Indexed(unique = true)
 	private String email;
+	private String phone;
 	private List<String> address;
 	private boolean accountNonExpired;
 	private boolean accountNonLocked;
@@ -36,6 +37,7 @@ public class UserModel {
 		this.name = userDTO.name();
 		this.lastName = userDTO.lastName();
 		this.email = userDTO.email();
+		this.setPhone(userDTO.phone());
 		this.address = new ArrayList<String>();
 		this.accountNonExpired = true; 
 		this.accountNonLocked = true; 
@@ -46,13 +48,14 @@ public class UserModel {
 		roles.add(Role.ROLE_NON_VERIFIED_EMAIL);
 	}
 
-	public UserModel(String id, String cpf, String password, String name, String lastName, String email) {
+	public UserModel(String id, String cpf, String password, String name, String lastName, String email, String phone) {
 		this.id = id;
 		this.cpf = cpf;
 		this.password = password;
 		this.name = name;
 		this.lastName = lastName;
 		this.email = email;
+		this.phone = phone;
 		
 	}
 
@@ -143,6 +146,12 @@ public class UserModel {
 
 	public void setRoles(List<Role> roles) {
 		this.roles = roles;
+	}
+	public String getPhone() {
+		return phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
 }

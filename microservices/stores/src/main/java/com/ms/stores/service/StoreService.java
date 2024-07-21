@@ -1,5 +1,6 @@
 package com.ms.stores.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,8 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ms.products.model.product.ProductModel;
+import com.ms.stores.controller.StorePerfil;
 import com.ms.stores.infra.security.CryptoUtils;
-import com.ms.stores.infra.security.StoreCryto;
+import com.ms.stores.infra.security.StoreCrypto;
 import com.ms.stores.infra.security.TokenService;
 import com.ms.stores.model.Role;
 import com.ms.stores.model.address.AddressDTO;
@@ -18,6 +20,7 @@ import com.ms.stores.model.products.ProductDTO;
 import com.ms.stores.model.store.StoreDTO;
 import com.ms.stores.model.store.StoreModel;
 import com.ms.stores.rabbitMQ.producer.AddProductProducer;
+import com.ms.stores.rabbitMQ.producer.RequestProductsByStoreIdProducer;
 import com.ms.stores.repository.StoreRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,7 +32,7 @@ public class StoreService {
 	@Autowired
 	private AddressService addressService;
 	@Autowired
-	private StoreCryto storeCryto;
+	private StoreCrypto storeCrypto;
 	@Autowired
 	private CryptoUtils cryptoUtils;
 	@Autowired
@@ -38,10 +41,12 @@ public class StoreService {
 	private TokenService tokenService;
 	@Autowired
 	private AddProductProducer addProductProducer;
+	@Autowired
+	private RequestProductsByStoreIdProducer productsByStoreIdProducer;
 
 	@Transactional
 	public StoreModel insertUser(StoreDTO storeDTO) {
-		var encryptedStore = this.storeCryto.cryptoStoreData(storeDTO);
+		var encryptedStore = this.storeCrypto.cryptoStoreData(storeDTO);
 		StoreModel newStore = new StoreModel(encryptedStore);
 		StoreModel savedStore = this.storeRepository.insert(newStore);
 		AddressDTO address = storeDTO.address();
@@ -77,7 +82,7 @@ public class StoreService {
 	}
 
 	public StoreModel getStoreByEmail(String email) {
-		System.out.println("email: "+email);
+		System.out.println("email: " + email);
 		StoreModel user = storeRepository.findByEmail(email.replace("\"", " ").trim());
 		return user;
 	}
@@ -95,16 +100,54 @@ public class StoreService {
 		var token = this.tokenService.recoverToken(httpRequest);
 		var storeInfo = this.tokenService.getTokenInformations(token);
 		var encrytedStore = this.cryptoUtils.encrypt(storeInfo.getSubject());
-		var store  = this.getStoreByEmail(encrytedStore);
+		var store = this.getStoreByEmail(encrytedStore);
 		ProductDTO newProductDTO = new ProductDTO(store.getId(), productDTO.name(), productDTO.price(),
-				productDTO.description(), productDTO.avaliability(), null);
-		
+				productDTO.description(), productDTO.avaliability());
+
 		var addedProduct = this.addProductProducer.addProduct(newProductDTO);
 		this.storeRepository.save(this.addProduct(store, addedProduct.getId()));
 		return addedProduct;
 	}
+
 	public StoreModel addProduct(StoreModel storeModel, String productId) {
 		storeModel.getProducts().add(productId);
 		return storeModel;
+	}
+
+	private StoreModel findStoreByToken(HttpServletRequest request) {
+		var token = this.tokenService.recoverToken(request);
+		var storeInfos = this.tokenService.getTokenInformations(token);
+		var email = storeInfos.getSubject();
+		var encryptedEmail = this.cryptoUtils.encrypt(email);
+		var store = this.getStoreByEmail(encryptedEmail);
+		return store;
+	}
+
+	public StorePerfil getStorePerfil(HttpServletRequest request) {
+		var store = this.findStoreByToken(request);
+		var decryptedUserPerfil = this.storeCrypto.decryptStoreData(store);
+		var hours = this.openingHoursService.getByStoreId(store.getId());
+		List<OpeningHoursDTO> openingHours = new ArrayList<>();
+		hours.forEach(opHours -> {
+			OpeningHoursDTO openingHoursDTO = new OpeningHoursDTO(opHours.getDayOfWeek(), opHours.getOpenTime(),
+					opHours.getCloseTime());
+			openingHours.add(openingHoursDTO);
+		});
+
+		var products = this.productsByStoreIdProducer.requestProductsByStoreIdProducer(store.getId());
+		var addressModel = this.addressService.getAddressById(store.getAddressId());
+		AddressDTO addressDTO = new AddressDTO(
+			    addressModel.getUserId(),
+			    addressModel.getStreet(),
+			    addressModel.getNumber(),
+			    addressModel.getComplement(),
+			    addressModel.getNeighborhood(),
+			    addressModel.getCity(),
+			    addressModel.getState(),
+			    addressModel.getZipCode()
+			);
+		StorePerfil storePerfil = new StorePerfil(store.getId(), decryptedUserPerfil.name(),
+				addressDTO, decryptedUserPerfil.phone(), openingHours, products);
+		return storePerfil;
 	}
 }

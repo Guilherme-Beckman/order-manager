@@ -1,5 +1,7 @@
 package com.ms.stores.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,5 +19,8 @@ public class OpeningHoursService {
 		var newHours = new OpeningHoursModel(openingHoursDTO);
 		newHours.setStoreId(storeId);
 		return this.openingHoursRepository.save(newHours);
+	}
+	public List<OpeningHoursModel> getByStoreId (String storeId) {
+		return this.openingHoursRepository.findByStoreId(storeId);
 	}
 }
