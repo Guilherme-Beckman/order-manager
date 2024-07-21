@@ -77,6 +77,11 @@ public class RabbitMQConfig {
 	public static final String ADD_PRODUCT_MENU_EXCHANGE = "add_product_menu.exchange";
 	public static final String ADD_PRODUCT_MENU_KEY = "add_product_menu.key";
 
+	public static final String PRODUCTS_BY_MENU_ID_QUEUE = "products_by_menu_id.queue";
+	public static final String PRODUCT_BY_MENU_EXCHANGE = "products_by_menu_id.exchange";
+	public static final String PRODUCTS_BY_MENU_KEY = "products_by_menu_id.key";
+	
+
 
 	@Bean
 	public Queue loadUserDetailsQueue() {
@@ -395,6 +400,22 @@ public class RabbitMQConfig {
 	public Binding bindingMenu(@Qualifier("addProductMenuQueue") Queue addProductMenuQueue,
 			@Qualifier("addProductMenuExchange") TopicExchange addProductMenuExchange) {
 		return BindingBuilder.bind(addProductMenuQueue).to(addProductMenuExchange).with(ADD_PRODUCT_MENU_KEY);
+	}
+	
+	@Bean
+	public Queue productByMenuIdQueue() {
+		return new Queue(PRODUCTS_BY_MENU_ID_QUEUE);
+	}
+
+	@Bean
+	public TopicExchange productByMenuIdExchange() {
+		return new TopicExchange(PRODUCT_BY_MENU_EXCHANGE);
+	}
+
+	@Bean
+	public Binding productByMenuIdExchangeBindingKey(@Qualifier("productByMenuIdQueue") Queue productByMenuIdQueue,
+			@Qualifier("productByMenuIdExchange") TopicExchange productByMenuIdExchange) {
+		return BindingBuilder.bind(productByMenuIdQueue).to(productByMenuIdExchange).with(PRODUCTS_BY_MENU_KEY);
 	}
 	
 }

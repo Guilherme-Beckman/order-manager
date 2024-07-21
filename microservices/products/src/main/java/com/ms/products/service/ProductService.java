@@ -79,6 +79,10 @@ public class ProductService {
 		this.productRepository.save(product);
 		return product;
 	}
+
+	public List<ProductModel> findByMenuId(String menuId) {
+		return this.productRepository.findByMenuId(menuId);
+	}
 }
 	
 

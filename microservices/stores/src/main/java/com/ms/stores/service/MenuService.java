@@ -7,8 +7,10 @@ import com.ms.stores.exceptions.rest.MenuNotFoundException;
 import com.ms.stores.exceptions.rest.ProductIsAlreadyOnTheMenuException;
 import com.ms.stores.model.menu.MenuDTO;
 import com.ms.stores.model.menu.MenuModel;
+import com.ms.stores.model.menu.MenuPerfil;
 import com.ms.stores.rabbitMQ.producer.AddProductMenuProducer;
 import com.ms.stores.rabbitMQ.producer.MenuProductDTO;
+import com.ms.stores.rabbitMQ.producer.RequestProductsByMenuIdProducer;
 import com.ms.stores.repository.MenuRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,6 +23,9 @@ public class MenuService {
 	private StoreService storeService;
 	@Autowired
 	private AddProductMenuProducer productMenuProducer;
+	@Autowired
+	private RequestProductsByMenuIdProducer requestProductsByMenuIdProducer;
+
 	public MenuModel createMenu(MenuDTO menuDTO, HttpServletRequest servletRequest) {
 		var store = this.storeService.findStoreByToken(servletRequest);
 		var menuModel = new MenuModel(menuDTO);
@@ -33,6 +38,7 @@ public class MenuService {
 	}
 
 	public MenuModel addProductMenu(String menuId, String productId) {
+		this.getMenuId(menuId);
 		MenuProductDTO menuProductDTO = new MenuProductDTO(menuId, productId);
 		this.productMenuProducer.addProductMenu(menuProductDTO);
 		var menuModel = getMenuId(menuId);
@@ -40,6 +46,13 @@ public class MenuService {
 			throw new ProductIsAlreadyOnTheMenuException();
 		menuModel.getProductIds().add(productId);
 		return this.menuRepository.save(menuModel);
+	}
+
+	public MenuPerfil getProductByMenuId(String menuId) {
+		var menu = this.getMenuId(menuId);
+		var products = this.requestProductsByMenuIdProducer.requestProductsByMenuIdProducer(menuId);
+		return new MenuPerfil(menu.getId(),menu.getStoreId(),menu.getName(), products);
+		
 	}
 
 }
