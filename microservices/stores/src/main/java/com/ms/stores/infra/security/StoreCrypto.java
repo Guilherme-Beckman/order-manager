@@ -2,17 +2,15 @@ package com.ms.stores.infra.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import com.ms.stores.controller.StorePerfil;
-import com.ms.stores.model.address.AddressDTO;
+
 import com.ms.stores.model.store.StoreDTO;
 import com.ms.stores.model.store.StoreModel;
+import com.ms.stores.model.store.StorePerfil;
 
 @Component
 public class StoreCrypto {
 	@Autowired
 	private CryptoUtils cryptoUtils;
-	@Autowired
-	private DecryptAddresses decryptAddresses;
 
 	public StoreDTO cryptoStoreData(StoreDTO storeDTO) {
 		String CNPJ = this.cryptoUtils.encrypt(storeDTO.CNPJ());

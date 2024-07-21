@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ms.products.model.product.ProductModel;
-import com.ms.stores.controller.StorePerfil;
 import com.ms.stores.infra.security.CryptoUtils;
 import com.ms.stores.infra.security.StoreCrypto;
 import com.ms.stores.infra.security.TokenService;
@@ -19,6 +18,7 @@ import com.ms.stores.model.opening_hours.OpeningHoursDTO;
 import com.ms.stores.model.products.ProductDTO;
 import com.ms.stores.model.store.StoreDTO;
 import com.ms.stores.model.store.StoreModel;
+import com.ms.stores.model.store.StorePerfil;
 import com.ms.stores.rabbitMQ.producer.AddProductProducer;
 import com.ms.stores.rabbitMQ.producer.RequestProductsByStoreIdProducer;
 import com.ms.stores.repository.StoreRepository;
@@ -29,6 +29,7 @@ import jakarta.servlet.http.HttpServletRequest;
 public class StoreService {
 	@Autowired
 	private StoreRepository storeRepository;
+
 	@Autowired
 	private AddressService addressService;
 	@Autowired
@@ -114,7 +115,7 @@ public class StoreService {
 		return storeModel;
 	}
 
-	private StoreModel findStoreByToken(HttpServletRequest request) {
+	public StoreModel findStoreByToken(HttpServletRequest request) {
 		var token = this.tokenService.recoverToken(request);
 		var storeInfos = this.tokenService.getTokenInformations(token);
 		var email = storeInfos.getSubject();
@@ -123,8 +124,8 @@ public class StoreService {
 		return store;
 	}
 
-	public StorePerfil getStorePerfil(HttpServletRequest request) {
-		var store = this.findStoreByToken(request);
+	public StorePerfil getStorePerfil(String id) {
+		var store = this.getStoreById(id);
 		var decryptedUserPerfil = this.storeCrypto.decryptStoreData(store);
 		var hours = this.openingHoursService.getByStoreId(store.getId());
 		List<OpeningHoursDTO> openingHours = new ArrayList<>();
@@ -136,18 +137,12 @@ public class StoreService {
 
 		var products = this.productsByStoreIdProducer.requestProductsByStoreIdProducer(store.getId());
 		var addressModel = this.addressService.getAddressById(store.getAddressId());
-		AddressDTO addressDTO = new AddressDTO(
-			    addressModel.getUserId(),
-			    addressModel.getStreet(),
-			    addressModel.getNumber(),
-			    addressModel.getComplement(),
-			    addressModel.getNeighborhood(),
-			    addressModel.getCity(),
-			    addressModel.getState(),
-			    addressModel.getZipCode()
-			);
-		StorePerfil storePerfil = new StorePerfil(store.getId(), decryptedUserPerfil.name(),
-				addressDTO, decryptedUserPerfil.phone(), openingHours, products);
+		AddressDTO addressDTO = new AddressDTO(addressModel.getUserId(), addressModel.getStreet(),
+				addressModel.getNumber(), addressModel.getComplement(), addressModel.getNeighborhood(),
+				addressModel.getCity(), addressModel.getState(), addressModel.getZipCode());
+		StorePerfil storePerfil = new StorePerfil(store.getId(), decryptedUserPerfil.name(), addressDTO,
+				decryptedUserPerfil.phone(), openingHours, products);
 		return storePerfil;
 	}
+
 }

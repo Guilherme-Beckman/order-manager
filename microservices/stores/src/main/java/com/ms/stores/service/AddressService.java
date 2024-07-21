@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.ms.stores.exceptions.address.AdressNotFoundException;
+import com.ms.stores.exceptions.rest.AdressNotFoundException;
 import com.ms.stores.model.address.AddressDTO;
 import com.ms.stores.model.address.AddressModel;
 import com.ms.stores.model.address.ViaCepResponse;

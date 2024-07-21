@@ -10,12 +10,12 @@ import com.ms.products.model.product.ProductDTO;
 import com.ms.products.model.product.ProductModel;
 import com.ms.products.service.ProductService;
 @Component
-public class AddProductListener {
+public class AddProductMenuListener {
 	@Autowired
 	private ProductService productService;
 	
-	@RabbitListener(queues = RabbitMQConfig.ADD_PRODUCT_QUEUE)
-	public ProductModel receiveProducToAdd(@Payload ProductDTO productDTO) {
-		return this.productService.addNewProduct(productDTO);
+	@RabbitListener(queues = RabbitMQConfig.ADD_PRODUCT_MENU_QUEUE)
+	public void receiveProducToAddMenu(@Payload MenuProductDTO menuProductDTO) {
+		this.productService.addProductMenu(menuProductDTO);
 	}
 }

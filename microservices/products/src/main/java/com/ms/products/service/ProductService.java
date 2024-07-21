@@ -7,11 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import com.ms.products.exceptions.ProductNotFoundException;
+import com.ms.products.exceptions.rest.ProductNotFoundException;
 import com.ms.products.model.product.ProductDTO;
 import com.ms.products.model.product.ProductModel;
 import com.ms.products.model.product.ProductPerfil;
 import com.ms.products.model.reviews.ReviewDTO;
+import com.ms.products.rabbitMQ.listener.MenuProductDTO;
 import com.ms.products.repository.ProductRepository;
 
 @Service
@@ -70,6 +71,13 @@ public class ProductService {
 	
 	public List<ProductModel> findByStoreId (String storeId){
 		return this.productRepository.findByOwnerid(storeId);
+	}
+
+	public ProductModel addProductMenu(MenuProductDTO menuProductDTO) {
+		var product  = this.getProductById(menuProductDTO.productId());
+		product.setMenuId(menuProductDTO.menuId());
+		this.productRepository.save(product);
+		return product;
 	}
 }
 	

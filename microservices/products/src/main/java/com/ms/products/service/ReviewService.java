@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ms.products.config.infra.security.TokenService;
-import com.ms.products.exceptions.ReviewNotFound;
+import com.ms.products.exceptions.rest.ReviewNotFoundException;
 import com.ms.products.model.reviews.ReviewDTO;
 import com.ms.products.model.reviews.ReviewModel;
 import com.ms.products.repository.ReviewRepository;
@@ -47,7 +47,7 @@ public class ReviewService {
 	}
 
 	public ReviewDTO getReviewDTOById(String id) {
-		var review = this.reviewRepository.findById(id).orElseThrow(ReviewNotFound::new);
+		var review = this.reviewRepository.findById(id).orElseThrow(ReviewNotFoundException::new);
 		return new ReviewDTO(review.getProductId(), review.getUserName(), review.getComment(),
 				review.getRating(), review.getCreatedAt());
 	}
