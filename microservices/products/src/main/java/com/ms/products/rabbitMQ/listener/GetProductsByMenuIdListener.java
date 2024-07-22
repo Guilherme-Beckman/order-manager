@@ -11,7 +11,7 @@ import com.ms.products.config.RabbitMQConfig;
 import com.ms.products.model.product.ProductModel;
 import com.ms.products.service.ProductService;
 @Component
-public class GetProductsByMenuIdProducer {
+public class GetProductsByMenuIdListener {
 	@Autowired
 	private ProductService productService;
 	

@@ -1,12 +1,14 @@
 package com.ms.orders.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.HashMap;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.ms.orders.infra.security.TokenService;
 import com.ms.orders.model.cart.CartModel;
+import com.ms.orders.rabbitMQ.producer.GetProductByIdProducer;
 import com.ms.orders.repository.CartRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,6 +19,8 @@ public class CartService {
 	private CartRepository cartRepository;
 	@Autowired
 	private TokenService tokenService;
+	@Autowired
+	private GetProductByIdProducer productByIdProducer;
 
 	private CartModel getActiveCartByUserId(String id) {
 		CartModel cartModel = this.cartRepository.findActiveCartsByUserId(id);
@@ -24,18 +28,27 @@ public class CartService {
 	}
 
 	public CartModel addProductToCart(HttpServletRequest httpServletRequest, String productId) {
-		var userInfo = this.getUserInfoByToken(httpServletRequest);
-		String userId = userInfo.getClaim("userId").asString();
-		var cart = this.getActiveCartByUserId(userId);
-		if (cart == null) {
-			CartModel newCart = new CartModel(userId);
-			newCart.getProductsId().add(productId);
-			return this.cartRepository.insert(newCart);
-		}
-		cart.getProductsId().add(productId);
-		return this.cartRepository.save(cart);
-
+		var product = this.productByIdProducer.requestProductsByIdProducer(productId);
+		var storeId = product.ownerid();
+	    var userInfo = this.getUserInfoByToken(httpServletRequest);
+	    String userId = userInfo.getClaim("userId").asString();
+	    
+	    var cart = this.getActiveCartByUserId(userId);
+	    if (cart == null) {
+	        CartModel newCart = new CartModel(userId);
+	        var map = new HashMap<String, Integer>();
+	        map.put(productId, 1);
+	        newCart.getStoreProductsId().put(storeId, map);
+	        return this.cartRepository.insert(newCart);
+	    }
+	    
+	    var map = cart.getStoreProductsId();
+	    var storeProduct = map.computeIfAbsent(storeId, k -> new HashMap<>());
+	    storeProduct.put(productId, storeProduct.getOrDefault(productId, 0) + 1);
+	    
+	    return this.cartRepository.save(cart);
 	}
+
 
 	private DecodedJWT getUserInfoByToken(HttpServletRequest request) {
 		var token = this.tokenService.recoverToken(request);

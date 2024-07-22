@@ -3,6 +3,7 @@ package com.ms.products.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.ms.products.exceptions.rest.ProductNotFoundException;
 import com.ms.products.model.product.ProductDTO;
 import com.ms.products.model.product.ProductModel;
+import com.ms.products.model.product.ProductModelDTO;
 import com.ms.products.model.product.ProductPerfil;
 import com.ms.products.model.reviews.ReviewDTO;
 import com.ms.products.rabbitMQ.listener.MenuProductDTO;
@@ -47,34 +49,35 @@ public class ProductService {
 		return this.productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
 	}
 
-	public ProductPerfil getProductPerfilById(String id) {
-	    var product = this.productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
-	    List<ReviewDTO> reviewDTOs = new ArrayList<>();
-	    
-	    product.getReviews().forEach(review->{
-	    	var reviewDTO = this.reviewService.getReviewDTOById(review);
-	    	reviewDTOs.add(reviewDTO);
-	    });
-	    
-	    return new ProductPerfil(
-	            product.getId(),
-	            product.getOwnerid(),
-	            product.getName(),
-	            product.getPrice(),
-	            product.getMenuId(),
-	            product.getDescription(),
-	            product.getRating(),
-	            product.getReviewsCount(),
-	            reviewDTOs
-	            );
+	public ProductModelDTO getProductModelDTOById(String id) {
+		var product = this.productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
+		var produtModelDto = new ProductModelDTO();
+		BeanUtils.copyProperties(product, produtModelDto);
+		produtModelDto.setOwnerId(product.getOwnerid());
+		return produtModelDto;
+
 	}
-	
-	public List<ProductModel> findByStoreId (String storeId){
+
+	public ProductPerfil getProductPerfilById(String id) {
+		var product = this.productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
+		List<ReviewDTO> reviewDTOs = new ArrayList<>();
+
+		product.getReviews().forEach(review -> {
+			var reviewDTO = this.reviewService.getReviewDTOById(review);
+			reviewDTOs.add(reviewDTO);
+		});
+
+		return new ProductPerfil(product.getId(), product.getOwnerid(), product.getName(), product.getPrice(),
+				product.getMenuId(), product.getDescription(), product.getRating(), product.getReviewsCount(),
+				reviewDTOs);
+	}
+
+	public List<ProductModel> findByStoreId(String storeId) {
 		return this.productRepository.findByOwnerid(storeId);
 	}
 
 	public ProductModel addProductMenu(MenuProductDTO menuProductDTO) {
-		var product  = this.getProductById(menuProductDTO.productId());
+		var product = this.getProductById(menuProductDTO.productId());
 		product.setMenuId(menuProductDTO.menuId());
 		this.productRepository.save(product);
 		return product;
@@ -84,5 +87,3 @@ public class ProductService {
 		return this.productRepository.findByMenuId(menuId);
 	}
 }
-	
-

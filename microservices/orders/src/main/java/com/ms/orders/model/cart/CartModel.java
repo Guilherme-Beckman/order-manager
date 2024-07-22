@@ -1,7 +1,7 @@
 package com.ms.orders.model.cart;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -11,21 +11,21 @@ public class CartModel {
 	@Id
 	private String id;
 	private String userId;
-	private List<String> productsId;
+	private Map<String, Map<String, Integer>> storeProductsId;
 	private boolean active;
 
 
 
 
 	public CartModel() {
-		this.productsId = new ArrayList<>();
+		this.storeProductsId = new HashMap<>();
 	}
 	
 	
 	public CartModel( String userId) {
 		this.userId = userId;
 		this.active = true;
-		this.productsId = new ArrayList<>();;
+		this.storeProductsId = new HashMap<>();
 	}
 
 	public boolean isActive() {
@@ -51,12 +51,16 @@ public class CartModel {
 		this.id = id;
 	}
 
-	public List<String> getProductsId() {
-		return productsId;
+
+	public Map<String, Map<String, Integer>> getStoreProductsId() {
+		return storeProductsId;
 	}
 
-	public void setProductsId(List<String> productsId) {
-		this.productsId = productsId;
+
+	public void setStoreProductsId(Map<String, Map<String, Integer>> storeProductsId) {
+		this.storeProductsId = storeProductsId;
 	}
+
+
 
 }

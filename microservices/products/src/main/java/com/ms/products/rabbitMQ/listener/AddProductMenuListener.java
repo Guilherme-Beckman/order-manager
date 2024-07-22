@@ -6,8 +6,6 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
 import com.ms.products.config.RabbitMQConfig;
-import com.ms.products.model.product.ProductDTO;
-import com.ms.products.model.product.ProductModel;
 import com.ms.products.service.ProductService;
 @Component
 public class AddProductMenuListener {
