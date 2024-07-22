@@ -22,7 +22,7 @@ public class ReviewModel {
 		this.userName = reviewDTO.userName();
 		this.comment = reviewDTO.comment();
 		this.rating = reviewDTO.rating();
-		this.createdAt = reviewDTO.createdAt();
+		this.createdAt = LocalDateTime.now();
 	}
 	public ReviewModel() {
 	}
@@ -35,7 +35,7 @@ public class ReviewModel {
 		this.userName = userName;
 		this.comment = comment;
 		this.rating = rating;
-		this.createdAt = createdAt;
+		this.createdAt = LocalDateTime.now();
 	}
 	public String getId() {
 		return id;

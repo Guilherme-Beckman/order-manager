@@ -24,7 +24,7 @@ public class ReviewService {
 		var token = this.tokenService.recoverToken(httpServletRequest);
 		var userInfo = this.tokenService.getTokenInformations(token);
 		ReviewDTO newReview = new ReviewDTO(productId, userInfo.getClaim("name").asString(), reviewDTO.comment(),
-				reviewDTO.rating(), reviewDTO.createdAt());
+				reviewDTO.rating(), null);
 		ReviewModel reviewModel = new ReviewModel(newReview);
 		reviewModel.setUserId(userInfo.getClaim("userId").asString());
 		var addedReview = this.reviewRepository.insert(reviewModel);

@@ -1,6 +1,7 @@
 package com.ms.orders.model.order;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -16,16 +17,20 @@ public class OrderModel {
 	private LocalDateTime orderData;
 	private OrderStatus orderStatus;
 	private String subtotal;
+	private List<String> productsId;
 	private AddressDTO addressDTO;
 
+
+
 	public OrderModel(String id, String userId, String storeId, LocalDateTime orderData, OrderStatus orderStatus,
-			String subtotal, AddressDTO addressDTO) {
+			String subtotal, List<String> productsId, AddressDTO addressDTO) {
 		this.id = id;
 		this.userId = userId;
 		this.storeId = storeId;
-		this.orderData = orderData;
+		this.orderData = LocalDateTime.now();
 		this.orderStatus = orderStatus;
 		this.subtotal = subtotal;
+		this.productsId = productsId;
 		this.addressDTO = addressDTO;
 	}
 
@@ -86,6 +91,14 @@ public class OrderModel {
 
 	public void setAddressDTO(AddressDTO addressDTO) {
 		this.addressDTO = addressDTO;
+	}
+
+	public List<String> getProductsId() {
+		return productsId;
+	}
+
+	public void setProductsId(List<String> productsId) {
+		this.productsId = productsId;
 	}
 
 }
