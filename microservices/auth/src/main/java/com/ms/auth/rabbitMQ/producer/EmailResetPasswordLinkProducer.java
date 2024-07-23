@@ -13,10 +13,7 @@ public class EmailResetPasswordLinkProducer {
 	private RabbitTemplate rabbitTemplate;
 
 	public void produceResetPasswordLink(Message message) {
-		rabbitTemplate.convertAndSend(
-				RabbitMQConfig.EMAIL_RESET_LINK_FANOUT_EXCHANGE,"",
-				message);
+		rabbitTemplate.convertAndSend(RabbitMQConfig.EMAIL_RESET_LINK_FANOUT_EXCHANGE, "", message);
 	}
-	
 
 }

@@ -31,6 +31,7 @@ public class UserModel {
 		roles.add(Role.ROLE_USER);
 		roles.add(Role.ROLE_NON_VERIFIED_EMAIL);
 	}
+
 	public UserModel(UserDTO userDTO) {
 		this.cpf = userDTO.cpf();
 		this.password = userDTO.password();
@@ -39,10 +40,10 @@ public class UserModel {
 		this.email = userDTO.email();
 		this.setPhone(userDTO.phone());
 		this.address = new ArrayList<String>();
-		this.accountNonExpired = true; 
-		this.accountNonLocked = true; 
-		this.credentialsNonExpired = true; 
-		this.enabled = true; 
+		this.accountNonExpired = true;
+		this.accountNonLocked = true;
+		this.credentialsNonExpired = true;
+		this.enabled = true;
 		this.roles = new ArrayList<>();
 		roles.add(Role.ROLE_USER);
 		roles.add(Role.ROLE_NON_VERIFIED_EMAIL);
@@ -56,7 +57,7 @@ public class UserModel {
 		this.lastName = lastName;
 		this.email = email;
 		this.phone = phone;
-		
+
 	}
 
 	public String getId() {
@@ -139,7 +140,6 @@ public class UserModel {
 		return enabled;
 	}
 
-
 	public List<Role> getRoles() {
 		return roles;
 	}
@@ -147,9 +147,11 @@ public class UserModel {
 	public void setRoles(List<Role> roles) {
 		this.roles = roles;
 	}
+
 	public String getPhone() {
 		return phone;
 	}
+
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}

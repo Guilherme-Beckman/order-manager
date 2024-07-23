@@ -33,12 +33,11 @@ public class ProductModel {
 		this.reviewsCount = 0;
 		this.reviews = new ArrayList<>();
 	}
-	
 
 	public ProductModel() {
 		this.reviews = new ArrayList<>();
 	}
-	
+
 	public ProductModel(ProductDTO productDTO) {
 		this.ownerid = productDTO.ownerid();
 		this.name = productDTO.name();
@@ -129,7 +128,5 @@ public class ProductModel {
 	public void setReviews(List<String> reviews) {
 		this.reviews = reviews;
 	}
-
-
 
 }

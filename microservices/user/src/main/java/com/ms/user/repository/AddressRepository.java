@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.ms.user.model.address.AddressModel;
 
 @Repository
-public interface AddressRepository extends MongoRepository<AddressModel, String>{
+public interface AddressRepository extends MongoRepository<AddressModel, String> {
 
 }

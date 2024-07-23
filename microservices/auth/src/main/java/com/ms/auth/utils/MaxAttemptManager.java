@@ -9,57 +9,58 @@ import com.ms.auth.exceptions.auth.attempts.ExceededNumberOfAttempts;
 
 @Component
 public class MaxAttemptManager {
-    private static final int MAX_ATTEMPTS = 3;
-    private static final int BASE_BLOCK_DURATION_MINUTES = 1;
-    private ConcurrentHashMap<String, AttemptsInfo> attemptRecords = new ConcurrentHashMap<>();
+	private static final int MAX_ATTEMPTS = 3;
+	private static final int BASE_BLOCK_DURATION_MINUTES = 1;
+	private ConcurrentHashMap<String, AttemptsInfo> attemptRecords = new ConcurrentHashMap<>();
 
-    public void checkAndUpdateAttempts(String key) {
-        AttemptsInfo attemptInfo = attemptRecords.getOrDefault(key, new AttemptsInfo());
+	public void checkAndUpdateAttempts(String key) {
+		AttemptsInfo attemptInfo = attemptRecords.getOrDefault(key, new AttemptsInfo());
 
-        if (attemptInfo.attempts == MAX_ATTEMPTS) {
-            LocalDateTime now = LocalDateTime.now();
-            long blockDuration = calculateBlockDuration(attemptInfo.attempts);
+		if (attemptInfo.attempts == MAX_ATTEMPTS) {
+			LocalDateTime now = LocalDateTime.now();
+			long blockDuration = calculateBlockDuration(attemptInfo.attempts);
 
-            if (now.isBefore(attemptInfo.lastAttempt.plusMinutes(blockDuration))) {
-                throw new ExceededNumberOfAttempts("Try again after: " + blockDuration+" minute(s)");
-            } else {
-                attemptInfo.attempts = 0;
-            }
-        }
+			if (now.isBefore(attemptInfo.lastAttempt.plusMinutes(blockDuration))) {
+				throw new ExceededNumberOfAttempts("Try again after: " + blockDuration + " minute(s)");
+			} else {
+				attemptInfo.attempts = 0;
+			}
+		}
 
-        attemptInfo.attempts++;
-        attemptInfo.lastAttempt = LocalDateTime.now();
-        attemptRecords.put(key, attemptInfo);
-    }
-    public void checkAndUpdateAttempts(String key, int MAX_ATTEMPTS, int TIME_IN_MINUTES) {
-        AttemptsInfo attemptInfo = attemptRecords.getOrDefault(key, new AttemptsInfo());
+		attemptInfo.attempts++;
+		attemptInfo.lastAttempt = LocalDateTime.now();
+		attemptRecords.put(key, attemptInfo);
+	}
 
-        if (attemptInfo.attempts == MAX_ATTEMPTS) {
-            LocalDateTime now = LocalDateTime.now();
-            long blockDuration = calculateBlockDuration(attemptInfo.attempts, TIME_IN_MINUTES);
+	public void checkAndUpdateAttempts(String key, int MAX_ATTEMPTS, int TIME_IN_MINUTES) {
+		AttemptsInfo attemptInfo = attemptRecords.getOrDefault(key, new AttemptsInfo());
 
-            if (now.isBefore(attemptInfo.lastAttempt.plusMinutes(blockDuration))) {
-                throw new ExceededNumberOfAttempts("Try again after: " + blockDuration+" minute(s)");
-            } else {
-                attemptInfo.attempts = 0;
-            }
-        }
+		if (attemptInfo.attempts == MAX_ATTEMPTS) {
+			LocalDateTime now = LocalDateTime.now();
+			long blockDuration = calculateBlockDuration(attemptInfo.attempts, TIME_IN_MINUTES);
 
-        attemptInfo.attempts++;
-        attemptInfo.lastAttempt = LocalDateTime.now();
-        attemptRecords.put(key, attemptInfo);
-    }
+			if (now.isBefore(attemptInfo.lastAttempt.plusMinutes(blockDuration))) {
+				throw new ExceededNumberOfAttempts("Try again after: " + blockDuration + " minute(s)");
+			} else {
+				attemptInfo.attempts = 0;
+			}
+		}
 
-    private Long calculateBlockDuration(int attempts) {
-        return BASE_BLOCK_DURATION_MINUTES * (long) Math.pow(2, attempts - 1);
-    }
-    private Long calculateBlockDuration(int attempts, int time) {
-        return time * (long) Math.pow(2, attempts - 1);
-    }
+		attemptInfo.attempts++;
+		attemptInfo.lastAttempt = LocalDateTime.now();
+		attemptRecords.put(key, attemptInfo);
+	}
 
+	private Long calculateBlockDuration(int attempts) {
+		return BASE_BLOCK_DURATION_MINUTES * (long) Math.pow(2, attempts - 1);
+	}
 
-    private static class AttemptsInfo {
-        int attempts = 0;
-        LocalDateTime lastAttempt = LocalDateTime.now();
-    }
+	private Long calculateBlockDuration(int attempts, int time) {
+		return time * (long) Math.pow(2, attempts - 1);
+	}
+
+	private static class AttemptsInfo {
+		int attempts = 0;
+		LocalDateTime lastAttempt = LocalDateTime.now();
+	}
 }

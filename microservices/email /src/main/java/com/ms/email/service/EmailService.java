@@ -14,7 +14,7 @@ public class EmailService {
 	public void sendEmailCode(Message message) {
 		SimpleMailMessage mailMessage = new SimpleMailMessage();
 		String email = new String(message.getBody());
-		System.out.println(email);
+
 		mailMessage.setTo(email);
 		mailMessage.setSubject("Code ");
 		mailMessage.setText("Your code is: " + message.getMessageProperties().getCorrelationId());
@@ -31,7 +31,7 @@ public class EmailService {
 		mailMessage.setTo(email);
 		mailMessage.setSubject("Reset link");
 		mailMessage.setText("Your reset link: " + resetUrl);
-		System.out.println(resetUrl);
+
 		javaMailSender.send(mailMessage);
 	}
 

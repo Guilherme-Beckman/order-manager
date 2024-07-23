@@ -1,6 +1,5 @@
 package com.ms.stores.infra.security;
 
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import com.auth0.jwt.JWT;
@@ -14,12 +13,14 @@ import jakarta.servlet.http.HttpServletRequest;
 public class TokenService {
 	@Value("${api.security.token.secret}")
 	public String secret;
+
 	public String recoverToken(HttpServletRequest request) {
 		var authHeader = request.getHeader("Authorization");
 		if (authHeader == null)
 			return null;
 		return authHeader.replace("Bearer ", "");
 	}
+
 	public DecodedJWT getTokenInformations(String token) {
 		try {
 			Algorithm algorithm = Algorithm.HMAC256(secret);

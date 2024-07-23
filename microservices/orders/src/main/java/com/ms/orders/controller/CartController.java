@@ -18,14 +18,18 @@ import jakarta.servlet.http.HttpServletRequest;
 public class CartController {
 	@Autowired
 	private CartService cartService;
+
 	@PostMapping("/add/{productId}")
-	public ResponseEntity<CartModel> addProductToCart (HttpServletRequest httpServletRequest, @PathVariable String productId){
+	public ResponseEntity<CartModel> addProductToCart(HttpServletRequest httpServletRequest,
+			@PathVariable String productId) {
 		var cart = this.cartService.addProductToCart(httpServletRequest, productId);
 		return ResponseEntity.ok().body(cart);
 	}
+
 	@PutMapping("/remove/{productId}")
-	public ResponseEntity<CartModel> removeProductToCart(HttpServletRequest httpServletRequest, @PathVariable String productId){
-		var cart = this.cartService.removeProductFromCart(httpServletRequest,productId);
+	public ResponseEntity<CartModel> removeProductToCart(HttpServletRequest httpServletRequest,
+			@PathVariable String productId) {
+		var cart = this.cartService.removeProductFromCart(httpServletRequest, productId);
 		return ResponseEntity.ok().body(cart);
 	}
 }

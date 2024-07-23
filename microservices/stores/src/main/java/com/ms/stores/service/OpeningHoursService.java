@@ -20,7 +20,8 @@ public class OpeningHoursService {
 		newHours.setStoreId(storeId);
 		return this.openingHoursRepository.save(newHours);
 	}
-	public List<OpeningHoursModel> getByStoreId (String storeId) {
+
+	public List<OpeningHoursModel> getByStoreId(String storeId) {
 		return this.openingHoursRepository.findByStoreId(storeId);
 	}
 }

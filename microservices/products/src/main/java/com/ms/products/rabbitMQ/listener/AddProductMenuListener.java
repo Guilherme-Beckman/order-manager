@@ -7,11 +7,12 @@ import org.springframework.stereotype.Component;
 
 import com.ms.products.config.RabbitMQConfig;
 import com.ms.products.service.ProductService;
+
 @Component
 public class AddProductMenuListener {
 	@Autowired
 	private ProductService productService;
-	
+
 	@RabbitListener(queues = RabbitMQConfig.ADD_PRODUCT_MENU_QUEUE)
 	public void receiveProducToAddMenu(@Payload MenuProductDTO menuProductDTO) {
 		this.productService.addProductMenu(menuProductDTO);

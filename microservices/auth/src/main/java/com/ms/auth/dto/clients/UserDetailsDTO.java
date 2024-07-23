@@ -27,7 +27,7 @@ public class UserDetailsDTO implements UserDetails {
 	@SuppressWarnings("unused")
 	private String username;
 	private List<Role> roles;
-	
+
 	public String getId() {
 		return id;
 	}

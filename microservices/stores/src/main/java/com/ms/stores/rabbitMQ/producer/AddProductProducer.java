@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import com.ms.products.model.product.ProductModel;
 import com.ms.stores.config.RabbitMQConfig;
 import com.ms.stores.model.products.ProductDTO;
+
 @Component
 public class AddProductProducer {
 	@Autowired
@@ -16,8 +17,8 @@ public class AddProductProducer {
 
 	public ProductModel addProduct(ProductDTO newProductDTO) {
 
-		ProductModel addedProduct = (ProductModel) rabbitTemplate.convertSendAndReceive(RabbitMQConfig.ADD_PRODUCT_EXCHANGE,
-				RabbitMQConfig.ADD_PRODUCT_KEY, newProductDTO);
+		ProductModel addedProduct = (ProductModel) rabbitTemplate.convertSendAndReceive(
+				RabbitMQConfig.ADD_PRODUCT_EXCHANGE, RabbitMQConfig.ADD_PRODUCT_KEY, newProductDTO);
 
 		return addedProduct;
 	}

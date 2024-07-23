@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.ms.stores.config.RabbitMQConfig;
+
 @Component
 public class AddProductMenuProducer {
 	@Autowired
@@ -13,8 +14,8 @@ public class AddProductMenuProducer {
 	RabbitTemplate rabbitTemplate;
 
 	public void addProductMenu(MenuProductDTO menuProductDTO) {
-		rabbitTemplate.convertAndSend(RabbitMQConfig.ADD_PRODUCT_MENU_EXCHANGE,
-				RabbitMQConfig.ADD_PRODUCT_MENU_KEY, menuProductDTO);
+		rabbitTemplate.convertAndSend(RabbitMQConfig.ADD_PRODUCT_MENU_EXCHANGE, RabbitMQConfig.ADD_PRODUCT_MENU_KEY,
+				menuProductDTO);
 
 	}
 

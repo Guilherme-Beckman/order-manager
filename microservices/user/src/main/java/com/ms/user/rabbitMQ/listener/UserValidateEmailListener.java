@@ -12,9 +12,9 @@ import com.ms.user.service.UserService;
 public class UserValidateEmailListener {
 	@Autowired
 	private UserService userService;
-	
-    @RabbitListener(queues = RabbitMQConfig.USER_EMAIL_VALIDATE_QUEUE)
-    public void validateUserEmail(@Payload String email)  {
-    	this.userService.validateUserEmail(email);
-    }
+
+	@RabbitListener(queues = RabbitMQConfig.USER_EMAIL_VALIDATE_QUEUE)
+	public void validateUserEmail(@Payload String email) {
+		this.userService.validateUserEmail(email);
+	}
 }

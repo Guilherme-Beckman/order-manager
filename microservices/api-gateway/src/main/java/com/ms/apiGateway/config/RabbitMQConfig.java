@@ -31,15 +31,15 @@ public class RabbitMQConfig {
 
 	public static final String USER_EMAIL_VALIDATE_FANOUT_EXCHANGE = "user_email_validate_fanout_exchange";
 	public static final String USER_EMAIL_VALIDATE_QUEUE = "user_email_validate_queue";
-	
+
 	public static final String LOAD_USER_DETAILS_API_GATEWAY_QUEUE = "user_ms.load_user_details_api_gateway_queue";
 	public static final String RETURN_USER_DETAILS_API_GATEWAY_QUEUE = "auth_ms.return_user_details_api_gateway_queue";
 	public static final String AUTH_USER_USER_DETAILS_DIRECT_API_GATEWAY_EXCHANGE = "auth_ms.user_ms_user_details_direct_api_gateway_exchange";
 	public static final String LOAD_USER_DETAILS_REQUEST_API_GATEWAY_KEY = "load.user.details.api_gateway_request";
 	public static final String RETURN_USER_DETAILS_RESPONSE_API_GATEWAY_KEY = "return.user.details.api_gateway_response";
 
-	//store
-	
+	// store
+
 	public static final String LOAD_STORE_DETAILS_API_GATEWAY_QUEUE = "store_ms.load_store_details_api_gateway_queue";
 	public static final String RETURN_STORE_DETAILS_API_GATEWAY_QUEUE = "auth_ms.return_store_details_api_gateway_queue";
 	public static final String AUTH_STORE_STORE_DETAILS_DIRECT_API_GATEWAY_EXCHANGE = "auth_ms.store_ms_store_details_direct_api_gateway_exchange";
@@ -142,7 +142,7 @@ public class RabbitMQConfig {
 	public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
 		return new RabbitTemplate(connectionFactory);
 	}
-	
+
 	@Bean
 	public Queue loadUserDetailsApiGatewayQueue() {
 		return new Queue(LOAD_USER_DETAILS_API_GATEWAY_QUEUE, true);
@@ -159,9 +159,11 @@ public class RabbitMQConfig {
 	}
 
 	@Bean
-	public Binding loadUserDetailsRequestApiGatewayKey(@Qualifier("authUserDirectApiGatewayExchange") DirectExchange authUserDirectApiGatewayExchange,
+	public Binding loadUserDetailsRequestApiGatewayKey(
+			@Qualifier("authUserDirectApiGatewayExchange") DirectExchange authUserDirectApiGatewayExchange,
 			@Qualifier("loadUserDetailsApiGatewayQueue") Queue loadUserDetailsApiGatewayQueue) {
-		return BindingBuilder.bind(loadUserDetailsApiGatewayQueue).to(authUserDirectApiGatewayExchange).with(LOAD_USER_DETAILS_REQUEST_API_GATEWAY_KEY);
+		return BindingBuilder.bind(loadUserDetailsApiGatewayQueue).to(authUserDirectApiGatewayExchange)
+				.with(LOAD_USER_DETAILS_REQUEST_API_GATEWAY_KEY);
 	}
 
 	@Bean
@@ -171,8 +173,8 @@ public class RabbitMQConfig {
 		return BindingBuilder.bind(returnUserDetailsApiGatewayQueue).to(authUserDirectApiGatewayExchange)
 				.with(RETURN_USER_DETAILS_RESPONSE_API_GATEWAY_KEY);
 	}
-	
-	//store
+
+	// store
 	@Bean
 	public Queue loadStoreDetailsApiGatewayQueue() {
 		return new Queue(LOAD_STORE_DETAILS_API_GATEWAY_QUEUE, true);
@@ -189,9 +191,11 @@ public class RabbitMQConfig {
 	}
 
 	@Bean
-	public Binding loadStoreDetailsRequestApiGatewayKey(@Qualifier("authStoreDirectApiGatewayExchange") DirectExchange authStoreDirectApiGatewayExchange,
+	public Binding loadStoreDetailsRequestApiGatewayKey(
+			@Qualifier("authStoreDirectApiGatewayExchange") DirectExchange authStoreDirectApiGatewayExchange,
 			@Qualifier("loadStoreDetailsApiGatewayQueue") Queue loadStoreDetailsApiGatewayQueue) {
-		return BindingBuilder.bind(loadStoreDetailsApiGatewayQueue).to(authStoreDirectApiGatewayExchange).with(LOAD_STORE_DETAILS_REQUEST_API_GATEWAY_KEY);
+		return BindingBuilder.bind(loadStoreDetailsApiGatewayQueue).to(authStoreDirectApiGatewayExchange)
+				.with(LOAD_STORE_DETAILS_REQUEST_API_GATEWAY_KEY);
 	}
 
 	@Bean
@@ -201,5 +205,5 @@ public class RabbitMQConfig {
 		return BindingBuilder.bind(returnStoreDetailsApiGatewayQueue).to(authStoreDirectApiGatewayExchange)
 				.with(RETURN_STORE_DETAILS_RESPONSE_API_GATEWAY_KEY);
 	}
-	
+
 }

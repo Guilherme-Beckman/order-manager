@@ -6,11 +6,13 @@ import org.springframework.http.ProblemDetail;
 import com.ms.apiGateway.exceptions.auth.AuthException;
 
 public class ConvertMessageToUserDetailsException extends AuthException {
-    private static final long serialVersionUID = 1L;
-    private String detail;
+	private static final long serialVersionUID = 1L;
+	private String detail;
+
 	public ConvertMessageToUserDetailsException(String detail) {
 		this.detail = detail;
 	}
+
 	@Override
 	public ProblemDetail toProblemDetail() {
 		var pb = ProblemDetail.forStatus(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -19,5 +21,4 @@ public class ConvertMessageToUserDetailsException extends AuthException {
 		return pb;
 	}
 
-   
 }

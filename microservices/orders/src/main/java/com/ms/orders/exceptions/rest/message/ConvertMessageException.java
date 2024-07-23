@@ -6,11 +6,13 @@ import org.springframework.http.ProblemDetail;
 import com.ms.orders.exceptions.rest.RestException;
 
 public class ConvertMessageException extends RestException {
-    private static final long serialVersionUID = 1L;
-    private String detail;
+	private static final long serialVersionUID = 1L;
+	private String detail;
+
 	public ConvertMessageException(String detail) {
 		this.detail = detail;
 	}
+
 	@Override
 	public ProblemDetail toProblemDetail() {
 		var pb = ProblemDetail.forStatus(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -19,5 +21,4 @@ public class ConvertMessageException extends RestException {
 		return pb;
 	}
 
-   
 }

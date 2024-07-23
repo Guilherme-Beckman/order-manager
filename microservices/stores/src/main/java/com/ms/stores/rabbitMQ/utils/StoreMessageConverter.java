@@ -33,7 +33,5 @@ public class StoreMessageConverter {
 		messageProperties.setExpiration("5000");
 		return new Message(menssageBytes, messageProperties);
 	}
-	
-
 
 }

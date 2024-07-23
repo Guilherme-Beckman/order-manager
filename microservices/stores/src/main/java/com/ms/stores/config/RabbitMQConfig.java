@@ -72,7 +72,7 @@ public class RabbitMQConfig {
 	public static final String PRODUCTS_BY_STORE_ID_QUEUE = "products_by_store_id.queue";
 	public static final String PRODUCT_BY_STORE_EXCHANGE = "products_by_store_id.exchange";
 	public static final String PRODUCTS_BY_STORE_KEY = "products_by_store_id.key";
-	
+
 	public static final String ADD_PRODUCT_MENU_QUEUE = "add_product_menu.queue";
 	public static final String ADD_PRODUCT_MENU_EXCHANGE = "add_product_menu.exchange";
 	public static final String ADD_PRODUCT_MENU_KEY = "add_product_menu.key";
@@ -80,8 +80,6 @@ public class RabbitMQConfig {
 	public static final String PRODUCTS_BY_MENU_ID_QUEUE = "products_by_menu_id.queue";
 	public static final String PRODUCT_BY_MENU_EXCHANGE = "products_by_menu_id.exchange";
 	public static final String PRODUCTS_BY_MENU_KEY = "products_by_menu_id.key";
-	
-
 
 	@Bean
 	public Queue loadUserDetailsQueue() {
@@ -369,7 +367,7 @@ public class RabbitMQConfig {
 	public Jackson2JsonMessageConverter jsonMessageConverter() {
 		return new Jackson2JsonMessageConverter();
 	}
-	
+
 	@Bean
 	public Queue productByStoreIdQueue() {
 		return new Queue(PRODUCTS_BY_STORE_ID_QUEUE);
@@ -385,7 +383,7 @@ public class RabbitMQConfig {
 			@Qualifier("productByStoreIdExchange") TopicExchange productByStoreIdExchange) {
 		return BindingBuilder.bind(productByStoreIdQueue).to(productByStoreIdExchange).with(PRODUCTS_BY_STORE_KEY);
 	}
-	
+
 	@Bean
 	public Queue addProductMenuQueue() {
 		return new Queue(ADD_PRODUCT_MENU_QUEUE);
@@ -401,7 +399,7 @@ public class RabbitMQConfig {
 			@Qualifier("addProductMenuExchange") TopicExchange addProductMenuExchange) {
 		return BindingBuilder.bind(addProductMenuQueue).to(addProductMenuExchange).with(ADD_PRODUCT_MENU_KEY);
 	}
-	
+
 	@Bean
 	public Queue productByMenuIdQueue() {
 		return new Queue(PRODUCTS_BY_MENU_ID_QUEUE);
@@ -417,5 +415,5 @@ public class RabbitMQConfig {
 			@Qualifier("productByMenuIdExchange") TopicExchange productByMenuIdExchange) {
 		return BindingBuilder.bind(productByMenuIdQueue).to(productByMenuIdExchange).with(PRODUCTS_BY_MENU_KEY);
 	}
-	
+
 }

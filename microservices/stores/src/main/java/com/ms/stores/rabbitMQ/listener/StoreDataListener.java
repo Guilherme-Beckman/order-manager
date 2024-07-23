@@ -1,6 +1,5 @@
 package com.ms.stores.rabbitMQ.listener;
 
-
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +42,7 @@ public class StoreDataListener {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-		
+
 			}
 		}
 	}

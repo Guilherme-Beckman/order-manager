@@ -15,11 +15,11 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitMQConfig {
-	
+
 	public static final String PRODUCTS_BY_ID_QUEUE = "products_by_id.queue";
 	public static final String PRODUCT_BY_ID_EXCHANGE = "products_by_id.exchange";
 	public static final String PRODUCTS_BY_ID_KEY = "products_by_id.key";
-	
+
 	public static final String LOAD_USER_DETAILS_QUEUE = "user_ms.load_user_details_queue";
 	public static final String RETURN_USER_DETAILS_QUEUE = "auth_ms.return_user_details_queue";
 	public static final String AUTH_USER_USER_DETAILS_DIRECT_EXCHANGE = "auth_ms.user_ms_user_details_direct_exchange";
@@ -410,8 +410,7 @@ public class RabbitMQConfig {
 			@Qualifier("productByMenuIdExchange") TopicExchange productByMenuIdExchange) {
 		return BindingBuilder.bind(productByMenuIdQueue).to(productByMenuIdExchange).with(PRODUCTS_BY_MENU_KEY);
 	}
-	
-	
+
 	@Bean
 	public Queue productByIdQueue() {
 		return new Queue(PRODUCTS_BY_ID_QUEUE);

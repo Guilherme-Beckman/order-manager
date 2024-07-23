@@ -19,16 +19,18 @@ import jakarta.servlet.http.HttpServletRequest;
 public class StoreController {
 	@Autowired
 	private StoreService storeService;
+
 	@PostMapping("/addProduct")
-	public ResponseEntity<ProductModel> addNewProduct(@RequestBody ProductDTO productDTO, HttpServletRequest httpRequest){
+	public ResponseEntity<ProductModel> addNewProduct(@RequestBody ProductDTO productDTO,
+			HttpServletRequest httpRequest) {
 		var newProduct = this.storeService.addNewProduct(productDTO, httpRequest);
 		return ResponseEntity.ok().body(newProduct);
 	}
+
 	@GetMapping("/perfil/{storeId}")
-	public ResponseEntity<StorePerfil> getStorePerfil(@PathVariable String storeId){
+	public ResponseEntity<StorePerfil> getStorePerfil(@PathVariable String storeId) {
 		StorePerfil storePerfil = this.storeService.getStorePerfil(storeId);
 		return ResponseEntity.ok().body(storePerfil);
 	}
 
-	
 }

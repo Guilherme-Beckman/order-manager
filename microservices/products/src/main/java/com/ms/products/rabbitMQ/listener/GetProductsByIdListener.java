@@ -9,19 +9,21 @@ import org.springframework.stereotype.Component;
 import com.ms.products.config.RabbitMQConfig;
 import com.ms.products.service.ProductService;
 import com.ms.products.utils.MessageUtils;
+
 @Component
 public class GetProductsByIdListener {
 	@Autowired
 	private ProductService productService;
-	@Autowired MessageUtils messageUtils;
+	@Autowired
+	private MessageUtils messageUtils;
+
 	@RabbitListener(queues = RabbitMQConfig.PRODUCTS_BY_ID_QUEUE)
 	public Message receiveId(@Payload Message message) {
 		var id = (String) this.messageUtils.convertMessage(message, String.class);
 		var productModelDTO = this.productService.getProductModelDTOById(id);
-		System.out.println(productModelDTO);
-		var message1 =  this.messageUtils.createMessage(productModelDTO);
-		System.out.println(message1.getClass());
-		System.out.println(message1);
+
+		var message1 = this.messageUtils.createMessage(productModelDTO);
+
 		return message1;
 	}
 }

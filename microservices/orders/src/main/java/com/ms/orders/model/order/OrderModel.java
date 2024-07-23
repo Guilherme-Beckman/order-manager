@@ -1,14 +1,17 @@
 package com.ms.orders.model.order;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.ms.orders.model.address.AddressDTO;
 
-@Document(collection = "products")
+@Document(collection = "orders")
 public class OrderModel {
 	@Id
 	private String id;
@@ -16,25 +19,26 @@ public class OrderModel {
 	private String storeId;
 	private LocalDateTime orderData;
 	private OrderStatus orderStatus;
-	private String subtotal;
-	private List<String> productsId;
+	private Integer subtotal;
+	private List<Map<String, Integer>> productsId;
 	private AddressDTO addressDTO;
 
-
-
 	public OrderModel(String id, String userId, String storeId, LocalDateTime orderData, OrderStatus orderStatus,
-			String subtotal, List<String> productsId, AddressDTO addressDTO) {
+			Integer subtotal, List<String> productsId, AddressDTO addressDTO) {
 		this.id = id;
 		this.userId = userId;
 		this.storeId = storeId;
 		this.orderData = LocalDateTime.now();
-		this.orderStatus = orderStatus;
+		this.orderStatus = OrderStatus.PENDING;
 		this.subtotal = subtotal;
-		this.productsId = productsId;
+		this.productsId = new ArrayList<>();
 		this.addressDTO = addressDTO;
 	}
 
 	public OrderModel() {
+		this.orderData = LocalDateTime.now();
+		this.orderStatus = OrderStatus.PENDING;
+		this.productsId = new ArrayList<>();
 	}
 
 	public String getId() {
@@ -77,11 +81,11 @@ public class OrderModel {
 		this.orderStatus = orderStatus;
 	}
 
-	public String getSubtotal() {
+	public Integer getSubtotal() {
 		return subtotal;
 	}
 
-	public void setSubtotal(String subtotal) {
+	public void setSubtotal(Integer subtotal) {
 		this.subtotal = subtotal;
 	}
 
@@ -93,11 +97,11 @@ public class OrderModel {
 		this.addressDTO = addressDTO;
 	}
 
-	public List<String> getProductsId() {
+	public List<Map<String, Integer>> getProductsId() {
 		return productsId;
 	}
 
-	public void setProductsId(List<String> productsId) {
+	public void setProductsId(List<Map<String, Integer>> productsId) {
 		this.productsId = productsId;
 	}
 

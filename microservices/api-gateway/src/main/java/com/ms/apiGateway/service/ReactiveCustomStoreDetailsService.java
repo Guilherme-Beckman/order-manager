@@ -50,7 +50,7 @@ public class ReactiveCustomStoreDetailsService {
 	}
 
 	public void receiveResponse(Message message) {
-		String responseCorrelationId = (String) message.getMessageProperties().getCorrelationId();
+		String responseCorrelationId = message.getMessageProperties().getCorrelationId();
 
 		CompletableFuture<Message> responseFuture = pendingResponses.get(responseCorrelationId);
 		if (responseFuture != null) {

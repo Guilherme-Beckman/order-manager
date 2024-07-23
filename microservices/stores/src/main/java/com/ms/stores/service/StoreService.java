@@ -83,7 +83,7 @@ public class StoreService {
 	}
 
 	public StoreModel getStoreByEmail(String email) {
-		System.out.println("email: " + email);
+
 		StoreModel user = storeRepository.findByEmail(email.replace("\"", " ").trim());
 		return user;
 	}

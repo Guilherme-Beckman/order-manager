@@ -51,8 +51,8 @@ public class MenuService {
 	public MenuPerfil getProductByMenuId(String menuId) {
 		var menu = this.getMenuId(menuId);
 		var products = this.requestProductsByMenuIdProducer.requestProductsByMenuIdProducer(menuId);
-		return new MenuPerfil(menu.getId(),menu.getStoreId(),menu.getName(), products);
-		
+		return new MenuPerfil(menu.getId(), menu.getStoreId(), menu.getName(), products);
+
 	}
 
 }

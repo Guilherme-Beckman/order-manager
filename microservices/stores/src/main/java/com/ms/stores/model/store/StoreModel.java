@@ -26,8 +26,6 @@ public class StoreModel {
 	private boolean enabled;
 	private List<Role> roles;
 
-
-	
 	public StoreModel() {
 		this.products = new ArrayList<>();
 		this.opening_hours = new ArrayList<>();
@@ -45,10 +43,10 @@ public class StoreModel {
 		this.CNPJ = cNPJ;
 		this.opening_hours = opening_hours;
 		this.products = products;
-		this.accountNonExpired = true; 
+		this.accountNonExpired = true;
 		this.accountNonLocked = true;
-		this.credentialsNonExpired = true; 
-		this.enabled = true; 
+		this.credentialsNonExpired = true;
+		this.enabled = true;
 	}
 
 	public StoreModel(StoreDTO storeDto) {
@@ -59,13 +57,13 @@ public class StoreModel {
 		this.CNPJ = storeDto.CNPJ();
 		this.products = new ArrayList<>();
 		this.opening_hours = new ArrayList<>();
-		this.accountNonExpired = true; 
-		this.accountNonLocked = true; 
+		this.accountNonExpired = true;
+		this.accountNonLocked = true;
 		this.credentialsNonExpired = true;
-		this.enabled = true; 
+		this.enabled = true;
 		this.roles = new ArrayList<>();
 		roles.add(Role.ROLE_STORE);
-		
+
 	}
 
 	public String getEmail() {

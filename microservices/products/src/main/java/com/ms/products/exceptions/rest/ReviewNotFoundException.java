@@ -5,13 +5,13 @@ import org.springframework.http.ProblemDetail;
 
 public class ReviewNotFoundException extends RestException {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    @Override
-    public ProblemDetail toProblemDetail() {
-        var pb = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
-        pb.setTitle("Review Not Found Exception");
-        pb.setDetail("Error while trying to find a review");
-        return pb;
-    }
+	@Override
+	public ProblemDetail toProblemDetail() {
+		var pb = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
+		pb.setTitle("Review Not Found Exception");
+		pb.setDetail("Error while trying to find a review");
+		return pb;
+	}
 }

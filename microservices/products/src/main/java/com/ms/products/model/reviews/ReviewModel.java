@@ -15,8 +15,7 @@ public class ReviewModel {
 	private String comment;
 	private Float rating;
 	private LocalDateTime createdAt;
-	
-	
+
 	public ReviewModel(ReviewDTO reviewDTO) {
 		this.productId = reviewDTO.productId();
 		this.userName = reviewDTO.userName();
@@ -24,6 +23,7 @@ public class ReviewModel {
 		this.rating = reviewDTO.rating();
 		this.createdAt = LocalDateTime.now();
 	}
+
 	public ReviewModel() {
 	}
 
@@ -37,49 +37,61 @@ public class ReviewModel {
 		this.rating = rating;
 		this.createdAt = LocalDateTime.now();
 	}
+
 	public String getId() {
 		return id;
 	}
+
 	public void setId(String id) {
 		this.id = id;
 	}
+
 	public String getProductId() {
 		return productId;
 	}
+
 	public void setProductId(String productId) {
 		this.productId = productId;
 	}
+
 	public String getUserId() {
 		return userId;
 	}
+
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
+
 	public String getComment() {
 		return comment;
 	}
+
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
+
 	public Float getRating() {
 		return rating;
 	}
+
 	public void setRating(Float rating) {
 		this.rating = rating;
 	}
+
 	public LocalDateTime getCreatedAt() {
 		return createdAt;
 	}
+
 	public void setCreatedAt(LocalDateTime createdAt) {
 		this.createdAt = createdAt;
 	}
+
 	public String getUserName() {
 		return userName;
 	}
+
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-	
-	
-	
+
 }

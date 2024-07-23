@@ -9,17 +9,18 @@ import org.springframework.stereotype.Component;
 
 import com.ms.products.model.product.ProductModel;
 import com.ms.stores.config.RabbitMQConfig;
+
 @Component
 public class RequestProductsByMenuIdProducer {
 	@Autowired
 	@Qualifier("rabbitTemplateForProducts")
 	private RabbitTemplate rabbitTemplate;
-	
+
 	public List<ProductModel> requestProductsByMenuIdProducer(String menuId) {
 
 		@SuppressWarnings("unchecked")
-		List<ProductModel> products = (List<ProductModel>) rabbitTemplate.convertSendAndReceive(RabbitMQConfig.PRODUCT_BY_MENU_EXCHANGE,
-				RabbitMQConfig.PRODUCTS_BY_MENU_KEY, menuId);
+		List<ProductModel> products = (List<ProductModel>) rabbitTemplate.convertSendAndReceive(
+				RabbitMQConfig.PRODUCT_BY_MENU_EXCHANGE, RabbitMQConfig.PRODUCTS_BY_MENU_KEY, menuId);
 
 		return products;
 	}

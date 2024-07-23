@@ -26,12 +26,11 @@ public class StoreCrypto {
 	}
 
 	public StorePerfil decryptStoreData(StoreModel storeModel) {
-		System.out.println(storeModel.getName());
+
 		String name = this.cryptoUtils.decrypt(storeModel.getName());
-		System.out.println(storeModel.getPhone());
+
 		String phone = this.cryptoUtils.decrypt(storeModel.getPhone());
-		StorePerfil storePerfilDTO = new StorePerfil(storeModel.getId(), name, null, phone,
-				null, null);
+		StorePerfil storePerfilDTO = new StorePerfil(storeModel.getId(), name, null, phone, null, null);
 		return storePerfilDTO;
 
 	}

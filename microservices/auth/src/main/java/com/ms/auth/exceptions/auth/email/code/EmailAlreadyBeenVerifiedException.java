@@ -5,7 +5,7 @@ import org.springframework.http.ProblemDetail;
 
 import com.ms.auth.exceptions.auth.AuthException;
 
-public class EmailAlreadyBeenVerifiedException extends AuthException{
+public class EmailAlreadyBeenVerifiedException extends AuthException {
 
 	private static final long serialVersionUID = 1L;
 

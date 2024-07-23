@@ -50,7 +50,7 @@ public class ResetPasswordService {
 		String code = registerResponseFutureCode(email, responseFuture);
 		sendMessage(email, code);
 		try {
-		 responseFuture.get(60, TimeUnit.MINUTES);
+			responseFuture.get(60, TimeUnit.MINUTES);
 		} catch (Exception e) {
 		} finally {
 			pendingResponses.remove(email + code);
@@ -76,8 +76,9 @@ public class ResetPasswordService {
 			pendingResponses.remove(email);
 			throw e;
 		}
-		if (!(token.equals(code))) throw new InvalideCodeException();
-		
+		if (!(token.equals(code)))
+			throw new InvalideCodeException();
+
 		CompletableFuture<String> responseFuture = pendingResponses.get(email);
 
 		if (responseFuture != null) {

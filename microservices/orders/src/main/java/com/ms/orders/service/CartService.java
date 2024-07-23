@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.ms.orders.exceptions.rest.CartNotFoundException;
 import com.ms.orders.exceptions.rest.ProductNotFoundInCartException;
 import com.ms.orders.infra.security.TokenService;
 import com.ms.orders.model.cart.CartModel;
@@ -23,7 +24,7 @@ public class CartService {
 	@Autowired
 	private GetProductByIdProducer productByIdProducer;
 
-	private CartModel getActiveCartByUserId(String id) {
+	public CartModel getActiveCartByUserId(String id) {
 		CartModel cartModel = this.cartRepository.findActiveCartsByUserId(id);
 		return cartModel;
 	}
@@ -47,7 +48,7 @@ public class CartService {
 		var map = cart.getStoreProductsId();
 		var storeProduct = map.computeIfAbsent(storeId, k -> new HashMap<>());
 		storeProduct.put(productId, storeProduct.getOrDefault(productId, 0) + 1);
-		System.out.println(product.price());
+
 		cart.setSubtotal(cart.getSubtotal() + product.price());
 		return this.cartRepository.save(cart);
 	}
@@ -89,6 +90,14 @@ public class CartService {
 		}
 
 		return this.cartRepository.save(cart);
+	}
+	public CartModel getCartById(String id) {
+		return this.cartRepository.findById(id).orElseThrow(CartNotFoundException::new);
+	}
+	public void disableCart(String id) {
+		var cart = this.getCartById(id);
+		cart.setActive(false);
+		this.cartRepository.save(cart);
 	}
 
 }

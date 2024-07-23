@@ -1,6 +1,5 @@
 package com.ms.stores.model.address;
 
-
 import com.ms.stores.service.AddressService;
 
 import jakarta.validation.constraints.NotBlank;

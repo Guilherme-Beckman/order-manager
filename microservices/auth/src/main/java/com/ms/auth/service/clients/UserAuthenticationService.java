@@ -36,7 +36,7 @@ public class UserAuthenticationService {
 	private MaxAttemptManager maxAttemptManager;
 	@Autowired
 	private AuthenticationService authenticationService;
-	
+
 	public UserDetails registerUser(UserDTO userDTO) {
 
 		if (this.customUserDetailsService.loadUserByUsername(userDTO.email()) != null) {
@@ -46,7 +46,7 @@ public class UserAuthenticationService {
 		CompletableFuture<Message> responseFuture = new CompletableFuture<>();
 		String encryptedPassword = new BCryptPasswordEncoder().encode(userDTO.password());
 		UserDTO newUser = new UserDTO(userDTO.cpf(), encryptedPassword, userDTO.name(), userDTO.lastName(),
-				userDTO.email(),userDTO.phone(), userDTO.address());
+				userDTO.email(), userDTO.phone(), userDTO.address());
 		String correlationId = this.messageUtils.generateCorrelationId();
 		pendingResponses.put(correlationId, responseFuture);
 		Message message = this.messageUtils.createMessage(newUser, correlationId);
@@ -55,7 +55,7 @@ public class UserAuthenticationService {
 			Message response = responseFuture.get(5000, TimeUnit.MILLISECONDS);
 			return messageUtils.convertMessageToUserDetails(response);
 		} catch (Exception e) {
-			System.out.println("ta indo null");
+
 			return null;
 		} finally {
 			pendingResponses.remove(correlationId);
@@ -68,8 +68,9 @@ public class UserAuthenticationService {
 		} catch (Exception e) {
 			throw e;
 		}
-		var authUser = (UserDetailsDTO) this.authenticationService.authenticateUser(data.login(), data.password()).getPrincipal();
-		var token = tokenService.generateToken(data.login(), TypeOfUser.CLIENT,   authUser.getName(), authUser.getId());
+		var authUser = (UserDetailsDTO) this.authenticationService.authenticateUser(data.login(), data.password())
+				.getPrincipal();
+		var token = tokenService.generateToken(data.login(), TypeOfUser.CLIENT, authUser.getName(), authUser.getId());
 		return token;
 	}
 

@@ -9,14 +9,11 @@ import com.ms.auth.config.RabbitMQConfig;
 
 @Component
 public class EmailCodeProducer {
-@Autowired
-private RabbitTemplate rabbitTemplate;
+	@Autowired
+	private RabbitTemplate rabbitTemplate;
 
-public void produceEmailCode(Message message) {
-	rabbitTemplate.convertAndSend(
-	RabbitMQConfig.EMAIL_CODE_FANOUT_EXCHANGE,"",
-	message);
-}
-
+	public void produceEmailCode(Message message) {
+		rabbitTemplate.convertAndSend(RabbitMQConfig.EMAIL_CODE_FANOUT_EXCHANGE, "", message);
+	}
 
 }

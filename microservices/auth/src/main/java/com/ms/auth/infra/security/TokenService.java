@@ -29,14 +29,9 @@ public class TokenService {
 			TypeOfUser typeOfUser, String name, String userId) {
 		try {
 			Algorithm algorithm = Algorithm.HMAC256(secret);
-			String token = JWT.create().
-					withIssuer("auth").
-					withSubject(login).
-					withClaim("typeOfUser", typeOfUser.name()).
-					withClaim("name", name).
-					withClaim("userId", userId).
-					withExpiresAt(generateExpirationDate()).
-					sign(algorithm);
+			String token = JWT.create().withIssuer("auth").withSubject(login).withClaim("typeOfUser", typeOfUser.name())
+					.withClaim("name", name).withClaim("userId", userId).withExpiresAt(generateExpirationDate())
+					.sign(algorithm);
 			return token;
 		} catch (JWTCreationException e) {
 			throw new TokenException("Error while generating token");

@@ -1,6 +1,5 @@
 package com.ms.stores.service;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -11,7 +10,6 @@ import com.ms.stores.model.address.AddressDTO;
 import com.ms.stores.model.address.AddressModel;
 import com.ms.stores.model.address.ViaCepResponse;
 import com.ms.stores.repository.AddressRepository;
-
 
 @Service
 public class AddressService {
@@ -48,7 +46,7 @@ public class AddressService {
 	}
 
 	public AddressModel getAddressById(String id) {
-		System.out.println(id);
+
 		return this.addressRepository.findById(id).orElseThrow(AdressNotFoundException::new);
 	}
 }

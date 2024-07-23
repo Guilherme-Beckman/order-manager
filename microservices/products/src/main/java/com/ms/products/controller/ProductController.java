@@ -16,14 +16,15 @@ import com.ms.products.service.ProductService;
 public class ProductController {
 	@Autowired
 	private ProductService productService;
-	
+
 	@GetMapping("/all")
-	public ResponseEntity<List<ProductModel>> getAllProducts(){
+	public ResponseEntity<List<ProductModel>> getAllProducts() {
 		var allProducts = this.productService.getAllProducts();
 		return ResponseEntity.ok().body(allProducts);
 	}
+
 	@GetMapping("/id/{productId}")
-	public ResponseEntity<ProductPerfil> getProductById(@PathVariable String productId){
+	public ResponseEntity<ProductPerfil> getProductById(@PathVariable String productId) {
 		var product = this.productService.getProductPerfilById(productId);
 		return ResponseEntity.ok().body(product);
 	}

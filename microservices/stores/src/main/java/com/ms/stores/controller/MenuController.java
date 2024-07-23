@@ -22,20 +22,23 @@ import jakarta.servlet.http.HttpServletRequest;
 public class MenuController {
 	@Autowired
 	private MenuService menuService;
+
 	@PostMapping("/create")
-	public ResponseEntity<MenuModel> createMenu (@RequestBody MenuDTO menuDTO, HttpServletRequest servletRequest){
+	public ResponseEntity<MenuModel> createMenu(@RequestBody MenuDTO menuDTO, HttpServletRequest servletRequest) {
 		var menuModel = this.menuService.createMenu(menuDTO, servletRequest);
 		return ResponseEntity.ok().body(menuModel);
 	}
+
 	@PutMapping("productMenu/{menuId}/{productId}")
-	public ResponseEntity<MenuModel> addProductMenu(@PathVariable String menuId, @PathVariable String productId){
-		var menuModel = this.menuService.addProductMenu(menuId,productId);
+	public ResponseEntity<MenuModel> addProductMenu(@PathVariable String menuId, @PathVariable String productId) {
+		var menuModel = this.menuService.addProductMenu(menuId, productId);
 		return ResponseEntity.ok().body(menuModel);
 	}
+
 	@GetMapping("/id/{menuId}")
-	public ResponseEntity<MenuPerfil> getProductByMenuId(@PathVariable String menuId){
-		MenuPerfil menuPerfil =this.menuService.getProductByMenuId(menuId);
+	public ResponseEntity<MenuPerfil> getProductByMenuId(@PathVariable String menuId) {
+		MenuPerfil menuPerfil = this.menuService.getProductByMenuId(menuId);
 		return ResponseEntity.ok().body(menuPerfil);
 	}
-	
+
 }

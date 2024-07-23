@@ -1,7 +1,6 @@
 package com.ms.apiGateway.service;
 
 import java.util.concurrent.CompletableFuture;
-
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
@@ -50,9 +49,8 @@ public class ReactiveCustomUserDetailsService {
 
 	}
 
-
 	public void receiveResponse(Message message) {
-		String responseCorrelationId = (String) message.getMessageProperties().getCorrelationId();
+		String responseCorrelationId = message.getMessageProperties().getCorrelationId();
 
 		CompletableFuture<Message> responseFuture = pendingResponses.get(responseCorrelationId);
 		if (responseFuture != null) {

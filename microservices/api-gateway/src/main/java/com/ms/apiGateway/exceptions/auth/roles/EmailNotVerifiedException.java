@@ -5,7 +5,7 @@ import org.springframework.http.ProblemDetail;
 
 import com.ms.apiGateway.exceptions.auth.AuthException;
 
-public class EmailNotVerifiedException extends AuthException{
+public class EmailNotVerifiedException extends AuthException {
 
 	private static final long serialVersionUID = 1L;
 

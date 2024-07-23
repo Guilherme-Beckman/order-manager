@@ -16,6 +16,5 @@ public class InvalideCodeException extends AuthException {
 		pb.setDetail("Invalide code");
 		return pb;
 	}
-	
-	
+
 }

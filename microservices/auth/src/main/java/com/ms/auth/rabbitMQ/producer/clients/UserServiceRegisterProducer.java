@@ -9,14 +9,11 @@ import com.ms.auth.config.RabbitMQConfig;
 
 @Component
 public class UserServiceRegisterProducer {
-    @Autowired
-    RabbitTemplate rabbitTemplate;
+	@Autowired
+	RabbitTemplate rabbitTemplate;
 
-    public void requestRegister(Message userDTO) {
-    	System.out.println("userDto: "+userDTO);
-            rabbitTemplate.convertAndSend(
-                    RabbitMQConfig.AUTH_USER_REGISTER_USER_DIRECT_EXCHANGE,
-                    RabbitMQConfig.REGISTER_USER_REQUEST_KEY,
-                    userDTO);   
-    }
+	public void requestRegister(Message userDTO) {
+		rabbitTemplate.convertAndSend(RabbitMQConfig.AUTH_USER_REGISTER_USER_DIRECT_EXCHANGE,
+				RabbitMQConfig.REGISTER_USER_REQUEST_KEY, userDTO);
+	}
 }

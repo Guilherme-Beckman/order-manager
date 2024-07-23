@@ -32,7 +32,8 @@ public class AddressDTO {
 		this.state = state;
 	}
 
-	public AddressDTO(@NotNull(message = "ZipCode must not be null") @NotBlank(message = "ZipCode must not be blank") String zipCode) {
+	public AddressDTO(
+			@NotNull(message = "ZipCode must not be null") @NotBlank(message = "ZipCode must not be blank") String zipCode) {
 		this.zipCode = zipCode;
 	}
 

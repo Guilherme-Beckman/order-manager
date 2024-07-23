@@ -15,16 +15,17 @@ import com.ms.auth.infra.security.customAuthentication.tokens.UserAuthentication
 import com.ms.auth.service.store.CustomStoreDetailsService;
 
 @Component
-public class StoreAuthenticationProvider implements AuthenticationProvider{
+public class StoreAuthenticationProvider implements AuthenticationProvider {
 	@Autowired
 	private CustomStoreDetailsService storeDetailsService;
 	@Autowired
 	@Lazy
 	private PasswordEncoder passwordEncoder;
+
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		String username = authentication.getName();
-		String password = (String)authentication.getCredentials();
+		String password = (String) authentication.getCredentials();
 		UserDetails userDetails = storeDetailsService.loadUserByUsername(username);
 
 		if (userDetails != null && passwordEncoder.matches(password, userDetails.getPassword())) {
@@ -32,7 +33,7 @@ public class StoreAuthenticationProvider implements AuthenticationProvider{
 		}
 
 		throw new BadCredentialsException("");
-	
+
 	}
 
 	@Override

@@ -11,7 +11,6 @@ import com.ms.auth.exceptions.auth.AuthException;
 import com.ms.auth.exceptions.auth.authenticate.AuthenticateMethodException;
 import com.ms.auth.exceptions.valid.ValidationException;
 
-
 @RestControllerAdvice
 public class RestExceptionHandler {
 	@Autowired
@@ -19,20 +18,19 @@ public class RestExceptionHandler {
 	@Autowired
 	private AuthenticateMethodException authenticateMethodException;
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ProblemDetail handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-     return this.validationException.toProblemDetail(e);
-    }
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ProblemDetail handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+		return this.validationException.toProblemDetail(e);
+	}
 
-    @ExceptionHandler(AuthException.class)
-    public ProblemDetail handleAuthException(AuthException e) {
-        return e.toProblemDetail();
-    }
-    
-    @ExceptionHandler(AuthenticationException.class)
-    public ProblemDetail handleAuthenticationExecetion(AuthenticationException e) {
-    	return this.authenticateMethodException.toProblemDetail(e);
-    }
+	@ExceptionHandler(AuthException.class)
+	public ProblemDetail handleAuthException(AuthException e) {
+		return e.toProblemDetail();
+	}
 
-    
+	@ExceptionHandler(AuthenticationException.class)
+	public ProblemDetail handleAuthenticationExecetion(AuthenticationException e) {
+		return this.authenticateMethodException.toProblemDetail(e);
+	}
+
 }

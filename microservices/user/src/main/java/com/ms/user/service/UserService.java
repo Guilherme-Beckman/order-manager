@@ -1,5 +1,7 @@
 package com.ms.user.service;
 
+import java.util.Arrays;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ms.user.infra.security.CryptoUtils;
+import com.ms.user.infra.security.DecryptAddresses;
 import com.ms.user.infra.security.TokenService;
 import com.ms.user.infra.security.UserCrypto;
 import com.ms.user.model.address.AddressDTO;
@@ -32,6 +35,8 @@ public class UserService {
 	private CryptoUtils cryptoUtils;
 	@Autowired
 	private TokenService tokenService;
+	@Autowired
+	private DecryptAddresses decryptAddresses;
 
 	@Transactional
 	public UserModel insertUser(UserDTO userDTO) {
@@ -78,7 +83,7 @@ public class UserService {
 
 	public UserModel getUserByEmail(String email) {
 		UserModel user = userRepository.findByEmail(email.replace("\"", " ").trim());
-		if(user!=null) {
+		if (user != null) {
 			user.setName(this.cryptoUtils.decrypt(user.getName()));
 		}
 		return user;
@@ -119,5 +124,16 @@ public class UserService {
 		user.setName(this.cryptoUtils.encrypt(user.getName()));
 		user.setPassword(newPassword);
 		this.userRepository.save(user);
+	}
+
+	public AddressDTO getAddressDTOByUserIdAddressId(String userId, String addressId) {
+		var user = this.getUserById(userId);
+		if (!user.getAddress().contains(addressId))
+			return null;
+		var address = this.addressService.getAddressById(addressId);
+		var list = Arrays.asList(address.getId());
+		var decryptedAddress = this.decryptAddresses.decryptAddresses(list);
+		var addressDTO = decryptedAddress.get(0);
+		return addressDTO;
 	}
 }

@@ -1,11 +1,9 @@
 package com.ms.user.exceptions.auth.message;
 
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 
 import com.ms.user.exceptions.auth.AuthException;
-
 
 public class ConvertMessageException extends AuthException {
 

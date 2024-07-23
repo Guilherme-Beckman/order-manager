@@ -1,9 +1,7 @@
 package com.ms.stores.exceptions.rest;
 
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
-
 
 public class AdressNotFoundException extends RestException {
 

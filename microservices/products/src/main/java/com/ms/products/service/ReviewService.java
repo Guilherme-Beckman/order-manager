@@ -48,8 +48,8 @@ public class ReviewService {
 
 	public ReviewDTO getReviewDTOById(String id) {
 		var review = this.reviewRepository.findById(id).orElseThrow(ReviewNotFoundException::new);
-		return new ReviewDTO(review.getProductId(), review.getUserName(), review.getComment(),
-				review.getRating(), review.getCreatedAt());
+		return new ReviewDTO(review.getProductId(), review.getUserName(), review.getComment(), review.getRating(),
+				review.getCreatedAt());
 	}
 
 }

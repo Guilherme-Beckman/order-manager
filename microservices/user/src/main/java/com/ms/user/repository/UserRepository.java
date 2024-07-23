@@ -7,6 +7,6 @@ import com.ms.user.model.user.UserModel;
 
 @Repository
 public interface UserRepository extends MongoRepository<UserModel, String> {
-    UserModel findByEmail( String email);
-    
+	UserModel findByEmail(String email);
+
 }

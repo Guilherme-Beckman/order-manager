@@ -12,7 +12,6 @@ import com.ms.stores.rabbitMQ.producer.StoreReturnDataProducerApiGateway;
 import com.ms.stores.rabbitMQ.utils.StoreMessageConverter;
 import com.ms.stores.service.StoreService;
 
-
 @Component
 public class StoreDataListenerApiGateway {
 

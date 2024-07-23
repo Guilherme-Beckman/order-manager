@@ -9,11 +9,12 @@ import com.ms.products.config.RabbitMQConfig;
 import com.ms.products.model.product.ProductDTO;
 import com.ms.products.model.product.ProductModel;
 import com.ms.products.service.ProductService;
+
 @Component
 public class AddProductListener {
 	@Autowired
 	private ProductService productService;
-	
+
 	@RabbitListener(queues = RabbitMQConfig.ADD_PRODUCT_QUEUE)
 	public ProductModel receiveProducToAdd(@Payload ProductDTO productDTO) {
 		return this.productService.addNewProduct(productDTO);

@@ -8,18 +8,13 @@ import com.ms.auth.config.RabbitMQConfig;
 
 @Component
 public class UserCredentialsProducer {
-    @Autowired
-    public RabbitTemplate rabbitTemplate;
+	@Autowired
+	public RabbitTemplate rabbitTemplate;
 
-    public void requestUserCredentials(Message email) {
-    	
+	public void requestUserCredentials(Message email) {
 
-        rabbitTemplate.convertAndSend(
-            RabbitMQConfig.AUTH_USER_USER_DETAILS_DIRECT_EXCHANGE,
-            RabbitMQConfig.LOAD_USER_DETAILS_REQUEST_KEY,
-            email
-        );
+		rabbitTemplate.convertAndSend(RabbitMQConfig.AUTH_USER_USER_DETAILS_DIRECT_EXCHANGE,
+				RabbitMQConfig.LOAD_USER_DETAILS_REQUEST_KEY, email);
 
-
-    }
+	}
 }

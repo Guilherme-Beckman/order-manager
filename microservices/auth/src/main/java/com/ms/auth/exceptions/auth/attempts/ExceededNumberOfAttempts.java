@@ -8,9 +8,11 @@ import com.ms.auth.exceptions.auth.AuthException;
 public class ExceededNumberOfAttempts extends AuthException {
 	private static final long serialVersionUID = 1L;
 	private String detail;
+
 	public ExceededNumberOfAttempts(String detail) {
 		this.detail = detail;
 	}
+
 	@Override
 	public ProblemDetail toProblemDetail() {
 		var pb = ProblemDetail.forStatus(HttpStatus.BANDWIDTH_LIMIT_EXCEEDED);
@@ -18,6 +20,5 @@ public class ExceededNumberOfAttempts extends AuthException {
 		pb.setDetail(detail);
 		return pb;
 	}
-	
 
 }

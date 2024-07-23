@@ -1,6 +1,5 @@
 package com.ms.user.infra.security;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -32,7 +31,5 @@ public class AddressCrypto {
 		return addressDTO;
 
 	}
-
-
 
 }

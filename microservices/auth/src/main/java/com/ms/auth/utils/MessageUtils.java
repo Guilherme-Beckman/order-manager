@@ -11,45 +11,50 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ms.auth.dto.clients.UserDetailsDTO;
 import com.ms.auth.dto.store.StoreDetailsDTO;
 import com.ms.auth.exceptions.auth.message.ConvertMessageToUserDetailsException;
+
 @Component
 public class MessageUtils {
 	@Autowired
 	private ObjectMapper objectMapper;
+
 	public UserDetailsDTO convertMessageToUserDetails(Message message) {
 
-	    try {
-	        ObjectMapper objectMapper = new ObjectMapper();
-	        var user = objectMapper.readValue(message.getBody(), UserDetailsDTO.class);
-	        System.out.println("user:"+ user);
-	        return user;
-	    } catch (Exception e) {
-	        throw new ConvertMessageToUserDetailsException("Error while converting message into UserDetails");
-	    }
-	
-    }
-        public StoreDetailsDTO convertMessageToStoreDetails(Message message) {
-            try {
-                ObjectMapper objectMapper = new ObjectMapper();
-                var user = objectMapper.readValue(message.getBody(), StoreDetailsDTO.class);
-                return user;
-            } catch (Exception e) {
-            	e.printStackTrace();
-                throw new ConvertMessageToUserDetailsException("Error while converting message into UserDetails");      
-    }
-       
-} 
-    public Message createMessage (Object content, String correlationId)  {
-    	try {
-        	byte[] body = this.objectMapper.writeValueAsBytes(content);
-        	MessageProperties props = new MessageProperties();
-        	props.setCorrelationId(correlationId);    
-        	props.setExpiration("5000");
-        	return new Message(body, props);
-        }catch (Exception e) {
-        	throw new ConvertMessageToUserDetailsException("Error while converting message into UserDetails");      
-        }
-}
-    public String generateCorrelationId() {
-    	return UUID.randomUUID().toString();
-    }
+		try {
+			ObjectMapper objectMapper = new ObjectMapper();
+			var user = objectMapper.readValue(message.getBody(), UserDetailsDTO.class);
+
+			return user;
+		} catch (Exception e) {
+			throw new ConvertMessageToUserDetailsException("Error while converting message into UserDetails");
+		}
+
+	}
+
+	public StoreDetailsDTO convertMessageToStoreDetails(Message message) {
+		try {
+			ObjectMapper objectMapper = new ObjectMapper();
+			var user = objectMapper.readValue(message.getBody(), StoreDetailsDTO.class);
+			return user;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ConvertMessageToUserDetailsException("Error while converting message into UserDetails");
+		}
+
+	}
+
+	public Message createMessage(Object content, String correlationId) {
+		try {
+			byte[] body = this.objectMapper.writeValueAsBytes(content);
+			MessageProperties props = new MessageProperties();
+			props.setCorrelationId(correlationId);
+			props.setExpiration("5000");
+			return new Message(body, props);
+		} catch (Exception e) {
+			throw new ConvertMessageToUserDetailsException("Error while converting message into UserDetails");
+		}
+	}
+
+	public String generateCorrelationId() {
+		return UUID.randomUUID().toString();
+	}
 }

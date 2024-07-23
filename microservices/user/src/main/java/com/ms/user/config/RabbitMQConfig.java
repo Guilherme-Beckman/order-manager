@@ -1,11 +1,11 @@
 package com.ms.user.config;
 
-
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -42,20 +42,24 @@ public class RabbitMQConfig {
 	public static final String EMAIL_RESET_LINK_GENERATED_QUEUE = "email_reset_link_genereted_queue";
 	public static final String USER_EMAIL_RESET_LINK_FANOUT_EXCHANGE = "user_email_reset_link_fanout_exchange";
 	public static final String USER_EMAIL_RESET_LINK_QUEUE = "user_email_reset_link_queue";
-	
-	//Store
+
+	// Store
 	public static final String LOAD_STORE_DETAILS_QUEUE = "store_ms.load_store_details_queue";
 	public static final String RETURN_STORE_DETAILS_QUEUE = "auth_ms.return_store_details_queue";
 	public static final String AUTH_STORE_STORE_DETAILS_DIRECT_EXCHANGE = "auth_ms.store_ms_store_details_direct_exchange";
 	public static final String LOAD_STORE_DETAILS_REQUEST_KEY = "load.store.details.request";
 	public static final String RETURN_STORE_DETAILS_RESPONSE_KEY = "return.store.details.response";
-	
+
 	public static final String REGISTER_STORE_QUEUE = "store_ms.register_store_queue";
 	public static final String RETURN_REGISTERED_STORE_QUEUE = "auth_ms.return_registered_store_queue";
 	public static final String AUTH_STORE_REGISTER_STORE_DIRECT_EXCHANGE = "auth_ms.register_store_direct_exchange";
 	public static final String REGISTER_STORE_REQUEST_KEY = "register.store.request";
 	public static final String RETURN_REGISTERED_STORE_RESPONSE_KEY = "return.registered.store.response";
-	
+
+	public static final String ADDRESS_BY_USER_ID_ADRESS_ID_QUEUE = "address_by_user_id_address_id.queue";
+	public static final String ADDRESS_BY_USER_ID_ADRESS_ID_EXCHANGE = "address_by_user_id_address_id.exchange";
+	public static final String ADDRESS_BY_USER_ID_ADRESS_ID_KEY = "address_by_user_id_address_id.key";
+
 	@Bean
 	public Queue loadUserDetailsQueue() {
 		return new Queue(LOAD_USER_DETAILS_QUEUE, true);
@@ -216,8 +220,8 @@ public class RabbitMQConfig {
 			@Qualifier("userResetLinkEmailQueue") Queue userResetLinkEmailQueue) {
 		return BindingBuilder.bind(userResetLinkEmailQueue).to(exchange);
 	}
-	
-	//Store
+
+	// Store
 	@Bean
 	public Queue loadStoreDetailsQueue() {
 		return new Queue(LOAD_STORE_DETAILS_QUEUE, true);
@@ -234,9 +238,11 @@ public class RabbitMQConfig {
 	}
 
 	@Bean
-	public Binding loadStoreDetailsRequestKey(@Qualifier("authStoreDirectExchange") DirectExchange authStoreDirectExchange,
+	public Binding loadStoreDetailsRequestKey(
+			@Qualifier("authStoreDirectExchange") DirectExchange authStoreDirectExchange,
 			@Qualifier("loadStoreDetailsQueue") Queue loadStoreDetailsQueue) {
-		return BindingBuilder.bind(loadStoreDetailsQueue).to(authStoreDirectExchange).with(LOAD_STORE_DETAILS_REQUEST_KEY);
+		return BindingBuilder.bind(loadStoreDetailsQueue).to(authStoreDirectExchange)
+				.with(LOAD_STORE_DETAILS_REQUEST_KEY);
 	}
 
 	@Bean
@@ -246,7 +252,7 @@ public class RabbitMQConfig {
 		return BindingBuilder.bind(returnStoreDetailsQueue).to(authStoreDirectExchange)
 				.with(RETURN_STORE_DETAILS_RESPONSE_KEY);
 	}
-	
+
 	@Bean
 	public Queue registerStoreQueue() {
 		return new Queue(REGISTER_STORE_QUEUE, true);
@@ -276,5 +282,23 @@ public class RabbitMQConfig {
 			@Qualifier("returnRegisteredStoreQueue") Queue returnRegisteredStoreQueue) {
 		return BindingBuilder.bind(returnRegisteredStoreQueue).to(authStoreRegisterStoreDirectExchange)
 				.with(RETURN_REGISTERED_STORE_RESPONSE_KEY);
+	}
+
+	@Bean
+	public Queue addressByUserIdAddressIdQueue() {
+		return new Queue(ADDRESS_BY_USER_ID_ADRESS_ID_QUEUE);
+	}
+
+	@Bean
+	public TopicExchange addressUserIdAddressIdExchange() {
+		return new TopicExchange(ADDRESS_BY_USER_ID_ADRESS_ID_EXCHANGE);
+	}
+
+	@Bean
+	public Binding addressUserIdAddressIdExchangeBindingKey(
+			@Qualifier("addressByUserIdAddressIdQueue") Queue addressByUserIdAddressIdQueue,
+			@Qualifier("addressUserIdAddressIdExchange") TopicExchange addressUserIdAddressIdExchange) {
+		return BindingBuilder.bind(addressByUserIdAddressIdQueue).to(addressUserIdAddressIdExchange)
+				.with(ADDRESS_BY_USER_ID_ADRESS_ID_KEY);
 	}
 }

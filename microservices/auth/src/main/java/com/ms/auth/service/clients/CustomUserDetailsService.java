@@ -33,9 +33,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 		credentialsRequestor.requestUserCredentials(message);
 		try {
 			Message response = responseFuture.get(5000, TimeUnit.MILLISECONDS);
-			System.out.println("response:"+response);
+
 			var lalal = messageUtils.convertMessageToUserDetails(response);
-			System.out.println("lalal:"+lalal);
+
 			return lalal;
 		} catch (Exception e) {
 			return null;
@@ -46,7 +46,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 	public void receiveResponse(Message message) {
 		String responseCorrelationId = (String) message.getMessageProperties().getCorrelationId();
-		System.out.println("message: "+ message);
+
 		CompletableFuture<Message> responseFuture = pendingResponses.get(responseCorrelationId);
 		if (responseFuture != null) {
 			responseFuture.complete(message);

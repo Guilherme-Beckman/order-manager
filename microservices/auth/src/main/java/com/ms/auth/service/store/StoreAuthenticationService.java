@@ -75,7 +75,8 @@ public class StoreAuthenticationService {
 		} catch (Exception e) {
 			throw e;
 		}
-		var authStore = (StoreDetailsDTO) this.authenticationService.authenticateStore(data.login(), data.password()).getPrincipal();
+		var authStore = (StoreDetailsDTO) this.authenticationService.authenticateStore(data.login(), data.password())
+				.getPrincipal();
 		var token = tokenService.generateToken(data.login(), TypeOfUser.STORE, authStore.getName(), authStore.getId());
 		return token;
 	}

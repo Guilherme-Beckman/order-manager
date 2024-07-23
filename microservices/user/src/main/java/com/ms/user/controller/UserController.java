@@ -16,11 +16,13 @@ import jakarta.servlet.http.HttpServletRequest;
 public class UserController {
 	@Autowired
 	private UserService userService;
+
 	@GetMapping("/perfil")
 	public ResponseEntity<UserPerfilDTO> getUserPerfil(HttpServletRequest request) {
 		UserPerfilDTO userPerfil = this.userService.getUserPerfil(request);
 		return ResponseEntity.ok().body(userPerfil);
 	}
+
 	@PutMapping("/addAddress")
 	public ResponseEntity<String> addAddress(HttpServletRequest request, @RequestBody AddressDTO addressDTO) {
 		this.userService.addAdress(request, addressDTO);

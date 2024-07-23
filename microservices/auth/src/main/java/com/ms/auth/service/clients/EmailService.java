@@ -42,7 +42,6 @@ public class EmailService {
 		var userInfos = this.tokenService.getTokenInformations(token);
 		String email = userInfos.getSubject();
 
-		System.out.println(email);
 		this.attemptManagerExponencial.checkAndUpdateAttempts(email);
 		this.maxAttemptManager.checkAndUpdateAttempts(email);
 		code = this.generateCode();
@@ -80,7 +79,8 @@ public class EmailService {
 			throw e;
 		}
 
-		if (!(emailCodeDTO.emailCode().equals(code))) throw new InvalideCodeException();
+		if (!(emailCodeDTO.emailCode().equals(code)))
+			throw new InvalideCodeException();
 
 		CompletableFuture<String> responseFuture = pendingResponses.get(email);
 

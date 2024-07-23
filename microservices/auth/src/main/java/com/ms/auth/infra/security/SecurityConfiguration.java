@@ -17,17 +17,15 @@ import org.springframework.security.web.SecurityFilterChain;
 import com.ms.auth.infra.security.customAuthentication.providers.StoreAuthenticationProvider;
 import com.ms.auth.infra.security.customAuthentication.providers.UserAuthenticationProvider;
 
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
-	
-	   @Autowired
-	    private UserAuthenticationProvider userAuthenticationProvider;
 
-	    @Autowired
-	    private StoreAuthenticationProvider storeAuthenticationProvider;
+	@Autowired
+	private UserAuthenticationProvider userAuthenticationProvider;
 
+	@Autowired
+	private StoreAuthenticationProvider storeAuthenticationProvider;
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -36,36 +34,22 @@ public class SecurityConfiguration {
 
 				.csrf(csrf -> csrf.disable())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-				.authorizeHttpRequests(autorize -> autorize.requestMatchers(
-						"/register",
-						"/login", 
-						"/sendcode",
-						"/validate", 
-						"/inviteResetPassword", 
-						"/newPassword", 
-						"/register-store",
-						"/login-store",
-						"/products"
-						).permitAll().anyRequest().authenticated())
+				.authorizeHttpRequests(autorize -> autorize
+						.requestMatchers("/register", "/login", "/sendcode", "/validate", "/inviteResetPassword",
+								"/newPassword", "/register-store", "/login-store", "/products")
+						.permitAll().anyRequest().authenticated())
 				.build();
 
 	}
 
-
-
-
 	@Bean
-	   public AuthenticationManager authenticationManager() {
-        return new ProviderManager(Arrays.asList(userAuthenticationProvider, storeAuthenticationProvider));
-    }
-
-
+	public AuthenticationManager authenticationManager() {
+		return new ProviderManager(Arrays.asList(userAuthenticationProvider, storeAuthenticationProvider));
+	}
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-	
-	
 
 }
