@@ -1,6 +1,7 @@
 package com.ms.orders.service;
 
 import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,9 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.ms.orders.exceptions.rest.StoreDoesNotHaveAnyOrdersException;
 import com.ms.orders.exceptions.rest.UserDontHaveActiveCartException;
 import com.ms.orders.infra.security.TokenService;
 import com.ms.orders.model.order.OrderModel;
+import com.ms.orders.model.order.OrderPerfilForStores;
+import com.ms.orders.model.product.ProductPerfil;
 import com.ms.orders.rabbitMQ.producer.GetAddresByUserIdAdressIdProducer;
 import com.ms.orders.rabbitMQ.producer.GetProductByIdProducer;
 import com.ms.orders.repository.OrderRepository;
@@ -65,5 +69,32 @@ public class OrderService {
 		var userInfos = this.tokenService.getTokenInformations(token);
 		return userInfos;
 	}
+
+	public List<OrderPerfilForStores> getOrdersStore(HttpServletRequest servletRequest) {
+		var storeInfo = this.getUserInfoByToken(servletRequest);
+		String storeId = storeInfo.getClaim("userId").asString();
+		List<OrderModel> orderModels = this.getOrdersByStoreId(storeId);
+		List<OrderPerfilForStores> orderPerfils = new ArrayList<>();
+		if(orderModels.isEmpty()) throw new StoreDoesNotHaveAnyOrdersException();
+		orderModels.forEach(order -> {
+			List<ProductPerfil> productsPerfilList = new ArrayList<>();
+			var listProductsId = order.getProductsId();
+			listProductsId.forEach(product -> {
+				for (Map.Entry<String, Integer> productEntry : product.entrySet()) {
+					var productModel = this.productByIdProducer.requestProductsByIdProducer(productEntry.getKey());
+					ProductPerfil productPerfil = new ProductPerfil(productModel.id(), productModel.name(),
+							productModel.description(), productEntry.getValue());
+					productsPerfilList.add(productPerfil);
+				}
+			});
+			OrderPerfilForStores perfilForStores = new OrderPerfilForStores(order.getId(), order.getUserId(),
+					order.getOrderData(), order.getOrderStatus(), order.getSubtotal(), productsPerfilList, order.getAddressDTO());
+			orderPerfils.add(perfilForStores);
+		});
+		return orderPerfils;
+	}
+	   public List<OrderModel> getOrdersByStoreId(String storeId) {
+	        return orderRepository.findByStoreId(storeId);
+	    }
 
 }
