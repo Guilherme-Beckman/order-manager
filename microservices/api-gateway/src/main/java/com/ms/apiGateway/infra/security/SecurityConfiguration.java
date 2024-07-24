@@ -24,7 +24,7 @@ public class SecurityConfiguration {
 				.authorizeExchange(exchange -> exchange
 						.pathMatchers("/auth/login", "/auth/register", "/auth/register-store", "/auth/login-store",
 								"/products/all", "/products/id/**", "/stores/perfil/**", "/stores/menu/id/**")
-						.permitAll().pathMatchers("/stores/addProduct", "/stores/menu/**", "orders/store").hasRole("STORE")
+						.permitAll().pathMatchers("/stores/addProduct", "/stores/menu/**", "orders/store","orders/store/status/**").hasRole("STORE")
 						.pathMatchers("/auth/inviteResetPassword", "/auth/newPassword", "products/review/**",
 								"/orders/cart/add/**", "/orders/cart/remove/**","/orders/make/**")
 						.hasRole("USER").pathMatchers("/auth/sendcode", "/auth/validate").hasRole("NON_VERIFIED_EMAIL")

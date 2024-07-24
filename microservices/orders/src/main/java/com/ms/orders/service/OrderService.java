@@ -1,20 +1,22 @@
 package com.ms.orders.service;
 
 import java.util.ArrayList;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.ms.orders.exceptions.rest.OrderNotFoundException;
 import com.ms.orders.exceptions.rest.StoreDoesNotHaveAnyOrdersException;
 import com.ms.orders.exceptions.rest.UserDontHaveActiveCartException;
 import com.ms.orders.infra.security.TokenService;
 import com.ms.orders.model.order.OrderModel;
 import com.ms.orders.model.order.OrderPerfilForStores;
+import com.ms.orders.model.order.OrderStatus;
 import com.ms.orders.model.product.ProductPerfil;
 import com.ms.orders.rabbitMQ.producer.GetAddresByUserIdAdressIdProducer;
 import com.ms.orders.rabbitMQ.producer.GetProductByIdProducer;
@@ -75,7 +77,8 @@ public class OrderService {
 		String storeId = storeInfo.getClaim("userId").asString();
 		List<OrderModel> orderModels = this.getOrdersByStoreId(storeId);
 		List<OrderPerfilForStores> orderPerfils = new ArrayList<>();
-		if(orderModels.isEmpty()) throw new StoreDoesNotHaveAnyOrdersException();
+		if (orderModels.isEmpty())
+			throw new StoreDoesNotHaveAnyOrdersException();
 		orderModels.forEach(order -> {
 			List<ProductPerfil> productsPerfilList = new ArrayList<>();
 			var listProductsId = order.getProductsId();
@@ -88,13 +91,28 @@ public class OrderService {
 				}
 			});
 			OrderPerfilForStores perfilForStores = new OrderPerfilForStores(order.getId(), order.getUserId(),
-					order.getOrderData(), order.getOrderStatus(), order.getSubtotal(), productsPerfilList, order.getAddressDTO());
+					order.getOrderData(), order.getOrderStatus(), order.getSubtotal(), productsPerfilList,
+					order.getAddressDTO());
 			orderPerfils.add(perfilForStores);
 		});
 		return orderPerfils;
 	}
-	   public List<OrderModel> getOrdersByStoreId(String storeId) {
-	        return orderRepository.findByStoreId(storeId);
-	    }
+
+	public List<OrderModel> getOrdersByStoreId(String storeId) {
+		return orderRepository.findByStoreId(storeId);
+	}
+
+	public OrderModel changeOrderStatus(HttpServletRequest httpServletRequest, String orderId, String statusName) {
+		var storeInfo = this.getUserInfoByToken(httpServletRequest);
+		String storeId = storeInfo.getClaim("userId").asString();
+		var orders = this.getOrdersByStoreId(storeId);
+		Optional<OrderModel> orderOptional = orders.stream().filter(order -> order.getId().equals(orderId)).findFirst();
+		if (orderOptional.isEmpty())
+			throw new OrderNotFoundException(orderId, storeId);
+		var orderModel = orderOptional.get();
+		orderModel.setOrderStatus(OrderStatus.valueOf(statusName.toUpperCase()));
+		var savedOrder = this.orderRepository.save(orderModel);
+		return savedOrder;
+	}
 
 }
