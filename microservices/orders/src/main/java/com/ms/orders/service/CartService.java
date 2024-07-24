@@ -91,9 +91,11 @@ public class CartService {
 
 		return this.cartRepository.save(cart);
 	}
+
 	public CartModel getCartById(String id) {
 		return this.cartRepository.findById(id).orElseThrow(CartNotFoundException::new);
 	}
+
 	public void disableCart(String id) {
 		var cart = this.getCartById(id);
 		cart.setActive(false);

@@ -26,26 +26,26 @@ public class GetAddresByUserIdAdressIdProducer {
 		var message = this.messageUtils.createMessage(userAdressId);
 
 		@SuppressWarnings("unchecked")
-		LinkedHashMap<String, Object> linkedHashMap = (LinkedHashMap<String, Object>) rabbitTemplate.convertSendAndReceive(
-				RabbitMQConfig.ADDRESS_BY_USER_ID_ADRESS_ID_EXCHANGE, RabbitMQConfig.ADDRESS_BY_USER_ID_ADRESS_ID_KEY,
-				message);
+		LinkedHashMap<String, Object> linkedHashMap = (LinkedHashMap<String, Object>) rabbitTemplate
+				.convertSendAndReceive(RabbitMQConfig.ADDRESS_BY_USER_ID_ADRESS_ID_EXCHANGE,
+						RabbitMQConfig.ADDRESS_BY_USER_ID_ADRESS_ID_KEY, message);
 		if (linkedHashMap == null)
 			throw new AddressNotFoundInUserListException();
 		var newAddressDTO = this.mapToAddressDTO(linkedHashMap);
 		return newAddressDTO;
 	}
 
-    private AddressDTO mapToAddressDTO(LinkedHashMap<String, Object> map) {
-        String userId = (String) map.get("userId");
-        String street = (String) map.get("street");
-        String number = map.get("number") != null ? (String) map.get("number") : "";
-        String complement = (String) map.get("complement");
-        String neighborhood = (String) map.get("neighborhood");
-        String city = (String) map.get("city");
-        String state = (String) map.get("state");
-        String zipCode = (String) map.get("zipCode");
+	private AddressDTO mapToAddressDTO(LinkedHashMap<String, Object> map) {
+		String userId = (String) map.get("userId");
+		String street = (String) map.get("street");
+		String number = map.get("number") != null ? (String) map.get("number") : "";
+		String complement = (String) map.get("complement");
+		String neighborhood = (String) map.get("neighborhood");
+		String city = (String) map.get("city");
+		String state = (String) map.get("state");
+		String zipCode = (String) map.get("zipCode");
 
-        return new AddressDTO(userId, street, number, complement, neighborhood, city, state, zipCode);
-    }
+		return new AddressDTO(userId, street, number, complement, neighborhood, city, state, zipCode);
+	}
 
 }

@@ -12,10 +12,13 @@ import org.springframework.stereotype.Service;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.ms.orders.exceptions.rest.OrderNotFoundException;
 import com.ms.orders.exceptions.rest.StoreDoesNotHaveAnyOrdersException;
+import com.ms.orders.exceptions.rest.UserCannotCancelOrder;
+import com.ms.orders.exceptions.rest.UserDoesNotHaveAnyOrdersException;
 import com.ms.orders.exceptions.rest.UserDontHaveActiveCartException;
 import com.ms.orders.infra.security.TokenService;
 import com.ms.orders.model.order.OrderModel;
 import com.ms.orders.model.order.OrderPerfilForStores;
+import com.ms.orders.model.order.OrderPerfilForUsers;
 import com.ms.orders.model.order.OrderStatus;
 import com.ms.orders.model.product.ProductPerfil;
 import com.ms.orders.rabbitMQ.producer.GetAddresByUserIdAdressIdProducer;
@@ -120,7 +123,7 @@ public class OrderService {
 		return savedOrder;
 	}
 
-	public List<OrderModel> getOrderHistory(HttpServletRequest httpServletRequest) {
+	public List<OrderModel> getStoreOrderHistory(HttpServletRequest httpServletRequest) {
 		var storeInfo = this.getUserInfoByToken(httpServletRequest);
 		String storeId = storeInfo.getClaim("userId").asString();
 		List<OrderModel> orders = this.getInactiveOrdersByStoreId(storeId);
@@ -129,6 +132,65 @@ public class OrderService {
 
 	private List<OrderModel> getInactiveOrdersByStoreId(String storeId) {
 		List<OrderModel> orders = this.orderRepository.findByStoreIdAndInactive(storeId);
+		return orders;
+	}
+
+	public OrderModel cancelOrder(HttpServletRequest httpServletRequest, String orderId) {
+		var userInfo = this.getUserInfoByToken(httpServletRequest);
+		String userId = userInfo.getClaim("userId").asString();
+		List<OrderModel> orders = this.getActiveOrdersByUserId(userId);
+		Optional<OrderModel> orderOptional = orders.stream().filter(order -> order.getId().equals(orderId)).findFirst();
+		if (orderOptional.isEmpty())
+			throw new OrderNotFoundException(orderId, userId);
+		var orderModel = orderOptional.get();
+		var status = orderModel.getOrderStatus().toString();
+		if ((OrderStatus.CONFIRMED.toString()).equals(status) || OrderStatus.PENDING.toString().equals(status)) {
+			orderModel.setOrderStatus(OrderStatus.CANCELED);
+			orderModel.setActive(false);
+			return this.orderRepository.save(orderModel);
+		}
+		throw new UserCannotCancelOrder(OrderStatus.valueOf(status));
+	}
+
+	private List<OrderModel> getActiveOrdersByUserId(String userId) {
+		return orderRepository.findByUserIdAndActive(userId);
+	}
+
+	public List<OrderPerfilForUsers> getOrdersUser(HttpServletRequest servletRequest) {
+		var userInfo = this.getUserInfoByToken(servletRequest);
+		String userId = userInfo.getClaim("userId").asString();
+		List<OrderModel> orderModels = this.getActiveOrdersByUserId(userId);
+		List<OrderPerfilForUsers> orderPerfils = new ArrayList<>();
+		if (orderModels.isEmpty())
+			throw new UserDoesNotHaveAnyOrdersException();
+		orderModels.forEach(order -> {
+			List<ProductPerfil> productsPerfilList = new ArrayList<>();
+			var listProductsId = order.getProductsId();
+			listProductsId.forEach(product -> {
+				for (Map.Entry<String, Integer> productEntry : product.entrySet()) {
+					var productModel = this.productByIdProducer.requestProductsByIdProducer(productEntry.getKey());
+					ProductPerfil productPerfil = new ProductPerfil(productModel.id(), productModel.name(),
+							productModel.description(), productEntry.getValue());
+					productsPerfilList.add(productPerfil);
+				}
+			});
+			OrderPerfilForUsers perfilForUsers = new OrderPerfilForUsers(order.getId(), order.getStoreId(),
+					order.getOrderData(), order.getOrderStatus(), order.getSubtotal(), productsPerfilList,
+					order.getAddressDTO());
+			orderPerfils.add(perfilForUsers);
+		});
+		return orderPerfils;
+	}
+
+	public List<OrderModel> getUserOrderHistory(HttpServletRequest httpServletRequest) {
+		var userInfo = this.getUserInfoByToken(httpServletRequest);
+		String userId = userInfo.getClaim("userId").asString();
+		List<OrderModel> orders = this.getInactiveOrdersByUserId(userId);
+		return orders;
+	}
+
+	private List<OrderModel> getInactiveOrdersByUserId(String userId) {
+		List<OrderModel> orders = this.orderRepository.findByUserIdAndInactive(userId);
 		return orders;
 	}
 
