@@ -22,6 +22,7 @@ public class OrderModel {
 	private Integer subtotal;
 	private List<Map<String, Integer>> productsId;
 	private AddressDTO addressDTO;
+	private boolean active;
 
 	public OrderModel(String id, String userId, String storeId, LocalDateTime orderData, OrderStatus orderStatus,
 			Integer subtotal, List<String> productsId, AddressDTO addressDTO) {
@@ -33,12 +34,14 @@ public class OrderModel {
 		this.subtotal = subtotal;
 		this.productsId = new ArrayList<>();
 		this.addressDTO = addressDTO;
+		this.active = true;
 	}
 
 	public OrderModel() {
 		this.orderData = LocalDateTime.now();
 		this.orderStatus = OrderStatus.PENDING;
 		this.productsId = new ArrayList<>();
+		this.active = true;
 	}
 
 	public String getId() {
@@ -103,6 +106,14 @@ public class OrderModel {
 
 	public void setProductsId(List<Map<String, Integer>> productsId) {
 		this.productsId = productsId;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 
 }

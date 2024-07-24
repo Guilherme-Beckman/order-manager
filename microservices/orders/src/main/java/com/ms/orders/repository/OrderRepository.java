@@ -11,7 +11,9 @@ import com.ms.orders.model.order.OrderModel;
 @Repository
 public interface OrderRepository extends MongoRepository<OrderModel, String> {
 
-	
-	    List<OrderModel> findByStoreId(String storeId);
 
+    @Query("{ 'storeId': ?0, 'active': true }")
+    List<OrderModel> findByStoreIdAndActive(String storeId);
+    @Query("{ 'storeId': ?0, 'active': false }")
+	List<OrderModel> findByStoreIdAndInactive(String storeId);
 }

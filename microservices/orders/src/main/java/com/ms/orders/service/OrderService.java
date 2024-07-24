@@ -75,7 +75,7 @@ public class OrderService {
 	public List<OrderPerfilForStores> getOrdersStore(HttpServletRequest servletRequest) {
 		var storeInfo = this.getUserInfoByToken(servletRequest);
 		String storeId = storeInfo.getClaim("userId").asString();
-		List<OrderModel> orderModels = this.getOrdersByStoreId(storeId);
+		List<OrderModel> orderModels = this.getActiveOrdersByStoreId(storeId);
 		List<OrderPerfilForStores> orderPerfils = new ArrayList<>();
 		if (orderModels.isEmpty())
 			throw new StoreDoesNotHaveAnyOrdersException();
@@ -98,21 +98,38 @@ public class OrderService {
 		return orderPerfils;
 	}
 
-	public List<OrderModel> getOrdersByStoreId(String storeId) {
-		return orderRepository.findByStoreId(storeId);
+	public List<OrderModel> getActiveOrdersByStoreId(String storeId) {
+		return orderRepository.findByStoreIdAndActive(storeId);
 	}
 
 	public OrderModel changeOrderStatus(HttpServletRequest httpServletRequest, String orderId, String statusName) {
 		var storeInfo = this.getUserInfoByToken(httpServletRequest);
 		String storeId = storeInfo.getClaim("userId").asString();
-		var orders = this.getOrdersByStoreId(storeId);
+		var orders = this.getActiveOrdersByStoreId(storeId);
 		Optional<OrderModel> orderOptional = orders.stream().filter(order -> order.getId().equals(orderId)).findFirst();
 		if (orderOptional.isEmpty())
 			throw new OrderNotFoundException(orderId, storeId);
 		var orderModel = orderOptional.get();
 		orderModel.setOrderStatus(OrderStatus.valueOf(statusName.toUpperCase()));
+		if (statusName.toUpperCase().equals(OrderStatus.REFUSED.toString())
+				|| statusName.toUpperCase().equals(OrderStatus.DELIVERED.toString())) {
+			orderModel.setActive(false);
+		}
 		var savedOrder = this.orderRepository.save(orderModel);
+
 		return savedOrder;
+	}
+
+	public List<OrderModel> getOrderHistory(HttpServletRequest httpServletRequest) {
+		var storeInfo = this.getUserInfoByToken(httpServletRequest);
+		String storeId = storeInfo.getClaim("userId").asString();
+		List<OrderModel> orders = this.getInactiveOrdersByStoreId(storeId);
+		return orders;
+	}
+
+	private List<OrderModel> getInactiveOrdersByStoreId(String storeId) {
+		List<OrderModel> orders = this.orderRepository.findByStoreIdAndInactive(storeId);
+		return orders;
 	}
 
 }
