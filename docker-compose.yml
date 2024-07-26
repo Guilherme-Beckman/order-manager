@@ -1,0 +1,57 @@
+
+services:
+  service-registry:
+    build:
+      context: ./microservices/service-registry
+    container_name: service-registry
+    ports:
+      - "8761:8761"
+    networks:
+      - order-manager
+  global-config:
+    build:
+      context: ./microservices/global-config
+    container_name: global-config
+    ports:
+      - "8888:8888"
+    networks:
+      - order-manager
+    environment:
+      - GIT_GLOBAL_CONFIG_REPO=${GIT_GLOBAL_CONFIG_REPO}
+      - GIT_TOKEN=${GIT}
+      - EUREKA=${EUREKA}
+  api-gateway:
+    build:
+      context: ./microservices/api-gateway
+    container_name: api-gateway
+    networks:
+      - order-manager
+  auth:
+    build:
+      context: ./microservices/auth
+    container_name: auth
+    networks:
+      - order-manager
+  email:
+    build:
+      context: ./microservices/email /
+    container_name: email
+    networks:
+      - order-manager
+  orders:
+    build:
+      context: ./microservices/orders
+    container_name: orders
+    networks:
+      - order-manager
+  products:
+    build:
+      context: ./microservices/products
+    container_name: products
+    networks:
+      - order-manager
+
+
+networks:
+  order-manager:
+    driver: bridge
