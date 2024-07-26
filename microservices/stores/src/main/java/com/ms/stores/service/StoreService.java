@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ms.products.model.product.ProductModel;
 import com.ms.stores.infra.security.CryptoUtils;
 import com.ms.stores.infra.security.StoreCrypto;
 import com.ms.stores.infra.security.TokenService;
@@ -16,6 +15,7 @@ import com.ms.stores.model.address.AddressDTO;
 import com.ms.stores.model.address.AddressModel;
 import com.ms.stores.model.opening_hours.OpeningHoursDTO;
 import com.ms.stores.model.products.ProductDTO;
+import com.ms.stores.model.products.ProductModel;
 import com.ms.stores.model.store.StoreDTO;
 import com.ms.stores.model.store.StoreModel;
 import com.ms.stores.model.store.StorePerfil;

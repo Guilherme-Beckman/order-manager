@@ -31,6 +31,7 @@ public class GetProductByIdProducer {
 		return productModelDTO;
 	}
 
+	@SuppressWarnings("unchecked")
 	private ProductModelDTO mapToProductModelDTO(LinkedHashMap<String, Object> map) {
 		var rating = map.get("rating");
 		rating = rating.toString();

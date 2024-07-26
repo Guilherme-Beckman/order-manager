@@ -36,4 +36,5 @@ public class MessageUtils {
 			throw new ConvertMessageException("Error while converting message into UserDetails");
 		}
 	}
+
 }

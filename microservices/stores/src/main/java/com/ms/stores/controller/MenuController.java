@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ms.stores.model.menu.MenuDTO;
 import com.ms.stores.model.menu.MenuModel;
-import com.ms.stores.model.menu.MenuPerfil;
 import com.ms.stores.service.MenuService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,8 +35,9 @@ public class MenuController {
 	}
 
 	@GetMapping("/id/{menuId}")
-	public ResponseEntity<MenuPerfil> getProductByMenuId(@PathVariable String menuId) {
-		MenuPerfil menuPerfil = this.menuService.getProductByMenuId(menuId);
+	public ResponseEntity<?> getProductByMenuId(@PathVariable String menuId) {
+		var menuPerfil = this.menuService.getProductByMenuId(menuId);
+		 
 		return ResponseEntity.ok().body(menuPerfil);
 	}
 

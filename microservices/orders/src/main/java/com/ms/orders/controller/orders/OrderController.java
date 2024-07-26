@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ms.orders.model.order.OrderModel;
-import com.ms.orders.model.order.OrderPerfilForStores;
 import com.ms.orders.model.order.OrderPerfilForUsers;
 import com.ms.orders.service.OrderService;
 

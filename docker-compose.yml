@@ -24,6 +24,8 @@ services:
     build:
       context: ./microservices/api-gateway
     container_name: api-gateway
+    ports:
+      - "8989:8989"
     networks:
       - order-manager
   auth:
@@ -50,6 +52,20 @@ services:
     container_name: products
     networks:
       - order-manager
+  user:
+    build:
+      context: ./microservices/user
+    container_name: user
+    networks:
+      - order-manager
+  stores:
+    build:
+      context: ./microservices/stores
+    container_name: stores
+    networks:
+      - order-manager
+
+
 
 
 networks:

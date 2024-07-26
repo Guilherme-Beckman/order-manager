@@ -1,8 +1,10 @@
 package com.ms.stores.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ms.stores.exceptions.rest.MenuNotFoundException;
 import com.ms.stores.exceptions.rest.ProductIsAlreadyOnTheMenuException;
 import com.ms.stores.model.menu.MenuDTO;
@@ -25,6 +27,8 @@ public class MenuService {
 	private AddProductMenuProducer productMenuProducer;
 	@Autowired
 	private RequestProductsByMenuIdProducer requestProductsByMenuIdProducer;
+	@Autowired
+	ObjectMapper objectMapper;
 
 	public MenuModel createMenu(MenuDTO menuDTO, HttpServletRequest servletRequest) {
 		var store = this.storeService.findStoreByToken(servletRequest);
@@ -51,8 +55,9 @@ public class MenuService {
 	public MenuPerfil getProductByMenuId(String menuId) {
 		var menu = this.getMenuId(menuId);
 		var products = this.requestProductsByMenuIdProducer.requestProductsByMenuIdProducer(menuId);
-		return new MenuPerfil(menu.getId(), menu.getStoreId(), menu.getName(), products);
-
+		MenuPerfil perfil = new MenuPerfil(menu.getId(), menu.getStoreId(), menu.getName(), products);
+		 
+		return perfil;
 	}
 
 }

@@ -1,7 +1,6 @@
 package com.ms.orders.rabbitMQ.producer;
 
 import java.util.LinkedHashMap;
-import java.util.List;
 
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import com.ms.orders.config.RabbitMQConfig;
 import com.ms.orders.exceptions.rest.AddressNotFoundInUserListException;
 import com.ms.orders.model.address.AddressDTO;
 import com.ms.orders.model.address.UserIdAddressIdDTO;
-import com.ms.orders.model.product.ProductModelDTO;
 import com.ms.orders.utils.message.MessageUtils;
 
 @Component
