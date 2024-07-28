@@ -7,6 +7,7 @@ import com.ms.auth.exceptions.auth.AuthException;
 
 public class ExceededNumberOfAttempts extends AuthException {
 	private static final long serialVersionUID = 1L;
+
 	private String detail;
 
 	public ExceededNumberOfAttempts(String detail) {
@@ -15,10 +16,9 @@ public class ExceededNumberOfAttempts extends AuthException {
 
 	@Override
 	public ProblemDetail toProblemDetail() {
-		var pb = ProblemDetail.forStatus(HttpStatus.BANDWIDTH_LIMIT_EXCEEDED);
+		var pb = ProblemDetail.forStatus(HttpStatus.TOO_MANY_REQUESTS);
 		pb.setTitle("You have exceeded the number of attempts in a time");
 		pb.setDetail(detail);
 		return pb;
 	}
-
 }

@@ -37,7 +37,7 @@ public class MenuController {
 	@GetMapping("/id/{menuId}")
 	public ResponseEntity<?> getProductByMenuId(@PathVariable String menuId) {
 		var menuPerfil = this.menuService.getProductByMenuId(menuId);
-		 
+
 		return ResponseEntity.ok().body(menuPerfil);
 	}
 

@@ -7,6 +7,7 @@ import com.ms.auth.exceptions.auth.AuthException;
 
 public class UserDataAlreadyExistsException extends AuthException {
 	private static final long serialVersionUID = 1L;
+
 	private String detail;
 
 	public UserDataAlreadyExistsException(String detail) {
@@ -20,5 +21,4 @@ public class UserDataAlreadyExistsException extends AuthException {
 		pb.setDetail(detail);
 		return pb;
 	}
-
 }

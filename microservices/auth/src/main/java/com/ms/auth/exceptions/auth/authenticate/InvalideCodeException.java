@@ -9,12 +9,17 @@ public class InvalideCodeException extends AuthException {
 
 	private static final long serialVersionUID = 1L;
 
+	private String detail;
+
+	public InvalideCodeException() {
+		this.detail = "Invalid code";
+	}
+
 	@Override
 	public ProblemDetail toProblemDetail() {
 		var pb = ProblemDetail.forStatus(HttpStatus.UNAUTHORIZED);
-		pb.setTitle("Invalide Code Exception");
-		pb.setDetail("Invalide code");
+		pb.setTitle("Invalid Code Exception");
+		pb.setDetail(detail);
 		return pb;
 	}
-
 }

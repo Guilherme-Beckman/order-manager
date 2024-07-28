@@ -1,6 +1,7 @@
 package com.ms.auth.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,7 +40,6 @@ public class ClientAuthenticationController {
 	public ResponseEntity<UserDetails> register(@RequestBody @Valid UserDTO data) {
 		var user = this.userService.registerUser(data);
 		return ResponseEntity.ok().body(user);
-
 	}
 
 	@PostMapping("/login")
@@ -59,7 +59,6 @@ public class ClientAuthenticationController {
 			HttpServletRequest request) {
 		var message = this.emailService.validateEmailCode(emailCodeDTO, request);
 		return ResponseEntity.ok().body(message);
-
 	}
 
 	@GetMapping("/inviteResetPassword")
@@ -72,7 +71,6 @@ public class ClientAuthenticationController {
 			@RequestBody String newPassword) {
 		var message = this.resetPasswordService.validateEmailCode(email, token, newPassword);
 		return ResponseEntity.ok().body(message);
-
 	}
 
 }

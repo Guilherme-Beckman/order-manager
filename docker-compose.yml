@@ -32,8 +32,11 @@ services:
     build:
       context: ./microservices/auth
     container_name: auth
+    ports:
+      - "8081:8081"
     networks:
       - order-manager
+
   email:
     build:
       context: ./microservices/email /

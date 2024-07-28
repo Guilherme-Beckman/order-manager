@@ -36,7 +36,7 @@ public class SecurityConfiguration {
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(autorize -> autorize
 						.requestMatchers("/register", "/login", "/sendcode", "/validate", "/inviteResetPassword",
-								"/newPassword", "/register-store", "/login-store", "/products")
+								"/newPassword", "/register-store", "/login-store", "/products","/swagger-ui.html")
 						.permitAll().anyRequest().authenticated())
 				.build();
 

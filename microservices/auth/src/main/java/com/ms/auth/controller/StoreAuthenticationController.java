@@ -1,6 +1,8 @@
 package com.ms.auth.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +18,7 @@ import jakarta.validation.Valid;
 
 @RestController
 public class StoreAuthenticationController {
+
 	@Autowired
 	private StoreAuthenticationService storeService;
 
@@ -30,5 +33,4 @@ public class StoreAuthenticationController {
 		var token = this.storeService.storeLogin(data);
 		return ResponseEntity.ok(new LoginResponseDTO(token));
 	}
-
 }
