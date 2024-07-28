@@ -1,7 +1,7 @@
 # Online Order Management System
 
 ## Description:
-Develop an online order management system for restaurants that enables customers to place food orders over the internet. The system will feature a RESTful API for frontend communication and will be built on microservices, with each one responsible for specific functionalities.
+Develop an order management system for restaurants that enables customers to place products. The system will feature a RESTful API with microservices, with each one responsible for specific functionalities.
 
 ### Installation
 Clone the repository:
@@ -14,10 +14,8 @@ $ git clone https://github.com/Guilherme-Beckman/order-manager.git
 - Java
 - Spring Boot
 - Spring Security
-- Swagger for API documentation
+- Postman for API documentation
 - MongoDB for data storage
-- Amazon AWS for hosting and deployment
-- JUnit and Mockito for unit testing and mocking objects
 - Docker for containerization of applications
 - RabbitMQ for communication between microservices
 
@@ -34,18 +32,11 @@ $ git clone https://github.com/Guilherme-Beckman/order-manager.git
 
 ### Order Management:
 - Customers can browse menus, add items to the cart, and place orders.
-- Restaurants receive notifications of new orders and can accept, reject, or update the status.
+- Restaurants receive new orders and can accept, reject, or update the status.
 - Implement a queue system with RabbitMQ to process orders asynchronously and scalably.
 
-### Integration with AWS:
-- Utilize AWS services such as EC2 for hosting applications, S3 for static file storage (product images), and RDS for relational database.
-
-### Automated Testing:
-- Write unit and integration tests to ensure code quality using JUnit and Mockito.
-- Utilize API testing tools to test the integrity and functionality of the RESTful API.
-
 ### API Documentation:
-- Generate automatic API documentation using Swagger to facilitate integration with the frontend and provide a clear reference for developers.
+- Generate automatic API documentation using Postman to facilitate integration with the frontend and provide a clear reference for developers.
   
 ### Database
 The project uses MongoDB as the database. MongoDB is a NoSQL database that provides flexibility and scalability for storing and managing data.
