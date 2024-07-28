@@ -28,7 +28,7 @@ public class ProductModel {
 		this.reviewsCount = reviewsCount;
 		this.reviews = reviews;
 	}
-	
+
 	public ProductModel() {
 	}
 
