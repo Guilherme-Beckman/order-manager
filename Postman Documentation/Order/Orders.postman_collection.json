@@ -1,0 +1,270 @@
+{
+	"info": {
+		"_postman_id": "758193f7-f4e5-4a66-97fd-02000f6fc30d",
+		"name": "Orders",
+		"description": "Order Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31833083"
+	},
+	"item": [
+		{
+			"name": "Order Add Product To Cart",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoIiwic3ViIjoiZW1haWxAZ21haWwuY29tIiwidHlwZU9mVXNlciI6IkNMSUVOVCIsIm5hbWUiOiJOYW1lIiwidXNlcklkIjoiNjZhNmIyMmU5MTUyZTA2ZDQzNzJjMzU2IiwiZXhwIjoxNzIyMjEwMjUwfQ.6ed6WBhZyKJLi8yjYCW_g7nK0XcVQm_WhlN7mp3ZTxQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8989/orders/cart/add/66a6c20e10cb715d18013a8c",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8989",
+					"path": [
+						"orders",
+						"cart",
+						"add",
+						"66a6c20e10cb715d18013a8c"
+					]
+				},
+				"description": "The API endpoint allows the addition of a product to the cart, with product Id. Upon successful execution, the response will be in the form of a JSON object with the following schema:\n\n``` json\n{\n  \"id\": \"\",\n  \"userId\": \"\",\n  \"storeProductsId\": {\n    \"<productId>\": {\n      \"<quantity>\": 0\n    }\n  },\n  \"active\": true,\n  \"subtotal\": 0\n}\n\n ```\n\n- `id` (string): The ID of the cart order.\n    \n- `userId` (string): The ID of the user associated with the cart.\n    \n- `storeProductsId` (object): An object containing the product IDs and their corresponding quantities in the cart.\n    \n    - (string): The ID of the product in the cart.\n        - (string): The ID of the cart entry for the product.\n            - (number): The quantity of the product in the cart.\n                \n- `active` (boolean): Indicates whether the cart is active.\n    \n- `subtotal` (number): The subtotal of the cart."
+			},
+			"response": []
+		},
+		{
+			"name": "Order Remove Product From a Cart",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoIiwic3ViIjoiZW1haWxAZ21haWwuY29tIiwidHlwZU9mVXNlciI6IkNMSUVOVCIsIm5hbWUiOiJOYW1lIiwidXNlcklkIjoiNjZhNmIyMmU5MTUyZTA2ZDQzNzJjMzU2IiwiZXhwIjoxNzIyMjEwMjUwfQ.6ed6WBhZyKJLi8yjYCW_g7nK0XcVQm_WhlN7mp3ZTxQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8989/orders/cart/remove/66a6c20e10cb715d18013a8c",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8989",
+					"path": [
+						"orders",
+						"cart",
+						"remove",
+						"66a6c20e10cb715d18013a8c"
+					]
+				},
+				"description": "### Update Cart Item\n\nThis endpoint allows the user to remove a specific item from the cart, with the item Id.\n\n**Request Body**\n\n- No request body parameters required.\n    \n\n**Response**\n\n- Status: 200\n    \n- Content-Type: application/json\n    \n- Sample Response Body:\n    \n    ``` json\n      {\n        \"id\": \"\",\n        \"userId\": \"\",\n        \"storeProductsId\": {\n          \"66a6c14c4a0fe6025f3f6705\": {\n            \"66a6c20e10cb715d18013a8c\": 0\n          }\n        },\n        \"active\": true,\n        \"subtotal\": 0\n      }\n    \n     ```"
+			},
+			"response": []
+		},
+		{
+			"name": "Order Make With Address Id",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoIiwic3ViIjoiZW1haWxAZ21haWwuY29tIiwidHlwZU9mVXNlciI6IkNMSUVOVCIsIm5hbWUiOiJOYW1lIiwidXNlcklkIjoiNjZhNmIyMmU5MTUyZTA2ZDQzNzJjMzU2IiwiZXhwIjoxNzIyMjEwMjUwfQ.6ed6WBhZyKJLi8yjYCW_g7nK0XcVQm_WhlN7mp3ZTxQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8989/orders/make/66a6b22e9152e06d4372c357",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8989",
+					"path": [
+						"orders",
+						"make",
+						"66a6b22e9152e06d4372c357"
+					]
+				},
+				"description": "### Create New Order\n\nThis endpoint allows the client to create a new order with the provided order data and a address Id.\n\n#### Request Body Parameters\n\n- `id` (string): The unique identifier for the order.\n    \n- `userId` (string): The ID of the user placing the order.\n    \n- `storeId` (string): The ID of the store from which the order is being placed.\n    \n- `orderData` (string): The details of the order being placed.\n    \n- `orderStatus` (string): The status of the order.\n    \n- `subtotal` (number): The subtotal amount of the order.\n    \n- `productsId` (array): An array of product IDs along with their quantities.\n    \n    - `66a6c20e10cb715d18013a8c` (number): The quantity of the product with ID 66a6c20e10cb715d18013a8c.\n        \n- `addressDTO` (object): The address details for the order delivery.\n    \n    - `userId` (string): The ID of the user for whom the address is being used.\n        \n    - `street` (string): The street name for delivery.\n        \n    - `number` (string): The building number for delivery.\n        \n    - `complement` (string): Any additional address details.\n        \n    - `neighborhood` (string): The neighborhood for delivery.\n        \n    - `city` (string): The city for delivery.\n        \n    - `state` (string): The state for delivery.\n        \n    - `zipCode` (string): The zip code for delivery.\n        \n\n#### Response\n\nUpon successful creation of the order, the server responds with a status code of 200 and a JSON object containing the details of the newly created order, including the order ID, user ID, store ID, order data, order status, subtotal, product IDs with quantities, address details, and the active status of the order.\n\n## **Exceptions**\n\n{  \n\"type\": \"about:blank\",  \n\"title\": \"Active Cart Not Found\",  \n\"status\": 404,  \n\"detail\": \"The user with ID 66a6b22e9152e06d4372c356 does not have an active cart.\",  \n\"instance\": \"/make/66a6b22e9152e06d4372c357\"  \n}"
+			},
+			"response": []
+		},
+		{
+			"name": "Order Store Get Orders",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoIiwic3ViIjoiZXhhbXBsZUBzdG9yZS5jb20iLCJ0eXBlT2ZVc2VyIjoiU1RPUkUiLCJuYW1lIjoiSWlFdjFTcGdxR1QxeFJVbmduVk02dz09IiwidXNlcklkIjoiNjZhNmMxNGM0YTBmZTYwMjVmM2Y2NzA1IiwiZXhwIjoxNzIyMjEyNDUyfQ.NBpArAKOtfZ8iiF1wTv-OOj5QGHCkrGHWUhvSvolWdk",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8989/orders/store",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8989",
+					"path": [
+						"orders",
+						"store"
+					]
+				},
+				"description": "This endpoint retrieves the orders from the store.\n\n### Request\n\nNo request body is required for this GET request.\n\n### Response\n\nThe response will be in JSON format with a status code of 200. It will include an array of orders, where each order object contains the following fields:\n\n- `id` (string): The unique identifier for the order.\n    \n- `userId` (string): The user ID associated with the order.\n    \n- `orderData` (string): The date of the order.\n    \n- `orderStatus` (string): The status of the order.\n    \n- `subtotal` (number): The subtotal amount of the order.\n    \n- `productPerfils` (array): An array of product profiles, where each profile object contains the following fields:\n    - `productId` (string): The unique identifier for the product.\n        \n    - `name` (string): The name of the product.\n        \n    - `description` (string): The description of the product.\n        \n    - `quantity` (number): The quantity of the product in the order.\n        \n- `addressDTO` (object): An object containing the address details associated with the order, with the following fields:\n    - `userId` (string): The user ID associated with the address.\n        \n    - `street` (string): The street name.\n        \n    - `number` (string): The house number.\n        \n    - `complement` (string): The address complement.\n        \n    - `neighborhood` (string): The neighborhood.\n        \n    - `city` (string): The city.\n        \n    - `state` (string): The state.\n        \n    - `zipCode` (string): The ZIP code."
+			},
+			"response": []
+		},
+		{
+			"name": "Order Store Get History",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoIiwic3ViIjoiZXhhbXBsZUBzdG9yZS5jb20iLCJ0eXBlT2ZVc2VyIjoiU1RPUkUiLCJuYW1lIjoiSWlFdjFTcGdxR1QxeFJVbmduVk02dz09IiwidXNlcklkIjoiNjZhNmMxNGM0YTBmZTYwMjVmM2Y2NzA1IiwiZXhwIjoxNzIyMjA4MjQ2fQ.7_-hLxb34jQ-uAFkz73IOOmEQDjqH7TXWy2ITlvRhyg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8989/orders/store/history",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8989",
+					"path": [
+						"orders",
+						"store",
+						"history"
+					]
+				},
+				"description": "\n## Retrieve Store Order History\n\nThis endpoint is used to retrieve the order history for a specific store.\n\n### Request\n\n- Method: GET\n- Endpoint: `http://localhost:8989/orders/store/history`\n\n### Response\n\nThe response is a JSON array containing the order history for the store. Each object in the array has the following properties:\n\n- `id` (string): The ID of the order.\n- `userId` (string): The ID of the user who placed the order.\n- `storeId` (string): The ID of the store.\n- `orderData` (string): The data related to the order.\n- `orderStatus` (string): The status of the order.\n- `subtotal` (number): The subtotal amount of the order.\n- `productsId` (array): An array of objects containing the product IDs and their quantities.\n  - `productId` (string): The ID of the product.\n  - `quantity` (number): The quantity of the product.\n- `addressDTO` (object): The address details for the order.\n  - `userId` (string): The ID of the user.\n  - `street` (string): The street address.\n  - `number` (string): The house/flat number.\n  - `complement` (string): Additional address details.\n  - `neighborhood` (string): The neighborhood.\n  - `city` (string): The city.\n  - `state` (string): The state.\n  - `zipCode` (string): The ZIP code.\n- `active` (boolean): Indicates if the order is active.\n\n#### Example\n```json\n[\n  {\n    \"id\": \"\",\n    \"userId\": \"\",\n    \"storeId\": \"\",\n    \"orderData\": \"\",\n    \"orderStatus\": \"\",\n    \"subtotal\": 0,\n    \"productsId\": [\n      {\n        \"66a6c20e10cb715d18013a8c\": 0\n      }\n    ],\n    \"addressDTO\": {\n      \"userId\": \"\",\n      \"street\": \"\",\n      \"number\": \"\",\n      \"complement\": \"\",\n      \"neighborhood\": \"\",\n      \"city\": \"\",\n      \"state\": \"\",\n      \"zipCode\": \"\"\n    },\n    \"active\": true\n  }\n]\n```\n"
+			},
+			"response": []
+		},
+		{
+			"name": "Order Store Change the Order Status",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoIiwic3ViIjoiZXhhbXBsZUBzdG9yZS5jb20iLCJ0eXBlT2ZVc2VyIjoiU1RPUkUiLCJuYW1lIjoiSWlFdjFTcGdxR1QxeFJVbmduVk02dz09IiwidXNlcklkIjoiNjZhNmMxNGM0YTBmZTYwMjVmM2Y2NzA1IiwiZXhwIjoxNzIyMjEyNDUyfQ.NBpArAKOtfZ8iiF1wTv-OOj5QGHCkrGHWUhvSvolWdk",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8989/orders/store/status/66a6d004287f96439d9656f2/PREPARING",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8989",
+					"path": [
+						"orders",
+						"store",
+						"status",
+						"66a6d004287f96439d9656f2",
+						"PREPARING"
+					]
+				},
+				"description": "### Update Order Status\n\nThis endpoint allows the client to update the status **( PENDING, CONFIRMED, PREPARING, SHIPPED, DELIVERED, CANCELED, REFUSED)** of a specific order in the store.\n\n#### Request Body Parameters\n\n- `id` (string): The ID of the order.\n    \n- `userId` (string): The ID of the user who placed the order.\n    \n- `storeId` (string): The ID of the store where the order was placed.\n    \n- `orderData` (string): The details of the order.\n    \n- `orderStatus` (string): The updated status of the order.\n    \n- `subtotal` (number): The subtotal amount of the order.\n    \n- `productsId` (array): An array of product IDs along with their quantities.\n    \n    - `66a6c20e10cb715d18013a8c` (number): The quantity of the product with ID \"66a6c20e10cb715d18013a8c\".\n        \n- `addressDTO` (object): The address details for the order delivery.\n    \n    - `userId` (string): The ID of the user for the delivery address.\n        \n    - `street` (string): The street name for delivery.\n        \n    - `number` (string): The building number for delivery.\n        \n    - `complement` (string): Any additional address details.\n        \n    - `neighborhood` (string): The neighborhood for delivery.\n        \n    - `city` (string): The city for delivery.\n        \n    - `state` (string): The state for delivery.\n        \n    - `zipCode` (string): The ZIP code for delivery.\n        \n- `active` (boolean): The status of the order.\n    \n\n#### Response\n\nUpon successful update, the server responds with a status code of 200 and a JSON object containing the updated order details.\n\n``` json\n{\n  \"id\": \"\",\n  \"userId\": \"\",\n  \"storeId\": \"\",\n  \"orderData\": \"\",\n  \"orderStatus\": \"\",\n  \"subtotal\": 0,\n  \"productsId\": [{\"66a6c20e10cb715d18013a8c\": 0}],\n  \"addressDTO\": {\n    \"userId\": \"\",\n    \"street\": \"\",\n    \"number\": \"\",\n    \"complement\": \"\",\n    \"neighborhood\": \"\",\n    \"city\": \"\",\n    \"state\": \"\",\n    \"zipCode\": \"\"\n  },\n  \"active\": true\n}\n\n ```"
+			},
+			"response": []
+		},
+		{
+			"name": "Order User Cancel Orders",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoIiwic3ViIjoiZW1haWxAZ21haWwuY29tIiwidHlwZU9mVXNlciI6IkNMSUVOVCIsIm5hbWUiOiJOYW1lIiwidXNlcklkIjoiNjZhNmIyMmU5MTUyZTA2ZDQzNzJjMzU2IiwiZXhwIjoxNzIyMjEwMjUwfQ.6ed6WBhZyKJLi8yjYCW_g7nK0XcVQm_WhlN7mp3ZTxQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8989/orders/cancel/66a6d004287f96439d9656f2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8989",
+					"path": [
+						"orders",
+						"cancel",
+						"66a6d004287f96439d9656f2"
+					]
+				},
+				"description": "### Update Order Cancellation\n\nThis endpoint is used to cancel a specific order identified by the order ID in the URL.\n\n#### Request Body\n\n- No request body is required for this endpoint.\n    \n\n#### Response\n\n- Status: 200\n    \n- Content-Type: application/json\n    \n\nThe response body will contain the updated order details with the following fields:\n\n- id (string): The ID of the order.\n    \n- userId (string): The ID of the user who placed the order.\n    \n- storeId (string): The ID of the store from which the order was placed.\n    \n- orderData (string): Additional data related to the order.\n    \n- orderStatus (string): The status of the order.\n    \n- subtotal (number): The subtotal amount of the order.\n    \n- productsId (array): An array of product IDs along with their quantities.\n    \n- addressDTO (object): An object containing the address details associated with the order.\n    \n    - userId (string): The ID of the user for the address.\n        \n    - street (string): The street name in the address.\n        \n    - number (string): The building number in the address.\n        \n    - complement (string): Additional address details.\n        \n    - neighborhood (string): The neighborhood in the address.\n        \n    - city (string): The city in the address.\n        \n    - state (string): The state in the address.\n        \n    - zipCode (string): The zip code in the address.\n        \n- active (boolean): The status of the order (active or inactive).\n    \n\n## **Exceptions**\n\n{  \n\"type\": \"about:blank\",  \n\"title\": \"Order Not Found\",  \n\"status\": 404,  \n\"detail\": \"Order with ID 66a6cbfd287f96439d9656ec not found for id 66a6b22e9152e06d4372c356\",  \n\"instance\": \"/cancel/66a6cbfd287f96439d9656ec\"  \n}\n\n{  \n\"type\": \"about:blank\",  \n\"title\": \"Order Cancellation Error\",  \n\"status\": 400,  \n\"detail\": \"The user is not allowed to cancel the order with status: PREPARING/SHIPPED/DELIVERED\",  \n\"instance\": \"/cancel/66a6d004287f96439d9656f2\"  \n}"
+			},
+			"response": []
+		},
+		{
+			"name": "Order User Get History",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoIiwic3ViIjoiZW1haWxAZ21haWwuY29tIiwidHlwZU9mVXNlciI6IkNMSUVOVCIsIm5hbWUiOiJOYW1lIiwidXNlcklkIjoiNjZhNmIyMmU5MTUyZTA2ZDQzNzJjMzU2IiwiZXhwIjoxNzIyMjEwMjUwfQ.6ed6WBhZyKJLi8yjYCW_g7nK0XcVQm_WhlN7mp3ZTxQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8989/orders/client/history",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8989",
+					"path": [
+						"orders",
+						"client",
+						"history"
+					]
+				},
+				"description": "### GET /orders/client/history\n\nThis endpoint retrieves the order history for the client.\n\n#### Request\n\nNo request body is required for this endpoint.\n\n#### Response\n\nThe response is a JSON array containing order history data for the client. Each object in the array includes the following properties:\n\n- `id` (string): The unique identifier for the order.\n    \n- `userId` (string): The user ID associated with the order.\n    \n- `storeId` (string): The store ID where the order was placed.\n    \n- `orderData` (string): The details of the order.\n    \n- `orderStatus` (string): The status of the order.\n    \n- `subtotal` (number): The subtotal amount of the order.\n    \n- `productsId` (object): An object containing product IDs as keys and quantities as values.\n    \n- `addressDTO` (object): An object containing address details including userId, street, number, complement, neighborhood, city, state, and zipCode.\n    \n- `active` (boolean): Indicates if the order is active.\n    \n\nExample response:\n\n``` json\n[\n  {\n    \"id\": \"\",\n    \"userId\": \"\",\n    \"storeId\": \"\",\n    \"orderData\": \"\",\n    \"orderStatus\": \"\",\n    \"subtotal\": 0,\n    \"productsId\": {\n      \"66a6c20e10cb715d18013a8c\": 0\n    },\n    \"addressDTO\": {\n      \"userId\": \"\",\n      \"street\": \"\",\n      \"number\": \"\",\n      \"complement\": \"\",\n      \"neighborhood\": \"\",\n      \"city\": \"\",\n      \"state\": \"\",\n      \"zipCode\": \"\"\n    },\n    \"active\": true\n  }\n]\n\n ```"
+			},
+			"response": []
+		}
+	]
+}
