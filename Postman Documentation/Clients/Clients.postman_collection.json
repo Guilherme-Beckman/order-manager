@@ -1,0 +1,361 @@
+{
+	"info": {
+		"_postman_id": "43a19de8-9f06-4687-a3f7-50076a37c237",
+		"name": "Clients",
+		"description": "Clients Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31833083"
+	},
+	"item": [
+		{
+			"name": "User Access Reset Link",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoIiwic3ViIjoiZW1haWxAZ21haWwuY29tIiwidHlwZU9mVXNlciI6IkNMSUVOVCIsIm5hbWUiOiJOYW1lIiwidXNlcklkIjoiNjZhNmIyMmU5MTUyZTA2ZDQzNzJjMzU2IiwiZXhwIjoxNzIyMjA1OTM3fQ.1uOWOESdsRfyq_Z2aSz0Id-HzOPxP05qGQtpSZ_NZOc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\"aaaaa\"",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8989/auth/newPassword?email=email@gmail.com&token=9ed17c7e-3cb9-4eac-996b-4d6ca4a693ea",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8989",
+					"path": [
+						"auth",
+						"newPassword"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "email@gmail.com"
+						},
+						{
+							"key": "token",
+							"value": "9ed17c7e-3cb9-4eac-996b-4d6ca4a693ea"
+						}
+					]
+				},
+				"description": "### New Password Request\n\nThis endpoint is used to set a new password for a user account. It is a POST request to the specified URL with the email and token parameters included in the query string.\n\n#### Request Body\n\nThe request does not include a request body.\n\n#### Response\n\n- Status: 200\n    \n- Content-Type: text/plain\n    \n\nUpon successful execution, the response will indicate that the password has been changed successfully.\n\n## **Exceptions**\n\n{  \n\"type\": \"about:blank\",  \n\"title\": \"You have exceeded the number of attempts in a time\",  \n\"status\": 429,  \n\"detail\": \"Try again after: 240 minute(s)\",  \n\"instance\": \"/newPassword\"  \n}\n\n{  \n\"type\": \"about:blank\",  \n\"title\": \"Invalid Code Exception\",  \n\"status\": 401,  \n\"detail\": \"Invalid code\",  \n\"instance\": \"/newPassword\"  \n}"
+			},
+			"response": []
+		},
+		{
+			"name": "User Invite Reset Password Link To Email",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoIiwic3ViIjoiZW1haWxAZ21haWwuY29tIiwidHlwZU9mVXNlciI6IkNMSUVOVCIsIm5hbWUiOiJOYW1lIiwidXNlcklkIjoiNjZhNmIyMmU5MTUyZTA2ZDQzNzJjMzU2IiwiZXhwIjoxNzIyMjA1OTM3fQ.1uOWOESdsRfyq_Z2aSz0Id-HzOPxP05qGQtpSZ_NZOc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\"email@gmail.com\"",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8989/auth/inviteResetPassword",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8989",
+					"path": [
+						"auth",
+						"inviteResetPassword"
+					]
+				},
+				"description": "### Auth Invite Reset Password\n\nThis endpoint is used to send an invitation for resetting the password.\n\n#### Request\n\nThere are no request parameters for this endpoint.\n\n#### Response\n\nThe response for this request is in XML format and does not contain any specific data. To document the response as a JSON schema, the response body should be represented as follows:\n\n``` json\n{\n  \"type\": \"object\",\n  \"properties\": {\n    \"status\": {\n      \"type\": \"number\"\n    },\n    \"content-type\": {\n      \"type\": \"string\"\n    }\n  }\n}\n\n ```\n\n## **Exceptions**\n\n{  \n\"type\": \"about:blank\",  \n\"title\": \"You have exceeded the number of attempts in a time\",  \n\"status\": 429,  \n\"detail\": \"Try again after: 60 minute(s)\",  \n\"instance\": \"/inviteResetPassword\"  \n}"
+			},
+			"response": []
+		},
+		{
+			"name": "User Add Address",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoIiwic3ViIjoiZW1haWxAZ21haWwuY29tIiwidHlwZU9mVXNlciI6IkNMSUVOVCIsIm5hbWUiOiJOYW1lIiwidXNlcklkIjoiNjZhNmIyMmU5MTUyZTA2ZDQzNzJjMzU2IiwiZXhwIjoxNzIyMjA1NzExfQ.LtbzxHL1e7HY_iKjfUzixgHNQPRB21t1KLxBwIwjEgc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"zipCode\": \"79043-050\"            // Código postal\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8989/clients/addAddress",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8989",
+					"path": [
+						"clients",
+						"addAddress"
+					]
+				},
+				"description": "### Add Client Address\n\nThis endpoint allows the addition of a new address for a client.\n\n#### Request Body\n\n- `zipCode` (string): The postal code of the address.\n    \n\n#### Response\n\n- Status: 200\n    \n- Content-Type: text/xml\n    \n- Response body: null"
+			},
+			"response": []
+		},
+		{
+			"name": "User Perfil",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInRa5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoIiwic3ViIjoiZW1haWxAZ21haWwuY29tIiwidHlwZU9mVXNlciI6IkNMSUVOVCIsIm5hbWUiOiJOYW1lIiwidXNlcklkIjoiNjZhNmIyMmU5MTUyZTA2ZDQzNzJjMzU2IiwiZXhwIjoxNzIyMjA1NzExfQ.LtbzxHL1e7HY_iKjfUzixgHNQPRB21t1KLxBwIwjEgc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8989/clients/perfil",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8989",
+					"path": [
+						"clients",
+						"perfil"
+					]
+				},
+				"description": "# Get Client Profile\n\nThis endpoint retrieves the profile of a client.\n\n## Request\n\n### HTTP Request\n\n``` http\nGET http://localhost:8989/clients/perfil\n\n ```\n\n## Response\n\n- Status: 200 OK\n    \n- Content-Type: application/json\n    \n\n``` json\n{\n  \"id\": \"\",\n  \"name\": \"\",\n  \"lastName\": \"\",\n  \"email\": \"\",\n  \"phone\": \"\",\n  \"adresses\": [\n    {\n      \"userId\": \"\",\n      \"street\": \"\",\n      \"number\": \"\",\n      \"complement\": \"\",\n      \"neighborhood\": \"\",\n      \"city\": \"\",\n      \"state\": \"\",\n      \"zipCode\": \"\"\n    }\n  ]\n}\n\n ```\n\nThe response body contains the profile information of the client including their ID, name, last name, email, phone, and addresses.\n\n## Exceptions\n\n{  \n\"type\": \"about:blank\",  \n\"title\": \"Token not valid\",  \n\"status\": 401,  \n\"detail\": \"Error while validate the code\",  \n\"instance\": null,  \n\"properties\": null  \n}"
+			},
+			"response": []
+		},
+		{
+			"name": "User Validate Code",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoIiwic3ViIjoiZW1haWwyQGdtYWlsLmNvbSIsInR5cGVPZlVzZXIiOiJDTElFTlQiLCJuYW1lIjoiYSIsInVzZXJJZCI6IjY2YTZiNzZkOTE1MmUwNmQ0MzcyYzM1OCIsImV4cCI6MTcyMjIwNTU3NX0.5JVJKZCJHFPWSuNCO3qJ-uo7XQ232n71I9i-nkZVt1Y",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"emailCode\": \"391319\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8989/auth/validate",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8989",
+					"path": [
+						"auth",
+						"validate"
+					]
+				},
+				"description": "### Validate Email Code\n\nThis endpoint is used to validate the email verification code.\n\n**Request Body**\n\n- emailCode (string, required): The code sent to the user's email for verification.\n    \n\n**Response**\n\n- Status: 200 OK\n    \n- Content-Type: text/plain\n    \n- Body: \"Email validated successfully\"\n    \n\n## Exceptions\n\n{  \n\"type\": \"about:blank\",  \n\"title\": \"Invalid Code Exception\",  \n\"status\": 401,  \n\"detail\": \"Invalid code\",  \n\"instance\": \"/validate\"  \n}"
+			},
+			"response": []
+		},
+		{
+			"name": "User Sends Email Verification Code",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoIiwic3ViIjoiZW1haWwyQGdtYWlsLmNvbSIsInR5cGVPZlVzZXIiOiJDTElFTlQiLCJuYW1lIjoiYSIsInVzZXJJZCI6IjY2YTZiNzZkOTE1MmUwNmQ0MzcyYzM1OCIsImV4cCI6MTcyMjIwNTU3NX0.5JVJKZCJHFPWSuNCO3qJ-uo7XQ232n71I9i-nkZVt1Y",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8989/auth/sendcode",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8989",
+					"path": [
+						"auth",
+						"sendcode"
+					]
+				},
+				"description": "# Auth Send Code\n\nThis endpoint is used to send a verification code for authentication.\n\n## Request\n\n- Method: GET\n    \n- URL: `http://localhost:8989/auth/sendcode`\n    \n\n## **Exceptions**\n\n{  \n\"type\": \"about:blank\",  \n\"title\": \"You have exceeded the number of attempts in a time\",  \n\"status\": 429,  \n\"detail\": \"Try again after: 1 minute(s)\",  \n\"instance\": \"/sendcode\"  \n}"
+			},
+			"response": []
+		},
+		{
+			"name": "User Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"login\": \"email@gmail.com\",\n    \"password\": \"password\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8989/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8989",
+					"path": [
+						"auth",
+						"login"
+					]
+				},
+				"description": "### Request\n\nThis endpoint `/auth/login` is a POST request used for user authentication. The request should be sent to `http://localhost:8989/auth/login` with a JSON payload in the raw request body type. The payload should include the `login` and `password` fields.\n\nExample:\n\n``` json\n{\n    \"login\": \"user@example.com\",\n    \"password\": \"********\"\n}\n### Response\nUpon successful execution, the response will have a status code of 200 and a content type of `application/json`. The response body will contain a JSON object with a `token` field.\nExample response body:\n```json\n{\n    \"token\": \"*********\"\n}\n##Exceptions\n{\n    \"type\": \"about:blank\",\n    \"title\": \"Authentication Unauthorized Error\",\n    \"status\": 401,\n    \"detail\": \"Login or password are incorrect\",\n    \"instance\": \"/login\"\n}\n{\n    \"type\": \"about:blank\",\n    \"title\": \"Validation Error\",\n    \"status\": 400,\n    \"detail\": \"login must not be blank\",\n    \"instance\": \"/login\"\n}\n{\n    \"type\": \"about:blank\",\n    \"title\": \"You have exceeded the number of attempts in a time\",\n    \"status\": 429,\n    \"detail\": \"Try again after: 4 minute(s)\",\n    \"instance\": \"/login\"\n}\n\n ```"
+			},
+			"response": []
+		},
+		{
+			"name": "User Register",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"cpf\": 12345678901,\n    \"password\": \"a\",\n    \"name\": \"a\",\n    \"lastName\": \"LastName\",\n    \"email\": \"email2@gmail.com\",\n    \"phone\": \"999999999\",\n    \"address\": {\n        \"zipCode\":\"60843-286\" \n    }\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8989/auth/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8989",
+					"path": [
+						"auth",
+						"register"
+					]
+				},
+				"description": "### Register User\n\nThe HTTP POST request allows the user to register by providing the necessary details in the request body.\n\n#### Request Body Structure\n\nThe request body should include the following parameters:\n\n- `cpf` (number): The user's CPF.\n    \n- `password` (string): The user's password.\n    \n- `name` (string): The user's first name.\n    \n- `lastName` (string): The user's last name.\n    \n- `email` (string): The user's email address.\n    \n- `phone` (string): The user's phone number.\n    \n- `address` (object): The user's address details, which can be provided in three different formats:\n    \n    1. Complete Address:\n        \n        - `street` (string): The street name.\n            \n        - `number` (string): The street number.\n            \n        - `complement` (string): Additional address details.\n            \n        - `neighborhood` (string): The neighborhood.\n            \n        - `city` (string): The city.\n            \n        - `state` (string): The state.\n            \n    2. Simplified Address:\n        \n        - `zipCode` (string): The zip code\n            \n\n#### Expected Response\n\n- **Status**: 200\n    \n- **Content-Type**: application/json\n    \n- **User Details (encrypted)**:\n    \n    - `id` (string): User's ID\n        \n    - `cpf` (string): User's CPF\n        \n    - `password` (string): User's password\n        \n    - `name` (string): User's first name\n        \n    - `lastName` (string): User's last name\n        \n    - `email` (string): User's email address\n        \n    - `phone` (string): User's phone number\n        \n    - `address` (array): User's address details\n        \n    - `accountNonExpired` (boolean): User account expiration status\n        \n    - `accountNonLocked` (boolean): User account lock status\n        \n    - `credentialsNonExpired` (boolean): User credentials expiration status\n        \n    - `enabled` (boolean): User account enabled status\n        \n    - `username` (string): User's username\n        \n    - `roles` (array): User's roles\n        \n    - `authorities` (array): User's authorities\n        \n\nExceptions:  \n{  \n\"type\": \"about:blank\",  \n\"title\": \"Validation Error\",  \n\"status\": 400,  \n\"detail\": \"field must not be blank/null\",  \n\"instance\": \"/register\"  \n}\n\n{  \n\"type\": \"about:blank\",  \n\"title\": \"User data already exists\",  \n\"status\": 422,  \n\"detail\": \"Email is already registered\",  \n\"instance\": \"/register\"  \n}"
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer"
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

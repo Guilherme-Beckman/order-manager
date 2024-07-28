@@ -27,6 +27,7 @@ public class EmailService {
 		email = email.replace("\"", "").trim();
 		String resetUrl = "http://localhost:8989/auth/newPassword?email=" + email + "&token="
 				+ message.getMessageProperties().getCorrelationId();
+		System.out.println(resetUrl);
 		SimpleMailMessage mailMessage = new SimpleMailMessage();
 		mailMessage.setTo(email);
 		mailMessage.setSubject("Reset link");

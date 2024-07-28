@@ -50,6 +50,7 @@ public class EmailService {
 		pendingResponses.put(email, responseFuture);
 
 		Message message = this.messageUtils.createMessage(email, code);
+		System.out.println("code: "+code);
 		this.emailCodeProducer.produceEmailCode(message);
 
 		try {
