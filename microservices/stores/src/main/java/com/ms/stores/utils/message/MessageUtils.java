@@ -48,6 +48,7 @@ public class MessageUtils {
 
 			return body;
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new ConvertMessageException("Error while converting message into UserDetails");
 		}
 

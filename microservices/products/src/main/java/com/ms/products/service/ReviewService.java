@@ -1,5 +1,7 @@
 package com.ms.products.service;
 
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +26,7 @@ public class ReviewService {
 		var token = this.tokenService.recoverToken(httpServletRequest);
 		var userInfo = this.tokenService.getTokenInformations(token);
 		ReviewDTO newReview = new ReviewDTO(productId, userInfo.getClaim("name").asString(), reviewDTO.comment(),
-				reviewDTO.rating(), null);
+				reviewDTO.rating(), LocalDateTime.now());
 		ReviewModel reviewModel = new ReviewModel(newReview);
 		reviewModel.setUserId(userInfo.getClaim("userId").asString());
 		var addedReview = this.reviewRepository.insert(reviewModel);

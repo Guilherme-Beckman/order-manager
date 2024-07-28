@@ -1,0 +1,237 @@
+{
+	"info": {
+		"_postman_id": "24c5b07c-5013-4dce-bc43-3be488842586",
+		"name": "Store",
+		"description": "Store Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31833083"
+	},
+	"item": [
+		{
+			"name": "Store Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Example Store\",\n  \"email\": \"example@store.com\",\n  \"password\": \"securePassword123\",\n  \"address\": {\n    \"zipCode\": \"94760970\"\n  },\n  \"phone\": \"+1234567890\",\n  \"CNPJ\": \"12.345.678/0001-99\",\n  \"opening_hours\": [\n    {\n      \"dayOfWeek\": \"MONDAY\",\n      \"openTime\": \"08:00:00\",\n      \"closeTime\": \"18:00:00\"\n    },\n    {\n      \"dayOfWeek\": \"TUESDAY\",\n      \"openTime\": \"08:00:00\",\n      \"closeTime\": \"18:00:00\"\n    },\n    {\n      \"dayOfWeek\": \"WEDNESDAY\",\n      \"openTime\": \"08:00:00\",\n      \"closeTime\": \"18:00:00\"\n    },\n    {\n      \"dayOfWeek\": \"THURSDAY\",\n      \"openTime\": \"08:00:00\",\n      \"closeTime\": \"18:00:00\"\n    },\n    {\n      \"dayOfWeek\": \"FRIDAY\",\n      \"openTime\": \"08:00:00\",\n      \"closeTime\": \"18:00:00\"\n    },\n    {\n      \"dayOfWeek\": \"SATURDAY\",\n      \"openTime\": \"10:00:00\",\n      \"closeTime\": \"16:00:00\"\n    },\n    {\n      \"dayOfWeek\": \"SUNDAY\",\n      \"openTime\": \"11:00:00\",\n      \"closeTime\": \"15:00:00\"\n    }\n  ]\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8989/auth/register-store",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8989",
+					"path": [
+						"auth",
+						"register-store"
+					]
+				},
+				"description": "### Auth Register Store\n\nThis endpoint allows the user to register a new store for authentication.\n\n#### Request Body\n\n- `name` (string, required): The name of the store.\n    \n- `email` (string, required): The email of the store.\n    \n- `password` (string, required): The password for the store's account.\n    \n- `address` (object, required): The address details of the store.\n    - `zipCode` (string, required): The zip code of the store's address.\n        \n- `phone` (string, required): The phone number of the store.\n    \n- `CNPJ` (string, required): The CNPJ number of the store.\n    \n- `opening_hours` (array, required): The opening hours of the store.\n    - `dayOfWeek` (string, required): The day of the week.\n        \n    - `openTime` (string, required): The opening time.\n        \n    - `closeTime` (string, required): The closing time.\n        \n\n#### Response Body (JSON Schema)\n\n``` json\n{\n  \"type\": \"object\",\n  \"properties\": {\n    \"id\": {\"type\": \"string\"},\n    \"name\": {\"type\": \"string\"},\n    \"email\": {\"type\": \"string\"},\n    \"password\": {\"type\": \"string\"},\n    \"addressId\": {\"type\": \"string\"},\n    \"phone\": {\"type\": \"string\"},\n    \"opening_hours\": {\n      \"type\": \"array\",\n      \"items\": {\"type\": \"string\"}\n    },\n    \"products\": {\n      \"type\": \"array\",\n      \"items\": {}\n    },\n    \"username\": {\"type\": \"string\"},\n    \"accountNonExpired\": {\"type\": \"boolean\"},\n    \"accountNonLocked\": {\"type\": \"boolean\"},\n    \"credentialsNonExpired\": {\"type\": \"boolean\"},\n    \"enabled\": {\"type\": \"boolean\"},\n    \"roles\": {\n      \"type\": \"array\",\n      \"items\": {\"type\": \"string\"}\n    },\n    \"authorities\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"authority\": {\"type\": \"string\"}\n        }\n      }\n    },\n    \"cnpj\": {\"type\": \"string\"}\n  }\n}\n\n ```"
+			},
+			"response": []
+		},
+		{
+			"name": "Store Add Product",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoIiwic3ViIjoiZW1haWxAZ21haWwuY29tIiwidHlwZU9mVXNlciI6IkNMSUVOVCIsIm5hbWUiOiJOYW1lIiwidXNlcklkIjoiNjZhNmIyMmU5MTUyZTA2ZDQzNzJjMzU2IiwiZXhwIjoxNzIyMjA4Nzc3fQ.exBKdYReEDrfidAZyKZvJ58XmWihfOe4vdPZ57tPKC8",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Sample Product\",\n    \"price\": 100,\n    \"description\": \"This is a sample product description.\",\n    \"avaliability\": true\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8989/stores/addProduct",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8989",
+					"path": [
+						"stores",
+						"addProduct"
+					]
+				},
+				"description": "### Add Product to Store\n\nThis endpoint allows you to add a new product to the store.\n\n#### Request Body\n\n- `name` (string): The name of the product.\n    \n- `price` (number): The price of the product.\n    \n- `description` (string): The description of the product.\n    \n- `avaliability` (boolean): The availability status of the product.\n    \n\n#### Response\n\nUpon successful addition of the product, the API will return the details of the newly added product including:\n\n- `id` (string): The unique identifier of the product.\n    \n- `ownerid` (string): The identifier of the store owner.\n    \n- `menuId` (string): The identifier of the product category in the store.\n    \n- `name` (string): The name of the product.\n    \n- `price` (number): The price of the product.\n    \n- `description` (string): The description of the product.\n    \n- `avaliability` (boolean): The availability status of the product.\n    \n- `rating` (number): The average rating of the product.\n    \n- `reviewsCount` (number): The total number of reviews for the product.\n    \n- `reviews` (array): An array of reviews for the product."
+			},
+			"response": []
+		},
+		{
+			"name": "Store Login",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"login\": \"example@store.com\",\n    \"password\": \"securePassword123\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8989/auth/login-store",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8989",
+					"path": [
+						"auth",
+						"login-store"
+					]
+				},
+				"description": "### Auth Store Login\n\nThis endpoint is used to authenticate a user for the store login.\n\n#### Request Body\n\n- `login` (string, required): The username or email of the user.\n    \n- `password` (string, required): The password of the user.\n    \n\n#### Response\n\nUpon a successful authentication, the server responds with a status code of 200 and a JSON object containing the authentication token.\n\nExample:\n\n``` json\n{\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\"\n}\n\n ```\n\n## **Exceptions**\n\n{  \n\"type\": \"about:blank\",  \n\"title\": \"Authentication Unauthorized Error\",  \n\"status\": 401,  \n\"detail\": \"Login or password are incorrect\",  \n\"instance\": \"/login-store\"  \n}"
+			},
+			"response": []
+		},
+		{
+			"name": "Store Create Menu",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoIiwic3ViIjoiZXhhbXBsZUBzdG9yZS5jb20iLCJ0eXBlT2ZVc2VyIjoiU1RPUkUiLCJuYW1lIjoiSWlFdjFTcGdxR1QxeFJVbmduVk02dz09IiwidXNlcklkIjoiNjZhNmMxNGM0YTBmZTYwMjVmM2Y2NzA1IiwiZXhwIjoxNzIyMjA4MjQ2fQ.7_-hLxb34jQ-uAFkz73IOOmEQDjqH7TXWy2ITlvRhyg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Example Menu Name\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8989/stores/menu/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8989",
+					"path": [
+						"stores",
+						"menu",
+						"create"
+					]
+				},
+				"description": "The endpoint `POST /stores/menu/create` is used to create a new menu for a store.\n\n### Request Body\n\n- The request should include a JSON payload with the following parameter:\n    - `name`: (string) The name of the menu.\n        \n\n### Response\n\nThe response will be in JSON format with the following schema:\n\n``` json\n{\n  \"type\": \"object\",\n  \"properties\": {\n    \"id\": {\n      \"type\": \"string\"\n    },\n    \"storeId\": {\n      \"type\": \"string\"\n    },\n    \"name\": {\n      \"type\": \"string\"\n    },\n    \"productIds\": {\n      \"type\": \"array\",\n      \"items\": {}\n    }\n  }\n}\n\n ```"
+			},
+			"response": []
+		},
+		{
+			"name": "Store Perfil",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8989/stores/perfil/66aa6c14c4a0fe6025f3f6705",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8989",
+					"path": [
+						"stores",
+						"perfil",
+						"66aa6c14c4a0fe6025f3f6705"
+					]
+				},
+				"description": "### GET /stores/perfil/{id}\n\nThis endpoint retrieves the details of a specific store profile.\n\n#### Request\n\n- Path Parameters\n    - `id` (string, required): The unique identifier of the store profile.\n        \n\n#### Response\n\nThe response will be a JSON object with the following schema:\n\n``` json\n{\n  \"id\": \"\",\n  \"name\": \"\",\n  \"addressDTO\": {\n    \"userId\": \"\",\n    \"street\": \"\",\n    \"number\": null,\n    \"complement\": \"\",\n    \"neighborhood\": \"\",\n    \"city\": \"\",\n    \"state\": \"\",\n    \"zipCode\": \"\"\n  },\n  \"phone\": \"\",\n  \"hoursDTOs\": [\n    {\n      \"dayOfWeek\": \"\",\n      \"openTime\": \"\",\n      \"closeTime\": \"\"\n    }\n  ],\n  \"productModel\": [\n    {\n      \"id\": \"\",\n      \"ownerid\": \"\",\n      \"menuId\": null,\n      \"name\": \"\",\n      \"price\": 0,\n      \"description\": \"\",\n      \"avaliability\": true,\n      \"rating\": 0,\n      \"reviewsCount\": 0,\n      \"reviews\": []\n    }\n  ]\n}\n\n ```\n\nThe response will include the details of the store profile, including its ID, name, address, phone, operating hours, and product models."
+			},
+			"response": []
+		},
+		{
+			"name": "Store Add product to menu",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoIiwic3ViIjoiZXhhbXBsZUBzdG9yZS5jb20iLCJ0eXBlT2ZVc2VyIjoiU1RPUkUiLCJuYW1lIjoiSWlFdjFTcGdxR1QxeFJVbmduVk02dz09IiwidXNlcklkIjoiNjZhNmMxNGM0YTBmZTYwMjVmM2Y2NzA1IiwiZXhwIjoxNzIyMjA4MjQ2fQ.7_-hLxb34jQ-uAFkz73IOOmEQDjqH7TXWy2ITlvRhyg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8989/stores/menu/productMenu/66a6c54b4a0fe6025f3f6712/a66a6c20e10cb715d18013a8c",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8989",
+					"path": [
+						"stores",
+						"menu",
+						"productMenu",
+						"66a6c54b4a0fe6025f3f6712",
+						"a66a6c20e10cb715d18013a8c"
+					]
+				},
+				"description": "### Add Product to Menu\n\nThis endpoint allows updating the product menu for a specific store.\n\n#### Request Body\n\n- \"productMenu/{menuId}/{productId}\")\n    \n- `name` (string, required): The name of the product menu.\n    \n- `productIds` (array of strings, required): An array of product IDs included in the menu.\n    \n\n#### Response\n\nThe response is in JSON format with the following schema:\n\n``` json\n{\n    \"type\": \"object\",\n    \"properties\": {\n        \"id\": {\"type\": \"string\"},\n        \"storeId\": {\"type\": \"string\"},\n        \"name\": {\"type\": \"string\"},\n        \"productIds\": {\n            \"type\": \"array\",\n            \"items\": {\"type\": \"string\"}\n        }\n    }\n}\n\n ```\n\n## **Exceptions**\n\n{  \n\"type\": \"about:blank\",  \n\"title\": \"Menu Not Found Exception\",  \n\"status\": 404,  \n\"detail\": \"Error while trying to find a menu\",  \n\"instance\": \"/menu/productMenu/66a6c54b4a0fe602a5f3f6712/66a6c20e10cb715d18013a8c\"  \n}"
+			},
+			"response": []
+		},
+		{
+			"name": "Store Get Products By Menu Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8989/stores/menu/id/6a6a6c54b4a0fe6025f3f6712",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8989",
+					"path": [
+						"stores",
+						"menu",
+						"id",
+						"6a6a6c54b4a0fe6025f3f6712"
+					]
+				},
+				"description": "### GET /stores/menu/id/{menuId}\n\nThis endpoint retrieves the menu details for a specific store.\n\n#### Request\n\nNo request body is required for this endpoint.\n\n- Path Parameters\n    - `menuId` (string, required): The unique identifier of the menu.\n        \n\n#### Response\n\nThe response will be a JSON object with the following schema:\n\n``` json\n{\n    \"id\": \"\",\n    \"storeId\": \"\",\n    \"name\": \"\",\n    \"productIds\": [\n        {\n            \"id\": \"\",\n            \"ownerid\": \"\",\n            \"menuId\": \"\",\n            \"name\": \"\",\n            \"price\": 0,\n            \"description\": \"\",\n            \"avaliability\": true,\n            \"rating\": 0,\n            \"reviewsCount\": 0,\n            \"reviews\": []\n        }\n    ]\n}\n\n ```\n\n## E**xceptions**\n\n{  \n\"type\": \"about:blank\",  \n\"title\": \"Menu Not Found Exception\",  \n\"status\": 404,  \n\"detail\": \"Error while trying to find a menu\",  \n\"instance\": \"/menu/id/6a6a6c54b4a0fe6025f3f6712\"  \n}"
+			},
+			"response": []
+		}
+	]
+}
