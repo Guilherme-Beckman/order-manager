@@ -1,0 +1,98 @@
+{
+	"info": {
+		"_postman_id": "64a1027c-7fe1-4c19-9784-8ffa131badfd",
+		"name": "Products",
+		"description": "Product Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31833083"
+	},
+	"item": [
+		{
+			"name": "Product Get All Products",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8989/products/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8989",
+					"path": [
+						"products",
+						"all"
+					]
+				},
+				"description": "### Retrieve All Products\n\nThis endpoint retrieves all the products available.\n\n#### Request\n\n- Method: GET\n    \n- URL: `http://localhost:8989/products/all`\n    \n\n#### Response\n\nThe response will be a JSON array with the following schema:\n\n``` json\n[\n  {\n    \"id\": \"string\",\n    \"ownerid\": \"string\",\n    \"menuId\": \"string\",\n    \"name\": \"string\",\n    \"price\": 0,\n    \"description\": \"string\",\n    \"avaliability\": true,\n    \"rating\": 0,\n    \"reviewsCount\": 0,\n    \"reviews\": []\n  }\n]\n\n ```"
+			},
+			"response": []
+		},
+		{
+			"name": "Product Add Review",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoIiwic3ViIjoiZW1haWxAZ21haWwuY29tIiwidHlwZU9mVXNlciI6IkNMSUVOVCIsIm5hbWUiOiJOYW1lIiwidXNlcklkIjoiNjZhNmIyMmU5MTUyZTA2ZDQzNzJjMzU2IiwiZXhwIjoxNzIyMjA5NjYzfQ.hC_G59sYgjZLyaU4YC0otmLi0Bbk1MfwVSwDmv801ns",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"comment\": \"Great product! Highly recommend.\",\n    \"rating\": 2\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8989/products/review/66a6c20e10cb715d18013a8c",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8989",
+					"path": [
+						"products",
+						"review",
+						"66a6c20e10cb715d18013a8c"
+					]
+				},
+				"description": "### POST /products/review/66a6c20e10cb715d18013a8c\n\nThis endpoint allows the just users to submit a review for a specific product.\n\n#### Request Body\n\n- `comment` (string, optional): The comment provided by the user for the product review.\n    \n- `rating` (number, required): The rating given by the user for the product.\n    \n\n#### Response\n\nThe response is in JSON format with the following schema:\n\n``` json\n{\n    \"type\": \"object\",\n    \"properties\": {\n        \"productId\": {\"type\": \"string\"},\n        \"userName\": {\"type\": \"string\"},\n        \"comment\": {\"type\": \"string\"},\n        \"rating\": {\"type\": \"number\"},\n        \"createdAt\": {\"type\": \"string\"}\n    }\n}\n\n ```\n\nThe response includes the details of the submitted review, including the product ID, user name, comment, rating, and the timestamp of when the review was created.\n\n## Exceptions\n\n{  \n\"type\": \"about:blank\",  \n\"title\": \"Product Not Found Exception\",  \n\"status\": 404,  \n\"detail\": \"Error while trying to find a product\",  \n\"instance\": \"/review/66a6c20e10cb715d18013a8ca\"  \n}"
+			},
+			"response": []
+		},
+		{
+			"name": "Product Get By Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8989/products/id/66a6c20e10cb715d18013a8c",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8989",
+					"path": [
+						"products",
+						"id",
+						"66a6c20e10cb715d18013a8c"
+					]
+				},
+				"description": "The endpoint retrieves the details of a specific product identified by the provided ID.\n\n``` json\n{\n    \"type\": \"object\",\n    \"properties\": {\n        \"id\": {\"type\": \"string\"},\n        \"ownerid\": {\"type\": \"string\"},\n        \"name\": {\"type\": \"string\"},\n        \"price\": {\"type\": \"number\"},\n        \"menuId\": {\"type\": \"string\"},\n        \"description\": {\"type\": \"string\"},\n        \"rating\": {\"type\": \"number\"},\n        \"reviewsCount\": {\"type\": \"number\"},\n        \"reviews\": {\n            \"type\": \"array\",\n            \"items\": {}\n        }\n    }\n}\n\n ```\n\n## **Exceptions**\n\n{  \n\"type\": \"about:blank\",  \n\"title\": \"Product Not Found Exception\",  \n\"status\": 404,  \n\"detail\": \"Error while trying to find a product\",  \n\"instance\": \"/id/66a6c20e10cb715d18013a8ca\"  \n}"
+			},
+			"response": []
+		}
+	]
+}
