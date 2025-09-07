@@ -1,4 +1,7 @@
 # Online Order Management System
+🌍 Languages: [English](README.md) | [Português](README.pt-br.md)
+
+
 ![System Design](/Order%20Manger%20System%20Design.png)
 
 ## Description:
